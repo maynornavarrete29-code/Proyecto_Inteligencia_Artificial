@@ -1,0 +1,142 @@
+{
+  "users": [
+    {
+      "id": "user-admin-001",
+      "name": "Administrador BeyondDev",
+      "email": "admin@beyonddev.com",
+      "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "user-59e9c7ec-c511-4b3b-a0a4-c2999570d247",
+      "name": "orlando jose umanzor",
+      "email": "orlando@beyonddev.com",
+      "password": "$2a$10$WZdJi0QnbjEfv/pRchXpl.Ich9.biz30bJW.LWlPXktHb.pI3GGwu",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-24T05:24:48.404Z"
+    }
+  ],
+  "emails": [
+    {
+      "id": "email-1782278691989",
+      "type": "verify",
+      "to": "orlando@beyonddev.com",
+      "name": "orlando jose umanzor",
+      "subject": "Verifica tu cuenta de BeyondDev",
+      "token": "53cc3f6447ba4ab6ad1d3718c04fe631",
+      "timestamp": "23:24:51",
+      "previewUrl": "https://ethereal.email/message/ajtpkqtu2Pi7IDTpajtqIuh.E5oJTA6iAAAAAUGMhwKo.ZEaisBhWOq34fQ"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "Clon de Discord",
+      "client": "Gaming Guild Latam",
+      "type": "mobile",
+      "status": "desarrollo",
+      "progress": 65,
+      "budget": "12,500",
+      "hours": "142",
+      "developer": "Jeferson Reyes",
+      "role": "Mobile Dev",
+      "priority": "alta",
+      "startDate": "2026-04-10",
+      "endDate": "2026-07-15",
+      "desc": "Réplica móvil de alta fidelidad con canales de voz WebRTC en tiempo real, chat estructurado y roles dinámicos."
+    },
+    {
+      "id": "proj-2",
+      "name": "Ahorro Inteligente",
+      "client": "Fintech Spark",
+      "type": "mobile",
+      "status": "pruebas",
+      "progress": 88,
+      "budget": "8,400",
+      "hours": "95",
+      "developer": "Maynor Padilla",
+      "role": "Frontend Dev",
+      "priority": "media",
+      "startDate": "2026-05-01",
+      "endDate": "2026-06-30",
+      "desc": "App financiera de ahorro personal orientada a la salud de presupuestos familiares mediante visualización interactiva y metas."
+    },
+    {
+      "id": "proj-3",
+      "name": "Gestión Hotelera (PMS)",
+      "client": "Hotel San Pedro",
+      "type": "system",
+      "status": "en proceso",
+      "progress": 100,
+      "budget": "24,000",
+      "hours": "320",
+      "developer": "Orlando Umanzor",
+      "role": "Backend Dev",
+      "priority": "alta",
+      "startDate": "2026-01-15",
+      "endDate": "2026-05-20",
+      "desc": "ERP completo hotelero para reservas automatizadas, tarifas y facturación electrónica integrada."
+    },
+    {
+      "id": "proj-4",
+      "name": "Catastro Inmobiliario",
+      "client": "Lotificadora Continental",
+      "type": "system",
+      "status": "idea",
+      "progress": 15,
+      "budget": "18,500",
+      "hours": "24",
+      "developer": "Cristhian Anibal",
+      "role": "UI/UX Designer",
+      "priority": "media",
+      "startDate": "2026-06-01",
+      "endDate": "2026-10-15",
+      "desc": "Sistema web integral para visualización catastral de planos de terrenos interactivos de preventa y cuotas automatizadas."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "text": "Diseñar arquitectura WebSockets",
+      "status": "todo",
+      "project": "Clon de Discord"
+    },
+    {
+      "id": "task-2",
+      "text": "Integrar canal de audio WebRTC",
+      "status": "doing",
+      "project": "Clon de Discord"
+    },
+    {
+      "id": "task-3",
+      "text": "Testing de base de datos SQLite",
+      "status": "testing",
+      "project": "Ahorro Inteligente"
+    },
+    {
+      "id": "task-4",
+      "text": "Crear vistas de presupuesto mensual",
+      "status": "done",
+      "project": "Ahorro Inteligente"
+    },
+    {
+      "id": "task-5",
+      "text": "Optimizar queries de base de datos",
+      "status": "doing",
+      "project": "Gestión Hotelera (PMS)"
+    },
+    {
+      "id": "task-6",
+      "text": "Maquetado inicial del dashboard",
+      "status": "todo",
+      "project": "Catastro Inmobiliario"
+    }
+  ]
+}

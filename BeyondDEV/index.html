@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeyondDev | Beyond code, Beyond limit</title>
+    <meta name="description"
+        content="BeyondDev es un grupo especializado de desarrolladores web y móvil. Creamos páginas web, aplicaciones móviles y sistemas de información avanzados.">
+    <!-- Google Fonts: Orbitron for tech titles, Inter for sleek readable copy -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for high-quality icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Animated Gradients & Glows -->
+    <div class="glow-bg-container">
+        <div class="glow-orb orb-purple"></div>
+        <div class="glow-orb orb-gold"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header id="main-header">
+        <div class="container header-wrapper">
+            <a href="#" class="logo-area">
+                <img src="assets/logo.png" alt="BeyondDev Logo" class="header-logo" id="logo-img">
+                <span class="logo-text">Beyond<span class="highlight-gold">Dev</span></span>
+            </a>
+            <nav id="nav-menu">
+                <ul>
+                    <li><a href="#hero" class="nav-link active">Inicio</a></li>
+                    <li><a href="#about" class="nav-link">Nosotros</a></li>
+                    <li><a href="#services" class="nav-link">Servicios</a></li>
+                    <li><a href="#tech" class="nav-link">Tecnologías</a></li>
+                    <li><a href="#portfolio" class="nav-link">Portafolio</a></li>
+                    <li><a href="#contact" class="nav-btn-link"><button
+                                class="btn btn-primary-outline">Contáctanos</button></a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-drawer">
+        <div class="drawer-header">
+            <span class="logo-text">Beyond<span class="highlight-gold">Dev</span></span>
+            <button class="drawer-close" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="drawer-nav">
+            <ul>
+                <li><a href="#hero" class="drawer-link">Inicio</a></li>
+                <li><a href="#about" class="drawer-link">Nosotros</a></li>
+                <li><a href="#services" class="drawer-link">Servicios</a></li>
+                <li><a href="#tech" class="drawer-link">Tecnologías</a></li>
+                <li><a href="#portfolio" class="drawer-link">Portafolio</a></li>
+                <li><a href="login.html" class="drawer-link"><i class="fa-solid fa-right-to-bracket"></i> Backend</a>
+                </li>
+                <li><a href="#contact" class="drawer-link drawer-btn-link"><button
+                            class="btn btn-gold w-100">Contáctanos</button></a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="container hero-wrapper">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-code"></i> 2 Años de Innovación Digital
+                    </div>
+                    <h1 class="hero-title">
+                        Beyond <span class="gradient-text-purple">code</span>,<br>
+                        Beyond <span class="gradient-text-gold">limit</span>.
+                    </h1>
+                    <p class="hero-subtitle">
+                        Somos un grupo de desarrolladores apasionados. Transformamos ideas complejas en sistemas de
+                        información elegantes, páginas web de alto impacto y aplicaciones móviles extraordinarias.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn btn-gold">Registra tu Proyecto <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#portfolio" class="btn btn-secondary">Ver Portafolio</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="logo-showcase-container">
+                        <div class="logo-glow-ring"></div>
+                        <img src="assets/logo.png" alt="BeyondDev Circular Emblem" class="hero-logo-emblem">
+                    </div>
+                </div>
+            </div>
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator">
+                <a href="#about" aria-label="Desplazarse hacia abajo">
+                    <div class="mouse-icon">
+                        <div class="wheel"></div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">¿Quiénes Somos?</span>
+                    <h2 class="section-title">Impulsando el Futuro de las Empresas</h2>
+                    <p class="section-subtitle">Combinamos experiencia técnica, metodologías ágiles y un diseño centrado
+                        en el usuario para crear soluciones tecnológicas sólidas.</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-info-card glass-card">
+                        <h3>Nuestra Trayectoria</h3>
+                        <p>Durante los últimos <strong>2 años</strong>, en BeyondDev nos hemos consolidado como un
+                            equipo dinámico de desarrolladores frontend y backend comprometidos con la excelencia. Nos
+                            apasiona llevar los límites del código más allá de lo convencional, adaptando tecnologías
+                            modernas para resolver problemas reales de negocio.</p>
+                        <div class="about-stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-num" data-val="2">0</span>
+                                <span class="stat-lbl">Años de Exp.</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-val="12">0</span>
+                                <span class="stat-lbl">Proyectos de Éxito</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num" data-val="100">0</span><span class="stat-plus">%</span>
+                                <span class="stat-lbl">Calidad Código</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-perks-grid">
+                        <div class="perk-card glass-card">
+                            <div class="perk-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                            <h4>Desarrollo Full-Stack</h4>
+                            <p>Domino absoluto de tecnologías frontend y backend, garantizando que el diseño y el
+                                rendimiento trabajen en perfecta armonía.</p>
+                        </div>
+                        <div class="perk-card glass-card">
+                            <div class="perk-icon"><i class="fa-solid fa-cubes"></i></div>
+                            <h4>Arquitecturas Modernas</h4>
+                            <p>Sistemas modulares, escalables y seguros preparados para crecer junto con tu modelo de
+                                negocio.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Nuestros Servicios</span>
+                    <h2 class="section-title">Soluciones Tecnológicas a tu Medida</h2>
+                    <p class="section-subtitle">Ofrecemos un catálogo completo de desarrollo de software diseñado para
+                        modernizar y potenciar la productividad de tu organización.</p>
+                </div>
+                <div class="services-grid">
+                    <!-- Service 1 -->
+                    <div class="service-card glass-card">
+                        <div class="service-icon"><i class="fa-solid fa-globe"></i></div>
+                        <h3>Desarrollo Web</h3>
+                        <p>Diseño y construcción de páginas corporativas, plataformas web y portales interactivos ultra
+                            rápidos con la mejor experiencia de usuario.</p>
+                        <ul class="service-list">
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Sitios Responsivos y SEO-Optimized</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Single Page Applications (SPA)</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Portales de Reservaciones y Negocios
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Service 2 -->
+                    <div class="service-card glass-card">
+                        <div class="service-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <h3>Desarrollo Móvil</h3>
+                        <p>Desarrollo de aplicaciones nativas y multiplataforma robustas y dinámicas para iOS y Android
+                            con interfaces fluidas.</p>
+                        <ul class="service-list">
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Aplicaciones Híbridas de Alto
+                                Rendimiento</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Interfaces de Usuario Intuitivas</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Integración Completa con APIs y
+                                Sensores</li>
+                        </ul>
+                    </div>
+                    <!-- Service 3 -->
+                    <div class="service-card glass-card">
+                        <div class="service-icon"><i class="fa-solid fa-gears"></i></div>
+                        <h3>Sistemas de Gestión</h3>
+                        <p>Modernización e implementación de sistemas de información internos. Ideal para empresas que
+                            desean sistematizar y automatizar operaciones.</p>
+                        <ul class="service-list">
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Control de Inventario y Contratos</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Software de Gestión Hotelera (PMS)</li>
+                            <li><i class="fa-solid fa-check highlight-gold"></i> Sistemas Inmobiliarios y Lotificadoras
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technologies Section -->
+        <section id="tech" class="tech-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Tecnologías Estándar</span>
+                    <h2 class="section-title">El Tech-Stack que Impulsa tus Ideas</h2>
+                    <p class="section-subtitle">Utilizamos los frameworks y lenguajes más solicitados y estables del
+                        ecosistema actual para garantizar un software mantenible y rápido.</p>
+                </div>
+                <div class="tech-grid">
+                    <!-- FastAPI -->
+                    <div class="tech-item glass-card" data-tech="FastAPI">
+                        <div class="tech-icon-container"><i class="fa-solid fa-bolt"></i></div>
+                        <h4>FastAPI</h4>
+                        <span class="tech-type backend">Backend</span>
+                    </div>
+                    <!-- Express.js -->
+                    <div class="tech-item glass-card" data-tech="Express">
+                        <div class="tech-icon-container"><i class="fa-solid fa-server"></i></div>
+                        <h4>Express</h4>
+                        <span class="tech-type backend">Backend</span>
+                    </div>
+                    <!-- Node.js -->
+                    <div class="tech-item glass-card" data-tech="Node.js">
+                        <div class="tech-icon-container"><i class="fa-brands fa-node-js"></i></div>
+                        <h4>Node.js</h4>
+                        <span class="tech-type backend">Backend</span>
+                    </div>
+                    <!-- Angular -->
+                    <div class="tech-item glass-card" data-tech="Angular">
+                        <div class="tech-icon-container"><i class="fa-brands fa-angular"></i></div>
+                        <h4>Angular</h4>
+                        <span class="tech-type frontend">Frontend</span>
+                    </div>
+                    <!-- React -->
+                    <div class="tech-item glass-card" data-tech="React">
+                        <div class="tech-icon-container"><i class="fa-brands fa-react"></i></div>
+                        <h4>React</h4>
+                        <span class="tech-type frontend">Frontend</span>
+                    </div>
+                    <!-- React Native -->
+                    <div class="tech-item glass-card" data-tech="React Native">
+                        <div class="tech-icon-container"><i class="fa-solid fa-mobile-retro"></i></div>
+                        <h4>React Native</h4>
+                        <span class="tech-type mobile">Mobile</span>
+                    </div>
+                    <!-- Flutter -->
+                    <div class="tech-item glass-card" data-tech="Flutter">
+                        <div class="tech-icon-container"><i class="fa-solid fa-wind"></i></div>
+                        <h4>Flutter</h4>
+                        <span class="tech-type mobile">Mobile</span>
+                    </div>
+                    <!-- Next.js -->
+                    <div class="tech-item glass-card" data-tech="Next.js">
+                        <div class="tech-icon-container"><i class="fa-solid fa-layer-group"></i></div>
+                        <h4>Next.js</h4>
+                        <span class="tech-type fullstack">Fullstack</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="portfolio-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-tag">Portafolio</span>
+                    <h2 class="section-title">Historias de Éxito y Proyectos</h2>
+                    <p class="section-subtitle">Explora una selección de nuestras soluciones desarrolladas, que abarcan
+                        desde aplicaciones móviles interactivas hasta sistemas de gestión avanzados.</p>
+                </div>
+
+                <!-- Portfolio Filters -->
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="mobile">Aplicaciones Móviles</button>
+                    <button class="filter-btn" data-filter="web-sys">Páginas & Sistemas Web</button>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="portfolio-grid">
+                    <!-- Project 1: Discord Clone -->
+                    <div class="project-card glass-card" data-category="mobile">
+                        <div class="project-img-placeholder">
+                            <i class="fa-brands fa-discord project-bg-icon"></i>
+                            <div class="project-tag-badge">Móvil</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Clon de Discord</h3>
+                            <p class="project-desc">Réplica funcional de alta fidelidad para dispositivos móviles.
+                                Incluye canales de voz persistentes, mensajería en tiempo real estructurada por
+                                servidores y roles de usuario dinámicos.</p>
+                            <div class="project-tech-tags">
+                                <span>React Native</span>
+                                <span>WebSockets</span>
+                                <span>Node.js</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Ahorro Inteligente -->
+                    <div class="project-card glass-card" data-category="mobile">
+                        <div class="project-img-placeholder">
+                            <i class="fa-solid fa-wallet project-bg-icon"></i>
+                            <div class="project-tag-badge">Móvil</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Aplicación de Ahorro</h3>
+                            <p class="project-desc">Una herramienta intuitiva orientada a la salud financiera personal.
+                                Permite a los usuarios definir metas de ahorro, registrar transacciones diarias de
+                                manera ágil y visualizar presupuestos automáticos.</p>
+                            <div class="project-tech-tags">
+                                <span>Flutter</span>
+                                <span>SQLite</span>
+                                <span>Express</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Recomendación de Lectura -->
+                    <div class="project-card glass-card" data-category="mobile">
+                        <div class="project-img-placeholder">
+                            <i class="fa-solid fa-book-open project-bg-icon"></i>
+                            <div class="project-tag-badge">Móvil</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Recomendador de Lectura</h3>
+                            <p class="project-desc">Plataforma móvil interactiva de lectura que ofrece recomendaciones
+                                personalizadas de libros basándose en el historial del lector y sus categorías
+                                predilectas.</p>
+                            <div class="project-tech-tags">
+                                <span>React Native</span>
+                                <span>Node.js</span>
+                                <span>FastAPI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Páginas para Hoteles -->
+                    <div class="project-card glass-card" data-category="web-sys">
+                        <div class="project-img-placeholder">
+                            <i class="fa-solid fa-hotel project-bg-icon"></i>
+                            <div class="project-tag-badge">Web</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Páginas Web para Hoteles</h3>
+                            <p class="project-desc">Sitios web informativos y estéticos de alta conversión para hoteles.
+                                Cuentan con galerías de imágenes integradas, mapas interactivos de ubicación y pasarela
+                                de pre-reserva.</p>
+                            <div class="project-tech-tags">
+                                <span>React</span>
+                                <span>Next.js</span>
+                                <span>CSS Vanilla</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: Gestión Hotelera (PMS) -->
+                    <div class="project-card glass-card" data-category="web-sys">
+                        <div class="project-img-placeholder">
+                            <i class="fa-solid fa-bed project-bg-icon"></i>
+                            <div class="project-tag-badge">Sistemas</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Sistema de Gestión Hotelera</h3>
+                            <p class="project-desc">Software ERP especializado para control de hoteles. Automatiza el
+                                check-in/out, la gestión de limpieza, la asignación de tarifas de habitaciones en tiempo
+                                real y la facturación electrónica.</p>
+                            <div class="project-tech-tags">
+                                <span>Angular</span>
+                                <span>FastAPI</span>
+                                <span>PostgreSQL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6: Sistema para Lotificadoras -->
+                    <div class="project-card glass-card" data-category="web-sys">
+                        <div class="project-img-placeholder">
+                            <i class="fa-solid fa-map-location-dot project-bg-icon"></i>
+                            <div class="project-tag-badge">Sistemas</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Sistema para Lotificadoras</h3>
+                            <p class="project-desc">Sistema integral para la administración catastral y financiera de
+                                venta de terrenos. Gestiona planos interactivos de lotes, contratos de preventa, cuotas
+                                mensuales y cálculo automático de mora.</p>
+                            <div class="project-tech-tags">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>Express</span>
+                                <span>MySQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration & Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Left: Contact info -->
+                    <div class="contact-info-panel">
+                        <span class="section-tag">Hablemos de tu Proyecto</span>
+                        <h2 class="section-title">¿Listo para dar el siguiente paso?</h2>
+                        <p class="contact-intro">Completa el formulario de registro de proyecto para agendar una sesión
+                            de asesoría tecnológica gratuita con nuestro equipo. Analizaremos tu idea y estructuraremos
+                            una propuesta.</p>
+
+                        <div class="contact-details-list">
+                            <div class="contact-detail-item">
+                                <div class="detail-icon"><i class="fa-solid fa-phone"></i></div>
+                                <div class="detail-text">
+                                    <span class="detail-label">Llámanos o escríbenos:</span>
+                                    <a href="tel:97242842" class="detail-value">97242842</a>
+                                </div>
+                            </div>
+                            <div class="contact-detail-item">
+                                <div class="detail-icon"><i class="fa-solid fa-envelope"></i></div>
+                                <div class="detail-text">
+                                    <span class="detail-label">Correo electrónico:</span>
+                                    <a href="mailto:info@beyonddev.com" class="detail-value">info@beyonddev.com</a>
+                                </div>
+                            </div>
+                            <div class="contact-detail-item">
+                                <div class="detail-icon"><i class="fa-solid fa-clock"></i></div>
+                                <div class="detail-text">
+                                    <span class="detail-label">Horario de Atención:</span>
+                                    <span class="detail-value">Lunes a Viernes (8:00 AM - 6:00 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Brand Statement -->
+                        <div class="brand-badge-footer">
+                            <img src="assets/logo.png" alt="BeyondDev Emblem Tiny" class="tiny-emblem">
+                            <span>Beyond code, Beyond limit.</span>
+                        </div>
+                    </div>
+
+                    <!-- Right: Project Registration Form -->
+                    <div class="contact-form-panel glass-card">
+                        <h3>Registrar Nuevo Proyecto</h3>
+                        <p class="form-desc-text">Cuéntanos brevemente qué necesitas y te responderemos en menos de 24
+                            horas hábiles.</p>
+
+                        <form id="project-registration-form" novalidate>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="client-name">Tu Nombre <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-user input-icon"></i>
+                                        <input type="text" id="client-name" name="name" placeholder="Ej. Carlos Mendoza"
+                                            required>
+                                    </div>
+                                    <span class="error-msg">Por favor ingresa tu nombre</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row split">
+                                <div class="form-group">
+                                    <label for="client-email">Correo Electrónico <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-envelope input-icon"></i>
+                                        <input type="email" id="client-email" name="email"
+                                            placeholder="carlos@empresa.com" required>
+                                    </div>
+                                    <span class="error-msg">Ingresa un correo electrónico válido</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="client-phone">Número de Teléfono <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-phone input-icon"></i>
+                                        <input type="tel" id="client-phone" name="phone" placeholder="Ej. 97242842"
+                                            required>
+                                    </div>
+                                    <span class="error-msg">Por favor ingresa tu número telefónico</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row split">
+                                <div class="form-group">
+                                    <label for="client-company">Empresa / Organización</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-building input-icon"></i>
+                                        <input type="text" id="client-company" name="company"
+                                            placeholder="Nombre de tu empresa">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="project-type">Tipo de Proyecto <span class="required">*</span></label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-list input-icon"></i>
+                                        <select id="project-type" name="projectType" required>
+                                            <option value="" disabled selected>Selecciona una opción</option>
+                                            <option value="web">Desarrollo Web (Página / Portal)</option>
+                                            <option value="mobile">Aplicación Móvil (Android / iOS)</option>
+                                            <option value="system">Sistema de Gestión / Control Interno</option>
+                                            <option value="modernization">Modernización de Sistema Existente</option>
+                                            <option value="other">Otro Requerimiento Tecnológico</option>
+                                        </select>
+                                    </div>
+                                    <span class="error-msg">Selecciona una categoría</span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="project-desc">Cuéntanos sobre tu idea <span
+                                            class="required">*</span></label>
+                                    <textarea id="project-desc" name="description" rows="4"
+                                        placeholder="Describe brevemente las funcionalidades principales que necesitas para tu sistema o aplicación..."
+                                        required></textarea>
+                                    <span class="error-msg">Por favor describe tu proyecto para ayudarte mejor</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gold btn-submit w-100">
+                                <span class="btn-text">Enviar Registro <i class="fa-solid fa-paper-plane"></i></span>
+                                <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-bottom-wrapper">
+            <div class="footer-brand-col">
+                <a href="#" class="logo-area">
+                    <img src="assets/logo.png" alt="BeyondDev Logo" class="footer-logo">
+                    <span class="logo-text">Beyond<span class="highlight-gold">Dev</span></span>
+                </a>
+                <p class="footer-tagline">Superando límites a través del código de calidad.</p>
+            </div>
+            <div class="footer-social-links">
+                <a href="#" aria-label="LinkedIn" class="social-link-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" aria-label="GitHub" class="social-link-btn"><i class="fa-brands fa-github"></i></a>
+                <a href="#" aria-label="Instagram" class="social-link-btn"><i class="fa-brands fa-instagram"></i></a>
+                <a href="login.html" id="btn_backend" class="social-link-btn">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            </div>
+            <div class="footer-copyright-col">
+                <p>&copy; 2026 BeyondDev. Todos los derechos reservados.</p>
+                <p class="footer-slogan">Beyond code, Beyond limit.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal Popup -->
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>¡Proyecto Registrado!</h2>
+            <p>Muchas gracias por contactar a <strong>BeyondDev</strong>. Hemos recibido la información de tu proyecto
+                correctamente.</p>
+            <p class="modal-subtext">Uno de nuestros desarrolladores líderes revisará los detalles y se pondrá en
+                contacto contigo a través de tu correo electrónico o por teléfono (97242842) en un plazo máximo de 24
+                horas.</p>
+            <button id="close-modal-btn" class="btn btn-gold">Entendido <i class="fa-solid fa-thumbs-up"></i></button>
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="main.js"></script>
+</body>
+
+</html>

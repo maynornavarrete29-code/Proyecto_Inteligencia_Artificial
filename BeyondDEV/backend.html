@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevHub Dashboard | BeyondDev</title>
+    <!-- Route Protection Guard: prevents flashing of dashboard content for unauthenticated users -->
+    <script>
+        if (!localStorage.getItem('beyonddev_token')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="backend.css">
+</head>
+
+<body class="dashboard-body">
+    <!-- Glowing background elements -->
+    <div class="glow-bg-container">
+        <div class="glow-orb orb-purple"></div>
+        <div class="glow-orb orb-gold"></div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="dashboard-sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo-area">
+                    <img src="assets/logo.png" alt="BeyondDev Emblem" class="header-logo">
+                    <span class="logo-text">Beyond<span class="highlight-gold">Dev</span></span>
+                </a>
+                <button class="sidebar-close-btn" id="sidebar-close" aria-label="Cerrar barra lateral"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="sidebar-link active" data-view="overview">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Resumen</span>
+                    </li>
+                    <li class="sidebar-link" data-view="projects">
+                        <i class="fa-solid fa-cubes"></i>
+                        <span>Proyectos Activos</span>
+                    </li>
+                    <li class="sidebar-link" data-view="tasks">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Tablero de Tareas</span>
+                    </li>
+                    <li class="sidebar-link" data-view="team">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Equipo de Desarrollo</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-panel">
+                    <div class="user-avatar-circle">
+                        <span id="user-initials">AD</span>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" id="user-display-name">Admin</span>
+                        <span class="user-role">Dev Lead</span>
+                    </div>
+                    <button class="btn-logout" id="btn-logout-sidebar" title="Cerrar Sesión">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN PANEL WRAPPER -->
+        <main class="main-panel">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Abrir menú">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
+                    <h1 class="topbar-title" id="view-title">Resumen del Sistema</h1>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="global-search" placeholder="Buscar proyectos, clientes, tareas...">
+                    </div>
+                    <button class="btn btn-gold btn-new-project" id="btn-open-create-modal">
+                        <i class="fa-solid fa-plus"></i> <span>Nuevo Proyecto</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- VIEW SECTIONS CONTAINER -->
+            <div class="content-view-container">
+
+                <!-- VIEW 1: OVERVIEW -->
+                <section class="dashboard-view active" id="view-overview">
+                    <!-- Stat boxes -->
+                    <div class="stats-grid">
+                        <div class="stat-card glass-card">
+                            <div class="stat-card-icon purple"><i class="fa-solid fa-folder-open"></i></div>
+                            <div class="stat-card-info">
+                                <span class="stat-value" id="stat-total-projects">0</span>
+                                <span class="stat-label">Proyectos Registrados</span>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-card-icon gold"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                            <div class="stat-card-info">
+                                <span class="stat-value" id="stat-active-projects">0</span>
+                                <span class="stat-label">En Desarrollo</span>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-card-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="stat-card-info">
+                                <span class="stat-value" id="stat-completed-projects">0</span>
+                                <span class="stat-label">Completados</span>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card">
+                            <div class="stat-card-icon blue"><i class="fa-solid fa-dollar-sign"></i></div>
+                            <div class="stat-card-info">
+                                <span class="stat-value" id="stat-total-budget">$0</span>
+                                <span class="stat-label">Presupuesto Total (USD)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layout widgets grid -->
+                    <div class="overview-grid">
+
+                        <!-- Productivity chart & ongoing status -->
+                        <div class="overview-left glass-card">
+                            <h3>Rendimiento del Sprint Semanal</h3>
+                            <p class="card-desc">Histórico de commits y despliegues automáticos integrados.</p>
+
+                            <!-- Custom SVG Area chart -->
+                            <div class="chart-container">
+                                <svg class="progress-chart" viewBox="0 0 500 200">
+                                    <defs>
+                                        <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#2B1D75" stop-opacity="0.4"></stop>
+                                            <stop offset="100%" stop-color="#2B1D75" stop-opacity="0.0"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <!-- Grid lines -->
+                                    <line x1="40" y1="20" x2="480" y2="20" stroke="rgba(255,255,255,0.05)"
+                                        stroke-width="1"></line>
+                                    <line x1="40" y1="70" x2="480" y2="70" stroke="rgba(255,255,255,0.05)"
+                                        stroke-width="1"></line>
+                                    <line x1="40" y1="120" x2="480" y2="120" stroke="rgba(255,255,255,0.05)"
+                                        stroke-width="1"></line>
+                                    <line x1="40" y1="170" x2="480" y2="170" stroke="rgba(255,255,255,0.1)"
+                                        stroke-width="1"></line>
+
+                                    <!-- Filled path -->
+                                    <path d="M 40 170 Q 110 140, 180 90 T 320 60 T 480 30 L 480 170 Z"
+                                        fill="url(#chartGlow)"></path>
+
+                                    <!-- Line path -->
+                                    <path d="M 40 170 Q 110 140, 180 90 T 320 60 T 480 30" fill="none"
+                                        stroke="var(--accent-gold)" stroke-width="3"></path>
+
+                                    <!-- Data dots -->
+                                    <circle cx="40" cy="170" r="5" fill="var(--accent-gold)"></circle>
+                                    <circle cx="120" cy="138" r="5" fill="var(--accent-gold)"></circle>
+                                    <circle cx="190" cy="95" r="5" fill="var(--accent-gold)"></circle>
+                                    <circle cx="280" cy="65" r="5" fill="var(--accent-gold)"></circle>
+                                    <circle cx="370" cy="60" r="5" fill="var(--accent-gold)"></circle>
+                                    <circle cx="480" cy="30" r="5" fill="var(--accent-gold)"></circle>
+
+                                    <!-- Chart labels -->
+                                    <text x="40" y="190" fill="var(--text-muted)" font-size="10">Lun</text>
+                                    <text x="120" y="190" fill="var(--text-muted)" font-size="10">Mar</text>
+                                    <text x="190" y="190" fill="var(--text-muted)" font-size="10">Mie</text>
+                                    <text x="280" y="190" fill="var(--text-muted)" font-size="10">Jue</text>
+                                    <text x="370" y="190" fill="var(--text-muted)" font-size="10">Vie</text>
+                                    <text x="460" y="190" fill="var(--text-muted)" font-size="10">Fin de S.</text>
+                                </svg>
+                            </div>
+
+                            <!-- Project health statuses -->
+                            <div class="project-health-list">
+                                <h4>Proyectos Críticos de Alta Prioridad</h4>
+                                <div id="critical-projects-list">
+                                    <!-- Loaded dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity feed -->
+                        <div class="overview-right glass-card">
+                            <h3>Actividades del Equipo</h3>
+                            <p class="card-desc">Eventos y registros más recientes del grupo de desarrollo.</p>
+
+                            <div class="activity-timeline">
+                                <div class="activity-item">
+                                    <div class="activity-dot green"><i class="fa-solid fa-code-commit"></i></div>
+                                    <div class="activity-info">
+                                        <p class="activity-text"><strong>Orlando Umanzor</strong> subió commit
+                                            <code>feat/webrtc-audio</code> en Clon de Discord.
+                                        </p>
+                                        <span class="activity-time">Hace 12 min</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot blue"><i class="fa-solid fa-circle-check"></i></div>
+                                    <div class="activity-info">
+                                        <p class="activity-text"><strong>Cristhian Anibal</strong> completó pruebas de
+                                            pasarela en Ahorro Inteligente.</p>
+                                        <span class="activity-time">Hace 45 min</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot gold"><i class="fa-solid fa-circle-arrow-up"></i></div>
+                                    <div class="activity-info">
+                                        <p class="activity-text"><strong>Jeferson Reyes</strong> desplegó a producción
+                                            Gestión Hotelera (PMS).</p>
+                                        <span class="activity-time">Hace 2 horas</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-dot purple"><i class="fa-solid fa-user-plus"></i></div>
+                                    <div class="activity-info">
+                                        <p class="activity-text"><strong>Orlando Umanzor</strong> fue asignada como
+                                            diseñadora UX al Catastro Inmobiliario.</p>
+                                        <span class="activity-time">Hace 1 día</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- VIEW 2: PROJECTS VIEW -->
+                <section class="dashboard-view" id="view-projects">
+                    <!-- Filters row -->
+                    <div class="projects-filter-bar glass-card">
+                        <div class="filter-group">
+                            <label for="filter-status">Estado:</label>
+                            <select id="filter-status">
+                                <option value="all">Todos los Estados</option>
+                                <option value="idea">Idea / Planificación</option>
+                                <option value="desarrollo">En Desarrollo</option>
+                                <option value="pruebas">En Pruebas / QA</option>
+                                <option value="completado">Completados</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-type">Tipo de Proyecto:</label>
+                            <select id="filter-type">
+                                <option value="all">Todos los Tipos</option>
+                                <option value="web">Páginas & Sistemas Web</option>
+                                <option value="mobile">Aplicaciones Móviles</option>
+                                <option value="system">Sistemas ERP / PMS / Gestión</option>
+                            </select>
+                        </div>
+                        <div class="filter-group reset-btn-container">
+                            <button class="btn btn-secondary w-100" id="btn-reset-filters">
+                                <i class="fa-solid fa-arrow-rotate-left"></i> Limpiar Filtros
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Projects list container -->
+                    <div class="projects-grid" id="projects-list-container">
+                        <!-- Loaded dynamically via javascript -->
+                    </div>
+                </section>
+
+                <!-- VIEW 3: TASKS TABLERO (KANBAN) -->
+                <section class="dashboard-view" id="view-tasks">
+                    <div class="kanban-board-container">
+
+                        <!-- COLUMN: TODO -->
+                        <div class="kanban-column" data-status="todo">
+                            <div class="column-header">
+                                <h3>Por Hacer</h3>
+                                <span class="count-badge" id="count-todo">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper" id="column-todo-wrapper">
+                                <!-- Cards injected here -->
+                            </div>
+                            <!-- Quick task creator -->
+                            <form class="quick-task-form" data-target="todo">
+                                <input type="text" placeholder="+ Agregar nueva tarea..." required>
+                                <select class="project-selector" required>
+                                    <!-- Loaded dynamic project options -->
+                                </select>
+                                <button type="submit" class="btn-add-task"><i class="fa-solid fa-check"></i></button>
+                            </form>
+                        </div>
+
+                        <!-- COLUMN: DOING -->
+                        <div class="kanban-column" data-status="doing">
+                            <div class="column-header">
+                                <h3>En Desarrollo</h3>
+                                <span class="count-badge" id="count-doing">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper" id="column-doing-wrapper">
+                                <!-- Cards injected here -->
+                            </div>
+                        </div>
+
+                        <!-- COLUMN: TESTING -->
+                        <div class="kanban-column" data-status="testing">
+                            <div class="column-header">
+                                <h3>En Pruebas</h3>
+                                <span class="count-badge" id="count-testing">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper" id="column-testing-wrapper">
+                                <!-- Cards injected here -->
+                            </div>
+                        </div>
+
+                        <!-- COLUMN: DONE -->
+                        <div class="kanban-column" data-status="done">
+                            <div class="column-header">
+                                <h3>Completado</h3>
+                                <span class="count-badge" id="count-done">0</span>
+                            </div>
+                            <div class="kanban-cards-wrapper" id="column-done-wrapper">
+                                <!-- Cards injected here -->
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- VIEW 4: TEAM VIEW -->
+                <section class="dashboard-view" id="view-team">
+                    <div class="team-grid" id="team-list-container">
+                        <!-- Seeded static/dynamic team member profiles -->
+
+                        <!-- Member 1 -->
+                        <div class="team-card glass-card">
+                            <div class="team-status active" title="Disponible / Activo"></div>
+                            <div class="member-avatar">
+                                <span class="avatar-fallback text-purple">CM</span>
+                            </div>
+                            <h3 class="member-name">Maynor Padilla</h3>
+                            <span class="member-role">Gestor de Proyectos</span>
+                            <p class="member-bio">Encargado de la direccion del equipo y la conexion con el cliente,
+                                conocimientos en backend.</p>
+                            <div class="member-project-tags">
+                                <span class="project-tag">Clon de discord</span>
+                            </div>
+                        </div>
+
+                        <!-- Member 2 -->
+                        <div class="team-card glass-card">
+                            <div class="team-status active" title="Disponible / Activo"></div>
+                            <div class="member-avatar">
+                                <span class="avatar-fallback text-gold">SC</span>
+                            </div>
+                            <h3 class="member-name">Orlando Umanzor</h3>
+                            <span class="member-role">Desarrollador Fullstack</span>
+                            <p class="member-bio"> Especialista en React,React Native,Node.js,Expres,MongoDB.</p>
+                            <div class="member-project-tags">
+                                <span class="project-tag">Ahorro Inteligente</span>
+                            </div>
+                        </div>
+
+                        <!-- Member 3 -->
+                        <div class="team-card glass-card">
+                            <div class="team-status occupied" title="Disponible / Activo "></div>
+                            <div class="member-avatar">
+                                <span class="avatar-fallback text-blue">DP</span>
+                            </div>
+                            <h3 class="member-name">Jeferson Reyes</h3>
+                            <span class="member-role">Desarrollador Backend Principal</span>
+                            <p class="member-bio">Diseñador de bases de datos SQLServer, APIs seguras en FastAPI/Python
+                                y arquitecturas en la nube.</p>
+                            <div class="member-project-tags">
+                                <span class="project-tag">Gestión Hotelera </span>
+                            </div>
+                        </div>
+
+                        <!-- Member 4 -->
+                        <div class="team-card glass-card">
+                            <div class="team-status idle" title="Fuera de Oficina"></div>
+                            <div class="member-avatar">
+                                <span class="avatar-fallback text-green">ER</span>
+                            </div>
+                            <h3 class="member-name">Cristhian Anibal</h3>
+                            <span class="member-role">Quality Assurance</span>
+                            <p class="member-bio">Construye suites de pruebas robustas, automatiza regresiones y asegura
+                                experiencias digitales impecables.</p>
+                            <div class="member-project-tags">
+                                <span class="project-tag">Catastro Inmobiliario</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL 1: ADD & EDIT PROJECT MODAL -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-content glass-card project-modal-box">
+            <div class="modal-header-row">
+                <h2 id="modal-project-title">Registrar Nuevo Proyecto</h2>
+                <button class="btn-close-modal" id="btn-close-project-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="project-form" novalidate>
+                <input type="hidden" id="project-id-field">
+
+                <div class="form-row split">
+                    <div class="form-group">
+                        <label for="project-name-input">Nombre del Proyecto <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-laptop-code input-icon"></i>
+                            <input type="text" id="project-name-input" placeholder="Ej. Portal de Contratos" required>
+                        </div>
+                        <span class="error-msg">Por favor ingresa el nombre.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-client-input">Cliente / Empresa <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-building input-icon"></i>
+                            <input type="text" id="project-client-input" placeholder="Ej. Logística SA" required>
+                        </div>
+                        <span class="error-msg">Por favor ingresa el cliente.</span>
+                    </div>
+                </div>
+
+                <div class="form-row split">
+                    <div class="form-group">
+                        <label for="project-type-select">Tipo de Desarrollo <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-circle-nodes input-icon"></i>
+                            <select id="project-type-select" required>
+                                <option value="" disabled selected>Selecciona tipo</option>
+                                <option value="web">Página / Portal Web</option>
+                                <option value="mobile">Aplicación Móvil</option>
+                                <option value="system">Sistema de Gestión / ERP</option>
+                            </select>
+                        </div>
+                        <span class="error-msg">Selecciona una categoría.</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-priority-select">Prioridad <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-triangle-exclamation input-icon"></i>
+                            <select id="project-priority-select" required>
+                                <option value="baja">Baja</option>
+                                <option value="media" selected>Media</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row split">
+                    <div class="form-group">
+                        <label for="project-budget-input">Presupuesto (USD) <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-dollar-sign input-icon"></i>
+                            <input type="text" id="project-budget-input" placeholder="Ej. 15,000" required>
+                        </div>
+                        <span class="error-msg">Ingresa un presupuesto (número).</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-progress-input">Progreso (%) <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-percent input-icon"></i>
+                            <input type="number" id="project-progress-input" min="0" max="100" value="0" required>
+                        </div>
+                        <span class="error-msg">Ingresa un valor entre 0 y 100.</span>
+                    </div>
+                </div>
+
+                <div class="form-row split">
+                    <div class="form-group">
+                        <label for="project-start-input">Fecha Inicio</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-days input-icon"></i>
+                            <input type="date" id="project-start-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-end-input">Fecha Entrega</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-calendar-check input-icon"></i>
+                            <input type="date" id="project-end-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row split">
+                    <div class="form-group">
+                        <label for="project-developer-select">Líder de Desarrollo <span
+                                class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user-gear input-icon"></i>
+                            <select id="project-developer-select" required>
+                                <option value="Carlos Mendoza">Carlos Mendoza</option>
+                                <option value="Sofía Castro">Sofía Castro</option>
+                                <option value="Diego Portillo">Diego Portillo</option>
+                                <option value="Elena Rostova">Elena Rostova</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-status-select">Estado Inicial <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-list-progress input-icon"></i>
+                            <select id="project-status-select" required>
+                                <option value="idea">Idea / Planificación</option>
+                                <option value="desarrollo">En Desarrollo</option>
+                                <option value="pruebas">En Pruebas / QA</option>
+                                <option value="completado">Completado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-desc-input">Breve Descripción <span class="required">*</span></label>
+                        <textarea id="project-desc-input" rows="3"
+                            placeholder="Detalles de la arquitectura, stack y requerimientos del cliente..."
+                            required></textarea>
+                        <span class="error-msg">Por favor ingresa una descripción para orientar al equipo.</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer-row">
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-project-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-gold" id="btn-save-project">Guardar Proyecto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: DELETE CONFIRMATION -->
+    <div class="modal-overlay" id="delete-confirm-modal">
+        <div class="modal-content glass-card delete-modal-box">
+            <div class="modal-icon text-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h2>¿Eliminar Proyecto?</h2>
+            <p>¿Estás seguro de que deseas eliminar permanentemente el proyecto <strong
+                    id="delete-project-name"></strong>? Esta acción no se puede deshacer y borrará todas las tareas
+                Kanban vinculadas.</p>
+
+            <div class="delete-actions-row">
+                <button class="btn btn-secondary" id="btn-cancel-delete">Cancelar</button>
+                <button class="btn btn-red" id="btn-confirm-delete">Eliminar Permanentemente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Script imports -->
+    <script src="auth-api.js"></script>
+    <script src="backend.js"></script>
+</body>
+
+</html>
