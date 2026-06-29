@@ -21,18 +21,61 @@
       "resetToken": null,
       "resetTokenExpiry": null,
       "createdAt": "2026-06-24T05:24:48.404Z"
+    },
+    {
+      "id": "user-589276ba-29be-4c38-aed3-44a8f990fb16",
+      "name": "orl",
+      "email": "t#@GMAIL.COM",
+      "password": "$2a$10$est2JLCwtxQm9bdHNIMyKeaFxAqUss7/4Rocu4zYqqh/eUB0KHnPe",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-25T00:57:07.279Z"
+    },
+    {
+      "id": "user-f4a13f9c-4532-4656-abdd-7df65f7ba0f6",
+      "name": "cristhian lopez",
+      "email": "cr7@beyonddev.com",
+      "password": "$2a$10$MKjIgZMdRkOYu5iwXatYL.dudtyQiw8PEWu3kLE6Lsn.uUwgKhEe2",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-25T01:03:14.238Z"
+    },
+    {
+      "id": "user-21f6022e-ae46-41c2-8e3e-e2bcab341019",
+      "name": "Roberto Amaya",
+      "email": "RobertoA@beyonddev.com",
+      "password": "$2a$10$baXqH31R71zPtuLrbS1KROnnDJSKgtx1jt4REKI2UBbZCoTdx.Ntm",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-25T01:15:35.901Z"
     }
   ],
   "emails": [
     {
-      "id": "email-1782278691989",
+      "id": "email-1782350219296",
+      "type": "reset",
+      "to": "RobertoA@beyonddev.com",
+      "name": "Roberto Amaya",
+      "subject": "Restablecer contraseña de BeyondDev",
+      "token": "a34be345541e48b0bbeb07868454cf2a",
+      "timestamp": "19:16:59",
+      "previewUrl": "https://ethereal.email/message/ajx8qatu2Pi7VV38ajyBi.sdSb1T3hCnAAAABZeLmloFwQZVUUlVFdl6Rj4"
+    },
+    {
+      "id": "email-1782350139973",
       "type": "verify",
-      "to": "orlando@beyonddev.com",
-      "name": "orlando jose umanzor",
+      "to": "RobertoA@beyonddev.com",
+      "name": "Roberto Amaya",
       "subject": "Verifica tu cuenta de BeyondDev",
-      "token": "53cc3f6447ba4ab6ad1d3718c04fe631",
-      "timestamp": "23:24:51",
-      "previewUrl": "https://ethereal.email/message/ajtpkqtu2Pi7IDTpajtqIuh.E5oJTA6iAAAAAUGMhwKo.ZEaisBhWOq34fQ"
+      "token": "37fe5ae178d944c7a8ecd815f16ab16b",
+      "timestamp": "19:15:39",
+      "previewUrl": "https://ethereal.email/message/ajx8qatu2Pi7VV38ajyBO-h.E5oJUqY6AAAABBUfHTcb4qx5IW4ee2wvQB4"
     }
   ],
   "projects": [
