@@ -14,6 +14,7 @@
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="biometria.css">
 </head>
 <body class="auth-page-body">
     <!-- Background Animated Gradients & Glows -->
@@ -91,6 +92,12 @@
                                 <span class="btn-text">Ingresar <i class="fa-solid fa-right-to-bracket"></i></span>
                                 <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
                             </button>
+
+                            <!-- Biometric Face ID Login -->
+                            <div class="bio-divider"><span>o</span></div>
+                            <button type="button" class="bio-btn-faceid" id="btn-face-login">
+                                <i class="fa-solid fa-user-shield"></i> Ingresar con Face ID
+                            </button>
                         </form>
 
                         <div class="demo-credentials">
@@ -154,6 +161,11 @@
                             <button type="submit" class="btn btn-gold btn-submit w-100">
                                 <span class="btn-text">Registrarse <i class="fa-solid fa-user-plus"></i></span>
                                 <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+                            </button>
+
+                            <!-- Biometric Face ID Registration -->
+                            <button type="button" class="bio-register-link" id="btn-face-register">
+                                <i class="fa-solid fa-fingerprint"></i> Registrar Face ID (opcional)
                             </button>
                         </form>
                     </div>
@@ -271,8 +283,212 @@
     <!-- Toast Notifications Container -->
     <div class="toast-container" id="toast-container"></div>
 
+    <!-- ═════════════════════════════════════════════════════════════════════════
+         BIOMETRIC FACE ID MODALS
+         ═════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Face ID Login Modal -->
+    <div class="biometric-modal" id="modal-face-login">
+        <div class="biometric-modal-content">
+            <div class="biometric-modal-header">
+                <h2><i class="fa-solid fa-face-smile"></i> Iniciar Sesión con Face ID</h2>
+                <p>Acceso seguro mediante reconocimiento facial</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="face-login-loading" style="display:none;">
+                <div class="face-loading">
+                    <div class="face-spinner"></div>
+                    <div class="face-loading-text">Inicializando modelos de reconocimiento facial...</div>
+                </div>
+            </div>
+
+            <!-- Face Capture State -->
+            <div id="face-login-capture" style="display:none;">
+                <div class="face-instructions">
+                    <ul>
+                        <li>Posiciónate frente a la cámara</li>
+                        <li>Asegúrate de tener buena iluminación</li>
+                        <li>Mira directamente a la cámara</li>
+                        <li>Tu rostro debe ocupar la mayoría del encuadre</li>
+                    </ul>
+                </div>
+
+                <div class="face-capture-container">
+                    <video id="face-login-video" class="face-video-stream" muted playsinline></video>
+                    <canvas id="face-login-canvas" class="face-canvas"></canvas>
+                </div>
+
+                <div id="face-login-status" class="face-status" style="display:none;">
+                    <i class="face-status-icon fa-solid fa-circle-notch fa-spin"></i>
+                    <span id="face-login-status-text">Detectando rostro...</span>
+                </div>
+
+                <div class="face-quality-meter">
+                    <div class="quality-label">
+                        <span>Calidad de captura</span>
+                        <span id="face-login-quality-percent">0%</span>
+                    </div>
+                    <div class="quality-bar">
+                        <div class="quality-fill" id="face-login-quality-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="biometric-modal-actions">
+                    <button type="button" class="btn-capture-face" id="btn-face-login-capture" disabled>
+                        <i class="fa-solid fa-camera"></i> Capturar Rostro
+                    </button>
+                    <button type="button" class="btn-close-modal" id="btn-face-login-cancel">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing State -->
+            <div id="face-login-processing" style="display:none;">
+                <div class="face-loading">
+                    <div class="face-spinner"></div>
+                    <div class="face-loading-text">Analizando tu rostro y verificando en el sistema...</div>
+                </div>
+            </div>
+
+            <!-- Result State -->
+            <div id="face-login-result" style="display:none;">
+                <div class="face-result" id="face-login-result-content">
+                    <!-- Dynamically filled -->
+                </div>
+                <div class="biometric-modal-actions">
+                    <button type="button" class="btn-retry-capture" id="btn-face-login-retry">
+                        <i class="fa-solid fa-rotate-right"></i> Intentar de Nuevo
+                    </button>
+                    <button type="button" class="btn-close-modal" id="btn-face-login-close">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
+            <!-- User Selection (for multiple registered faces) -->
+            <div id="face-login-select" style="display:none;">
+                <div class="face-instructions">
+                    <p>¿Cuál es tu correo electrónico registrado?</p>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <input type="email" id="face-login-email" placeholder="tu-correo@beyonddev.com" style="
+                        width: 100%;
+                        padding: 10px 15px;
+                        background: rgba(255, 255, 255, 0.05);
+                        border: 1px solid rgba(255, 182, 31, 0.2);
+                        border-radius: 8px;
+                        color: #fff;
+                        font-size: 14px;
+                    ">
+                </div>
+                <div class="biometric-modal-actions">
+                    <button type="button" class="btn-capture-face" id="btn-face-login-proceed">
+                        <i class="fa-solid fa-arrow-right"></i> Continuar
+                    </button>
+                    <button type="button" class="btn-close-modal" id="btn-face-login-close-select">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Face ID Registration Modal -->
+    <div class="biometric-modal" id="modal-face-register">
+        <div class="biometric-modal-content">
+            <div class="biometric-modal-header">
+                <h2><i class="fa-solid fa-face-grin-stars"></i> Registrar Face ID</h2>
+                <p>Añade reconocimiento facial a tu cuenta para acceso más rápido</p>
+            </div>
+
+            <!-- Loading State -->
+            <div id="face-register-loading" style="display:none;">
+                <div class="face-loading">
+                    <div class="face-spinner"></div>
+                    <div class="face-loading-text">Inicializando sistema de reconocimiento facial...</div>
+                </div>
+            </div>
+
+            <!-- Face Capture State -->
+            <div id="face-register-capture" style="display:none;">
+                <div class="face-instructions">
+                    <p><strong>Instrucciones importantes:</strong></p>
+                    <ul>
+                        <li>Encuentra un área bien iluminada</li>
+                        <li>Mantén tu rostro centrado y visible</li>
+                        <li>Mira directamente a la cámara</li>
+                        <li>Capturaremos 3 imágenes para mejor precisión</li>
+                    </ul>
+                </div>
+
+                <div class="face-capture-container">
+                    <video id="face-register-video" class="face-video-stream" muted playsinline></video>
+                    <canvas id="face-register-canvas" class="face-canvas"></canvas>
+                </div>
+
+                <div id="face-register-status" class="face-status" style="display:none;">
+                    <i class="face-status-icon fa-solid fa-circle-notch fa-spin"></i>
+                    <span id="face-register-status-text">Escaneando rostro...</span>
+                </div>
+
+                <div class="face-quality-meter">
+                    <div class="quality-label">
+                        <span>Calidad de escaneo</span>
+                        <span id="face-register-quality-percent">0%</span>
+                    </div>
+                    <div class="quality-bar">
+                        <div class="quality-fill" id="face-register-quality-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="biometric-modal-actions">
+                    <button type="button" class="btn-capture-face" id="btn-face-register-capture" disabled>
+                        <i class="fa-solid fa-camera"></i> Escanear Rostro (<span id="scan-counter">1</span>/3)
+                    </button>
+                    <button type="button" class="btn-close-modal" id="btn-face-register-cancel">
+                        Saltar por Ahora
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing State -->
+            <div id="face-register-processing" style="display:none;">
+                <div class="face-loading">
+                    <div class="face-spinner"></div>
+                    <div class="face-loading-text">Procesando tus datos biométricos de forma segura...</div>
+                </div>
+            </div>
+
+            <!-- Result State -->
+            <div id="face-register-result" style="display:none;">
+                <div class="face-result" id="face-register-result-content">
+                    <!-- Dynamically filled -->
+                </div>
+                <div class="biometric-modal-actions">
+                    <button type="button" class="btn-capture-face" id="btn-face-register-done">
+                        <i class="fa-solid fa-check"></i> Completar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
+    <!-- Load API client first (needed by other scripts) -->
     <script src="auth-api.js"></script>
+    
+    <!-- Load face-api.js library (from CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    
+    <!-- Load biometric system BEFORE login.js (so login.js can initialize it) -->
+    <script src="biometria.js"></script>
+    
+    <!-- Load UI controller BEFORE login.js tries to use it -->
+    <script src="face-id-ui.js"></script>
+    
+    <!-- Load main login logic last -->
     <script src="login.js"></script>
 </body>
 </html>

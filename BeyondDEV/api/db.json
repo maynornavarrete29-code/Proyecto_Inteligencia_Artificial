@@ -54,28 +54,116 @@
       "resetToken": null,
       "resetTokenExpiry": null,
       "createdAt": "2026-06-25T01:15:35.901Z"
+    },
+    {
+      "id": "user-f00012fa-b9dc-4fbf-8e8e-982f5de059c8",
+      "name": "admin",
+      "email": "admin2@beyonddev.com",
+      "password": "$2a$10$g3qZPd8zK5GPpiUH.wtV.urC20l2hjFNRuQKciy/Pun6Pd3oOSbVW",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T20:46:25.658Z"
+    },
+    {
+      "id": "user-7bd96c19-f30f-4b84-b9f9-a556c07aca43",
+      "name": "Jeferson",
+      "email": "jeferson@gmail.com",
+      "password": "$2a$10$N7VGg4Kb1J2sAbTBA4kWFeeNJvyUMeu21hKpUxtLHvG6MXs4ofeLK",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T20:53:51.109Z"
+    },
+    {
+      "id": "user-bef3490d-e633-4298-8afa-bea38bf75951",
+      "name": "Maynor Navarrete",
+      "email": "maynornavarrete29@gmail.com",
+      "password": "$2a$10$ArE3pn2gFR0VVPVZ8FxnI.WxUvk7Tfozs0iZebqruYk.UVnTmM3sW",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T21:01:35.107Z"
+    },
+    {
+      "id": "user-e40b182c-ae36-4cca-abc4-3a540543d111",
+      "name": "Maynor Navarrete",
+      "email": "maynornavarrete@gmail.com",
+      "password": "$2a$10$GBj8FUaiV8eEUmIAAjKxhOVFffPIFF3qZlDkIWnLgPCNNSl0sABSa",
+      "verified": false,
+      "verificationToken": "4c2f2829b70843a898367e7deafbc79c",
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T21:08:46.414Z"
+    },
+    {
+      "id": "user-3a2eea01-2168-4a39-92bc-135ffca4f1d9",
+      "name": "Maynor Navarrete",
+      "email": "test@beyonddev.com",
+      "password": "$2a$10$bOLY1ac8uYpOAMdJ1PjYXu5e6EpZvWWq3KssgVPamCV41SMEnfV0O",
+      "verified": false,
+      "verificationToken": "c247c55299784c399854490aec290424",
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:06:28.140Z"
+    },
+    {
+      "id": "user-44030097-b00f-45e3-bcf8-c6073733a7fc",
+      "name": "Jeferson",
+      "email": "jefersonr@gmail.com",
+      "password": "$2a$10$5ryg4InJx2N0iNLqMzOwXOl4cqrgIJHuCvnFs.WSepmoO3EQ5ZESe",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:12:05.397Z"
+    },
+    {
+      "id": "user-9da4f9d2-2450-416b-ab8f-4253bdc9d661",
+      "name": "Jeferson",
+      "email": "jefersonalex@gmail.com",
+      "password": "$2a$10$9Kzl8V4uT9dd9SMxzgSXX.7pluBJPMvXVcac72Kl38EeuP3sVa3Au",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:14:37.287Z"
+    },
+    {
+      "id": "user-5fe2b057-e90a-4f5d-bb40-c8c4a27178bb",
+      "name": "jeferson",
+      "email": "orlando@gmail.com",
+      "password": "$2a$10$VMAOq5srMuheHfiIykzYPOEx/KnVJqCJQ1fbP398oknNEOUIxKPXC",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:17:04.252Z"
     }
   ],
   "emails": [
     {
-      "id": "email-1782350219296",
-      "type": "reset",
-      "to": "RobertoA@beyonddev.com",
-      "name": "Roberto Amaya",
-      "subject": "Restablecer contraseña de BeyondDev",
-      "token": "a34be345541e48b0bbeb07868454cf2a",
-      "timestamp": "19:16:59",
-      "previewUrl": "https://ethereal.email/message/ajx8qatu2Pi7VV38ajyBi.sdSb1T3hCnAAAABZeLmloFwQZVUUlVFdl6Rj4"
+      "id": "email-1782775026485",
+      "type": "verify",
+      "to": "orlando@gmail.com",
+      "name": "jeferson",
+      "subject": "Verifica tu cuenta de BeyondDev",
+      "token": "331b8d6529a74113bcf5543b11d5c2a4",
+      "timestamp": "17:17:06",
+      "previewUrl": "https://ethereal.email/message/akL7QKtu2Pi7cuGSakL89YtyfEwQms6rAAAAA5HSi7cR2.JauPcke1xRK28"
     },
     {
-      "id": "email-1782350139973",
+      "id": "email-1782774879725",
       "type": "verify",
-      "to": "RobertoA@beyonddev.com",
-      "name": "Roberto Amaya",
+      "to": "jefersonalex@gmail.com",
+      "name": "Jeferson",
       "subject": "Verifica tu cuenta de BeyondDev",
-      "token": "37fe5ae178d944c7a8ecd815f16ab16b",
-      "timestamp": "19:15:39",
-      "previewUrl": "https://ethereal.email/message/ajx8qatu2Pi7VV38ajyBO-h.E5oJUqY6AAAABBUfHTcb4qx5IW4ee2wvQB4"
+      "token": "9f4fb56ac077483382192c0162c9e922",
+      "timestamp": "17:14:39",
+      "previewUrl": "https://ethereal.email/message/akL7QKtu2Pi7cuGSakL8Y0aRd.PIUhoRAAAAAqA62gaz2nKIXkXBd-m9JNw"
     }
   ],
   "projects": [

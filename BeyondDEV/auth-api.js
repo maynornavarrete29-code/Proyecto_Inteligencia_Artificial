@@ -94,6 +94,23 @@ const AuthAPI = {
         }
     },
 
+    async createLocalSession(userId) {
+        try {
+            // Llama al endpoint de tu backend que maneja el login por Face ID
+            const result = await apiRequest('POST', '/auth/biometric-login', { userId });
+
+            if (result.success && result.token) {
+                // Guardamos el token y el usuario igual que en un login normal
+                localStorage.setItem(TOKEN_KEY, result.token);
+                localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+            }
+            return result;
+        } catch (err) {
+            console.error("Error al crear sesión biométrica:", err);
+            return { success: false, message: 'No se pudo conectar con el servidor para iniciar sesión.' };
+        }
+    },
+
     // Session helpers
     isAuthenticated() {
         return !!localStorage.getItem(TOKEN_KEY);
@@ -169,6 +186,66 @@ const AuthAPI = {
 
     async deleteTask(id) {
         return await apiRequest('DELETE', `/tasks/${id}`, null, true);
+    },
+
+    // ── Face ID / Biometric Authentication Methods ────────────────────────────
+    async checkFaceEmail(email) {
+        try {
+            const result = await apiRequest('POST', '/auth/check-face-email', { email });
+            return result;
+        } catch (err) {
+            console.error('Error checking face email:', err);
+            return { success: false, message: 'Error verificando correo' };
+        }
+    },
+
+    async registerFace(email, faceDescriptors) {
+        try {
+            const result = await apiRequest('POST', '/auth/register-face', { email, descriptors: faceDescriptors });
+            if (result.success && result.devMail) {
+                window.dispatchEvent(new CustomEvent('beyonddev-new-email', { detail: result.devMail }));
+            }
+            return result;
+        } catch (err) {
+            console.error('Error registering face:', err);
+            return { success: false, message: 'Error registrando Face ID' };
+        }
+    },
+
+    async verifyFaceLogin(email, faceDescriptor) {
+        try {
+            const result = await apiRequest('POST', '/auth/verify-face-login', { 
+                email, 
+                descriptor: faceDescriptor 
+            });
+
+            if (result.success && result.token) {
+                localStorage.setItem(TOKEN_KEY, result.token);
+                localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+            }
+            return result;
+        } catch (err) {
+            console.error('Error verifying face login:', err);
+            return { success: false, message: 'Error en verificación de Face ID' };
+        }
+    },
+
+    async getFaceProfile() {
+        try {
+            return await apiRequest('GET', '/auth/face-profile', null, true);
+        } catch (err) {
+            console.error('Error getting face profile:', err);
+            return { success: false };
+        }
+    },
+
+    async removeFaceProfile() {
+        try {
+            return await apiRequest('DELETE', '/auth/face-profile', null, true);
+        } catch (err) {
+            console.error('Error removing face profile:', err);
+            return { success: false, message: 'Error removiendo Face ID' };
+        }
     }
 };
 

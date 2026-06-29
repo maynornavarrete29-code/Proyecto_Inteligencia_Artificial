@@ -1,0 +1,527 @@
+/* ==========================================================================
+   BeyondDev Face ID Biometric Authentication System - Styles
+   ========================================================================== */
+
+/* ─── Modal Container ───────────────────────────────────────────────────────── */
+.biometric-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.biometric-modal.active {
+    display: flex;
+}
+
+/* ─── Modal Content ────────────────────────────────────────────────────────── */
+.biometric-modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid rgba(255, 182, 31, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(255, 182, 31, 0.2);
+    animation: slideUp 0.3s ease-out;
+    color: #fff;
+}
+
+.biometric-modal-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.biometric-modal-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    font-family: 'Orbitron', monospace;
+}
+
+.biometric-modal-header p {
+    color: #b0b0b0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ─── Face Detection Container ────────────────────────────────────────────── */
+.face-capture-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #0f0f1e;
+    border: 2px solid rgba(255, 182, 31, 0.2);
+}
+
+.face-video-stream {
+    width: 100%;
+    height: 400px;
+    display: block;
+    object-fit: cover;
+    background: #000;
+}
+
+.face-canvas {
+    display: none;
+}
+
+/* ─── Face Detection Status Indicators ─────────────────────────────────── */
+.face-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.face-status.detecting {
+    background: rgba(74, 144, 226, 0.1);
+    border: 1px solid rgba(74, 144, 226, 0.3);
+    color: #4a90e2;
+}
+
+.face-status.success {
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    color: #2ecc71;
+}
+
+.face-status.error {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+}
+
+.face-status-icon {
+    font-size: 18px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ─── Quality Indicators ───────────────────────────────────────────────────── */
+.face-quality-meter {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.quality-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #b0b0b0;
+    margin-bottom: 5px;
+}
+
+.quality-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.quality-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #2ecc71 100%);
+    width: 0%;
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+/* ─── Instructions ────────────────────────────────────────────────────────── */
+.face-instructions {
+    background: rgba(255, 182, 31, 0.05);
+    border-left: 3px solid #ffb61f;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #d4a76a;
+}
+
+.face-instructions ul {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+}
+
+.face-instructions li {
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.face-instructions li:before {
+    content: '✓';
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+/* ─── Button Groups ───────────────────────────────────────────────────────── */
+.biometric-modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.biometric-modal-actions button {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-start-capture {
+    background: linear-gradient(135deg, #ffb61f 0%, #ff9800 100%);
+    color: #1a1a2e;
+    border: none;
+}
+
+.btn-start-capture:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 182, 31, 0.4);
+}
+
+.btn-start-capture:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-capture-face {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    border: none;
+}
+
+.btn-capture-face:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+}
+
+.btn-capture-face:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-retry-capture {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+}
+
+.btn-retry-capture:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+}
+
+.btn-close-modal {
+    background: transparent;
+    color: #b0b0b0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-close-modal:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-skip-face {
+    background: transparent;
+    color: #b0b0b0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-skip-face:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* ─── Loading Spinner ──────────────────────────────────────────────────────── */
+.face-loading {
+    text-align: center;
+    padding: 30px;
+}
+
+.face-spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 182, 31, 0.3);
+    border-top-color: #ffb61f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.face-loading-text {
+    color: #b0b0b0;
+    font-size: 14px;
+}
+
+/* ─── Results Display ──────────────────────────────────────────────────────── */
+.face-result {
+    text-align: center;
+    padding: 20px;
+}
+
+.face-result.success {
+    color: #2ecc71;
+}
+
+.face-result.error {
+    color: #e74c3c;
+}
+
+.face-result-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.face-result-message {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.face-result-details {
+    font-size: 12px;
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
+/* ─── Profile Photo Display ───────────────────────────────────────────────── */
+.face-profile-preview {
+    width: 120px;
+    height: 120px;
+    margin: 15px auto;
+    border-radius: 15px;
+    border: 2px solid rgba(255, 182, 31, 0.3);
+    object-fit: cover;
+    background: #0f0f1e;
+}
+
+/* ─── Registration Integration ─────────────────────────────────────────────– */
+.face-registration-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 182, 31, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 182, 31, 0.1);
+}
+
+.face-registration-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffb61f;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.face-registration-status {
+    font-size: 12px;
+    color: #b0b0b0;
+    line-height: 1.5;
+}
+
+/* ─── Inline Face ID Button ───────────────────────────────────────────────── */
+.bio-btn-faceid {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(255, 182, 31, 0.1) 0%, rgba(255, 182, 31, 0.05) 100%);
+    border: 2px solid rgba(255, 182, 31, 0.3);
+    border-radius: 8px;
+    color: #ffb61f;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bio-btn-faceid:hover {
+    background: linear-gradient(135deg, rgba(255, 182, 31, 0.15) 0%, rgba(255, 182, 31, 0.1) 100%);
+    border-color: rgba(255, 182, 31, 0.5);
+    transform: translateY(-2px);
+}
+
+.bio-btn-faceid i {
+    font-size: 16px;
+}
+
+.bio-divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.bio-divider:before,
+.bio-divider:after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.bio-divider span {
+    color: #b0b0b0;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ─── Face Detected Overlay ───────────────────────────────────────────────── */
+.face-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.face-detection-box {
+    position: absolute;
+    border: 3px solid #2ecc71;
+    border-radius: 10px;
+    background: transparent;
+    transition: all 0.1s ease;
+}
+
+.face-detection-box.good {
+    border-color: #2ecc71;
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+}
+
+.face-detection-box.poor {
+    border-color: #f39c12;
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+}
+
+.face-detection-box.bad {
+    border-color: #e74c3c;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ─── Responsive Design ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .biometric-modal-content {
+        padding: 30px 20px;
+        max-width: 95%;
+    }
+
+    .face-capture-container {
+        max-width: 100%;
+    }
+
+    .face-video-stream {
+        height: 300px;
+    }
+
+    .biometric-modal-header h2 {
+        font-size: 20px;
+    }
+
+    .biometric-modal-actions {
+        flex-direction: column;
+    }
+
+    .biometric-modal-actions button {
+        min-width: 100%;
+    }
+
+    .face-profile-preview {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ─── Accessibility ───────────────────────────────────────────────────────── */
+.biometric-modal button:focus {
+    outline: 2px solid #ffb61f;
+    outline-offset: 2px;
+}
+
+.face-status-icon[role="status"] {
+    speak: polite;
+}
+
+/* ─── Print Styles ────────────────────────────────────────────────────────── */
+@media print {
+    .biometric-modal,
+    .biometric-modal-content {
+        display: none !important;
+    }
+}
