@@ -21,20 +21,31 @@
       "resetToken": null,
       "resetTokenExpiry": null,
       "createdAt": "2026-06-24T05:24:48.404Z"
-    }
-  ],
-  "emails": [
+    },
     {
-      "id": "email-1782278691989",
-      "type": "verify",
-      "to": "orlando@beyonddev.com",
-      "name": "orlando jose umanzor",
-      "subject": "Verifica tu cuenta de BeyondDev",
-      "token": "53cc3f6447ba4ab6ad1d3718c04fe631",
-      "timestamp": "23:24:51",
-      "previewUrl": "https://ethereal.email/message/ajtpkqtu2Pi7IDTpajtqIuh.E5oJTA6iAAAAAUGMhwKo.ZEaisBhWOq34fQ"
+      "id": "user-7d19e0c6-d27d-4aa1-8ddf-00acef616a8f",
+      "name": "Jeferson Reyes",
+      "email": "jeferson.reyes06@gmail.com",
+      "password": "$2a$10$2X6.jP44bz6/.gSB1N8nxeVL0Alx4qk3ZaXUQkrSiOhdWtwnHkByu",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T07:25:38.435Z"
+    },
+    {
+      "id": "user-fb413cb2-0d21-4771-9806-dce68ae1897e",
+      "name": "Cristhian",
+      "email": "cristhian@gmail.com",
+      "password": "$2a$10$fbDfQSqhceRf35/VEe9CbOjSWRgyibMk84g94/2GKvkLYL/u766Ta",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T07:27:58.177Z"
     }
   ],
+  "emails": [],
   "projects": [
     {
       "id": "proj-1",

@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
+const { spawn } = require('child_process');
 const { initMailer, sendVerificationEmail, sendResetEmail } = require('./mailer');
 
 // ─── Config ─────────────────────────────────────────────────────────────────
@@ -53,6 +54,8 @@ function writeDB(data) {
 }
 
 // ─── Auth Middleware ─────────────────────────────────────────────────────────
+const PYTHON_EXEC = process.env.PYTHON || 'python';
+
 function requireAuth(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -65,6 +68,39 @@ function requireAuth(req, res, next) {
     } catch {
         return res.status(401).json({ success: false, message: 'Token inválido o expirado.' });
     }
+}
+
+function runFaceScript(args) {
+    return new Promise((resolve, reject) => {
+        const faceDir = path.join(__dirname, '..', 'face_id');
+        const scriptPath = path.join(faceDir, 'face_biometric.py');
+        const child = spawn(PYTHON_EXEC, [scriptPath, '--db', path.join(faceDir, 'base_datos.json'), ...args], { cwd: faceDir });
+
+        let stdout = '';
+        let stderr = '';
+
+        child.stdout.on('data', (data) => {
+            stdout += data.toString();
+        });
+
+        child.stderr.on('data', (data) => {
+            stderr += data.toString();
+        });
+
+        child.on('error', (err) => reject(err));
+
+        child.on('close', (code) => {
+            const resultLine = stdout.trim().split('\n').filter(Boolean).pop();
+            if (resultLine) {
+                try {
+                    return resolve(JSON.parse(resultLine));
+                } catch (err) {
+                    return reject(new Error(`No se pudo parsear la salida de FaceID. stdout=${stdout} stderr=${stderr}`));
+                }
+            }
+            reject(new Error(`FaceID falló. Código: ${code}. stderr=${stderr}`));
+        });
+    });
 }
 
 // ─── ROUTES ─────────────────────────────────────────────────────────────────
@@ -134,6 +170,63 @@ app.post('/api/auth/register', async (req, res) => {
     } catch (error) {
         console.error('Register error:', error);
         res.status(500).json({ success: false, message: 'Error interno del servidor.' });
+    }
+});
+
+// ── POST /api/face/register ─────────────────────────────────────────────────
+app.post('/api/face/register', async (req, res) => {
+    try {
+        const { identifier, name } = req.body;
+
+        if (!identifier || !name) {
+            return res.status(400).json({ success: false, message: 'El correo y el nombre son requeridos para registrar FaceID.' });
+        }
+
+        const result = await runFaceScript(['register', '--id', identifier, '--name', name]);
+        if (result.success) {
+            return res.json({ success: true, message: `FaceID registrado para ${result.name}.`, data: result });
+        }
+
+        return res.status(400).json({ success: false, message: result.message || 'No se pudo registrar el FaceID.' });
+    } catch (error) {
+        console.error('Face register error:', error);
+        res.status(500).json({ success: false, message: 'Error al ejecutar el registro de FaceID.' });
+    }
+});
+
+// ── POST /api/face/verify ───────────────────────────────────────────────────
+app.post('/api/face/verify', async (req, res) => {
+    try {
+        const result = await runFaceScript(['verify']);
+        if (!result.success) {
+            return res.status(401).json({ success: false, message: result.message || 'No se reconoció el rostro.' });
+        }
+
+        const db = readDB();
+        const user = db.users.find(u => u.email.toLowerCase() === result.id.toLowerCase());
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Rostro reconocido, pero no existe una cuenta vinculada a ese correo.' });
+        }
+
+        if (!user.verified) {
+            return res.status(403).json({ success: false, unverified: true, message: 'Tu cuenta está registrada pero aún no ha sido verificada.' });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, name: user.name, email: user.email },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.json({
+            success: true,
+            message: `Inicio de sesión FaceID exitoso. Bienvenido, ${user.name}.`,
+            token,
+            user: { id: user.id, name: user.name, email: user.email }
+        });
+    } catch (error) {
+        console.error('Face verify error:', error);
+        res.status(500).json({ success: false, message: 'Error al ejecutar la verificación de FaceID.' });
     }
 });
 

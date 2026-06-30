@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,16 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="login.css">
 </head>
+
 <body class="auth-page-body">
     <!-- Background Animated Gradients & Glows -->
     <div class="glow-bg-container">
@@ -31,7 +35,8 @@
             </a>
             <nav id="nav-menu">
                 <ul>
-                    <li><a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Volver a la Landing</a></li>
+                    <li><a href="index.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Volver a la
+                            Landing</a></li>
                 </ul>
             </nav>
         </div>
@@ -39,10 +44,10 @@
 
     <main class="auth-main-container">
         <div class="auth-card-wrapper">
-            
+
             <!-- Auth card structure with glassmorphism -->
             <div class="auth-card glass-card" id="auth-card">
-                
+
                 <!-- Main Login/Register View -->
                 <div class="auth-view active" id="view-main">
                     <!-- Tabs -->
@@ -57,39 +62,45 @@
                             <h2>Acceso de Desarrollador</h2>
                             <p>Ingresa tus credenciales para ingresar al panel de control.</p>
                         </div>
-                        
+
                         <form id="form-login" novalidate>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="login-email">Correo Electrónico</label>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-envelope input-icon"></i>
-                                        <input type="email" id="login-email" placeholder="correo@beyonddev.com" required>
+                                        <input type="email" id="login-email" placeholder="correo@beyonddev.com"
+                                            required>
                                     </div>
                                     <span class="error-msg">Ingresa un correo válido.</span>
                                 </div>
                             </div>
-                            
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <div class="label-row">
                                         <label for="login-password">Contraseña</label>
-                                        <a href="#" class="forgot-pwd-link" id="goto-forgot">¿Olvidaste tu contraseña?</a>
+                                        <a href="#" class="forgot-pwd-link" id="goto-forgot">¿Olvidaste tu
+                                            contraseña?</a>
                                     </div>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-lock input-icon"></i>
                                         <input type="password" id="login-password" placeholder="••••••••" required>
-                                        <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i class="fa-solid fa-eye"></i></button>
+                                        <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i
+                                                class="fa-solid fa-eye"></i></button>
                                     </div>
                                     <span class="error-msg">Por favor ingresa tu contraseña.</span>
                                 </div>
                             </div>
 
                             <div class="form-feedback error" id="login-feedback"></div>
-                            
+
                             <button type="submit" class="btn btn-gold btn-submit w-100">
                                 <span class="btn-text">Ingresar <i class="fa-solid fa-right-to-bracket"></i></span>
                                 <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+                            </button>
+                            <button type="button" class="btn btn-gold btn-submit w-100" id="btn-faceid-login" style="margin-top: 1rem;">
+                                <span class="btn-text">Ingresar con FaceID <i class="fa-solid fa-face-smile-beam"></i></span>
                             </button>
                         </form>
 
@@ -105,7 +116,7 @@
                             <h2>Crear Cuenta</h2>
                             <p>Regístrate en la red de desarrollo de BeyondDev.</p>
                         </div>
-                        
+
                         <form id="form-register" novalidate>
                             <div class="form-row">
                                 <div class="form-group">
@@ -123,7 +134,8 @@
                                     <label for="register-email">Correo Electrónico</label>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-envelope input-icon"></i>
-                                        <input type="email" id="register-email" placeholder="carlos@empresa.com" required>
+                                        <input type="email" id="register-email" placeholder="carlos@empresa.com"
+                                            required>
                                     </div>
                                     <span class="error-msg">Ingresa un correo electrónico válido.</span>
                                 </div>
@@ -134,8 +146,10 @@
                                     <label for="register-password">Contraseña</label>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-lock input-icon"></i>
-                                        <input type="password" id="register-password" placeholder="Min 6 caracteres" required>
-                                        <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i class="fa-solid fa-eye"></i></button>
+                                        <input type="password" id="register-password" placeholder="Min 6 caracteres"
+                                            required>
+                                        <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i
+                                                class="fa-solid fa-eye"></i></button>
                                     </div>
                                     <span class="error-msg">Debe tener 6+ caracteres, una mayúscula y un número.</span>
                                 </div>
@@ -143,16 +157,24 @@
                                     <label for="register-confirm">Confirmar Clave</label>
                                     <div class="input-wrapper">
                                         <i class="fa-solid fa-lock-open input-icon"></i>
-                                        <input type="password" id="register-confirm" placeholder="Repite clave" required>
+                                        <input type="password" id="register-confirm" placeholder="Repite clave"
+                                            required>
                                     </div>
                                     <span class="error-msg">Las contraseñas no coinciden.</span>
                                 </div>
                             </div>
 
+                            <div>
+                                <button type="button" class="btn btn-gold btn-submit" id="btn-faceid-register">
+                                    Registrar faceid
+                                </button>
+                            </div>
+
                             <div class="form-feedback error" id="register-feedback"></div>
-                            
+
                             <button type="submit" class="btn btn-gold btn-submit w-100">
                                 <span class="btn-text">Registrarse <i class="fa-solid fa-user-plus"></i></span>
+
                                 <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
                             </button>
                         </form>
@@ -163,9 +185,10 @@
                 <div class="auth-view" id="view-forgot">
                     <div class="auth-header">
                         <h2>Recuperar Contraseña</h2>
-                        <p>Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.</p>
+                        <p>Ingresa tu correo electrónico registrado y te enviaremos un enlace para restablecer tu
+                            contraseña.</p>
                     </div>
-                    
+
                     <form id="form-forgot" novalidate>
                         <div class="form-row">
                             <div class="form-group">
@@ -179,13 +202,14 @@
                         </div>
 
                         <div class="form-feedback" id="forgot-feedback"></div>
-                        
+
                         <button type="submit" class="btn btn-gold btn-submit w-100">
                             <span class="btn-text">Enviar Enlace <i class="fa-solid fa-paper-plane"></i></span>
                             <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
                         </button>
-                        
-                        <a href="#" class="back-link" id="back-to-login-forgot"><i class="fa-solid fa-arrow-left"></i> Volver a Iniciar Sesión</a>
+
+                        <a href="#" class="back-link" id="back-to-login-forgot"><i class="fa-solid fa-arrow-left"></i>
+                            Volver a Iniciar Sesión</a>
                     </form>
                 </div>
 
@@ -195,7 +219,7 @@
                         <h2>Establecer Nueva Contraseña</h2>
                         <p>Crea una nueva contraseña segura para tu cuenta.</p>
                     </div>
-                    
+
                     <form id="form-reset" novalidate>
                         <div class="form-row">
                             <div class="form-group">
@@ -203,12 +227,13 @@
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-lock input-icon"></i>
                                     <input type="password" id="reset-password" placeholder="Min 6 caracteres" required>
-                                    <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i class="fa-solid fa-eye"></i></button>
+                                    <button type="button" class="pwd-toggle" aria-label="Mostrar contraseña"><i
+                                            class="fa-solid fa-eye"></i></button>
                                 </div>
                                 <span class="error-msg">Debe tener 6+ caracteres, una mayúscula y un número.</span>
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="reset-confirm">Confirmar Contraseña</label>
@@ -221,7 +246,7 @@
                         </div>
 
                         <div class="form-feedback" id="reset-feedback"></div>
-                        
+
                         <button type="submit" class="btn btn-gold btn-submit w-100">
                             <span class="btn-text">Guardar Contraseña <i class="fa-solid fa-shield-halved"></i></span>
                             <span class="spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
@@ -253,18 +278,21 @@
                 <div class="empty-inbox" id="empty-inbox-text">
                     <i class="fa-regular fa-envelope"></i>
                     <p>Bandeja de entrada vacía.</p>
-                    <p class="sub">Aquí recibirás los enlaces de verificación y restablecimiento para poder probar los flujos.</p>
+                    <p class="sub">Aquí recibirás los enlaces de verificación y restablecimiento para poder probar los
+                        flujos.</p>
                 </div>
             </div>
             <div class="mail-viewer" id="mail-viewer-container" style="display: none;">
-                <button class="btn-back-list" id="btn-back-to-mails"><i class="fa-solid fa-arrow-left"></i> Volver a la lista</button>
+                <button class="btn-back-list" id="btn-back-to-mails"><i class="fa-solid fa-arrow-left"></i> Volver a la
+                    lista</button>
                 <div class="mail-content-display" id="mail-display-area">
                     <!-- Loaded dynamically -->
                 </div>
             </div>
         </div>
         <div class="devmail-footer">
-            <button class="btn-clear-inbox" id="btn-clear-inbox"><i class="fa-solid fa-trash-can"></i> Limpiar bandeja</button>
+            <button class="btn-clear-inbox" id="btn-clear-inbox"><i class="fa-solid fa-trash-can"></i> Limpiar
+                bandeja</button>
         </div>
     </div>
 
@@ -275,4 +303,5 @@
     <script src="auth-api.js"></script>
     <script src="login.js"></script>
 </body>
+
 </html>
