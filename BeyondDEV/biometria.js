@@ -114,49 +114,103 @@ class BiometricFaceAuth {
         const videoWidth = videoElement.videoWidth;
         const videoHeight = videoElement.videoHeight;
 
-        // Check face size (should be at least 20% of frame)
+        // Check face size (should be at least 5% of frame, not more than 80%)
         const faceArea = (box.width * box.height) / (videoWidth * videoHeight);
-        if (faceArea < 0.05) issues.push('Face too small');
-        if (faceArea > 0.9) issues.push('Face too close');
+        let areaQuality = 100;
+        if (faceArea < 0.05) {
+            issues.push('Face too small');
+            areaQuality = 50;
+        } else if (faceArea > 0.8) {
+            issues.push('Face too close');
+            areaQuality = 75;
+        } else if (faceArea < 0.1) {
+            areaQuality = 80;
+        } else if (faceArea > 0.5) {
+            areaQuality = 90;
+        }
 
-        // Check face position (should be centered)
+        // Check face position (should be centered, but allow some flexibility)
         const faceX = (box.x + box.width / 2) / videoWidth;
         const faceY = (box.y + box.height / 2) / videoHeight;
-        if (faceX < 0.25 || faceX > 0.75) issues.push('Face not centered horizontally');
-        if (faceY < 0.2 || faceY > 0.8) issues.push('Face not centered vertically');
+        let positionQuality = 100;
+        if (faceX < 0.15 || faceX > 0.85) {
+            issues.push('Face not centered horizontally');
+            positionQuality = 75;
+        } else if (faceX < 0.25 || faceX > 0.75) {
+            positionQuality = 90;
+        }
+        if (faceY < 0.1 || faceY > 0.9) {
+            issues.push('Face not centered vertically');
+            positionQuality = Math.min(positionQuality, 75);
+        } else if (faceY < 0.2 || faceY > 0.8) {
+            positionQuality = Math.min(positionQuality, 90);
+        }
 
-        // Check if face is looking at camera (using landmarks)
-        if (landmarks && landmarks.positions.length > 0) {
-            // Simple check: distance between eyes
-            const leftEye = landmarks.getLeftEye();
-            const rightEye = landmarks.getRightEye();
-            const eyeDistance = Math.hypot(rightEye[0].x - leftEye[0].x, rightEye[0].y - leftEye[0].y);
-            const expectedEyeDistance = box.width * 0.3;
-            
-            if (Math.abs(eyeDistance - expectedEyeDistance) > expectedEyeDistance * 0.5) {
-                issues.push('Face not facing camera');
+        // Check if face is looking at camera (using landmarks correctly)
+        let rotationQuality = 100;
+        if (landmarks && landmarks.getPositions) {
+            try {
+                const positions = landmarks.getPositions();
+                if (positions && positions.length > 0) {
+                    const leftEye = landmarks.getLeftEye();
+                    const rightEye = landmarks.getRightEye();
+                    const nose = landmarks.getNose();
+                    
+                    if (leftEye && rightEye && leftEye.length > 0 && rightEye.length > 0) {
+                        const eyeDistance = Math.hypot(rightEye[0].x - leftEye[0].x, rightEye[0].y - leftEye[0].y);
+                        const expectedEyeDistance = box.width * 0.3;
+                        const eyeVariance = Math.abs(eyeDistance - expectedEyeDistance) / expectedEyeDistance;
+                        
+                        if (eyeVariance > 0.5) {
+                            issues.push('Face not facing camera');
+                            rotationQuality = 70;
+                        } else if (eyeVariance > 0.3) {
+                            rotationQuality = 85;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Error checking face rotation:', e);
             }
         }
 
         // Check for good lighting (based on descriptor variance)
+        let lightingQuality = 100;
         if (descriptor && descriptor.length > 0) {
             const variance = Math.sqrt(
                 descriptor.reduce((sum, val) => sum + val * val, 0) / descriptor.length
             );
-            if (variance < 0.1) issues.push('Poor lighting detected');
+            // Good descriptors should have reasonable variance
+            if (variance < 0.05) {
+                issues.push('Poor lighting detected');
+                lightingQuality = 70;
+            } else if (variance < 0.1) {
+                lightingQuality = 80;
+            } else if (variance > 0.5) {
+                // Very high variance might indicate harsh lighting
+                lightingQuality = 85;
+            }
         }
 
-        // Calculate quality score
-        let quality = 100;
-        if (faceArea < 0.05 || faceArea > 0.9) quality -= 30;
-        if (faceX < 0.25 || faceX > 0.75 || faceY < 0.2 || faceY > 0.8) quality -= 20;
-        if (issues.some(i => i.includes('Face not'))) quality -= 15;
+        // Calculate overall quality score as weighted average
+        const quality = Math.round(
+            (areaQuality * 0.3 + 
+             positionQuality * 0.3 + 
+             rotationQuality * 0.2 + 
+             lightingQuality * 0.2)
+        );
 
         return {
             quality: Math.max(0, Math.min(100, quality)),
             issues,
             detection: box,
-            descriptor
+            descriptor,
+            details: {
+                areaQuality,
+                positionQuality,
+                rotationQuality,
+                lightingQuality
+            }
         };
     }
 

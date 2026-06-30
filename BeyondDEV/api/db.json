@@ -142,28 +142,62 @@
       "resetToken": null,
       "resetTokenExpiry": null,
       "createdAt": "2026-06-29T23:17:04.252Z"
+    },
+    {
+      "id": "user-bd5b0ee0-1af8-48a4-b431-5f635a150341",
+      "name": "Jeferson",
+      "email": "jeferson.r@gmail.com",
+      "password": "$2a$10$JdRBG1wo31dNyV4JxXJ/lel5e6bCnvhjosJOEReG1..ehmTTuzwwC",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:51:18.310Z"
+    },
+    {
+      "id": "user-3e52383a-6dbc-4eb4-b1cf-44be6e418a87",
+      "name": "Jeferson",
+      "email": "jefersonl@gmail.com",
+      "password": "$2a$10$asV5mLQ53bZBpZDELbUIs.w30exYi1qNzwQnDofhZcwpJAfsBexOu",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-29T23:55:24.393Z"
+    },
+    {
+      "id": "user-4ffcf5de-2466-4af0-9947-2635940af8d5",
+      "name": "jeferson",
+      "email": "jefer@gmail.com",
+      "password": "$2a$10$RVYFRDxhZ7p24eiEBEpd4O5apVdrKXyZ.dy3mUkpipsovRzk.d4kW",
+      "verified": false,
+      "verificationToken": "5f7e50fd75054746bc533fbf5679e300",
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T00:10:01.567Z"
+    },
+    {
+      "id": "user-35154138-40b8-4f7d-89ee-0561a0a163d5",
+      "name": "Cris",
+      "email": "cris@gmail.com",
+      "password": "$2a$10$ddra3A5Ray8pL87BkbkYeuGlivGdz8P9r0KmdKySKJew9jEOYF0ha",
+      "verified": false,
+      "verificationToken": "b48fba97abed4a6f8e5b1fb243591dac",
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T00:27:23.480Z"
     }
   ],
   "emails": [
     {
-      "id": "email-1782775026485",
+      "id": "email-1782779246891",
       "type": "verify",
-      "to": "orlando@gmail.com",
-      "name": "jeferson",
+      "to": "cris@gmail.com",
+      "name": "Cris",
       "subject": "Verifica tu cuenta de BeyondDev",
-      "token": "331b8d6529a74113bcf5543b11d5c2a4",
-      "timestamp": "17:17:06",
-      "previewUrl": "https://ethereal.email/message/akL7QKtu2Pi7cuGSakL89YtyfEwQms6rAAAAA5HSi7cR2.JauPcke1xRK28"
-    },
-    {
-      "id": "email-1782774879725",
-      "type": "verify",
-      "to": "jefersonalex@gmail.com",
-      "name": "Jeferson",
-      "subject": "Verifica tu cuenta de BeyondDev",
-      "token": "9f4fb56ac077483382192c0162c9e922",
-      "timestamp": "17:14:39",
-      "previewUrl": "https://ethereal.email/message/akL7QKtu2Pi7cuGSakL8Y0aRd.PIUhoRAAAAAqA62gaz2nKIXkXBd-m9JNw"
+      "token": "b48fba97abed4a6f8e5b1fb243591dac",
+      "timestamp": "18:27:26",
+      "previewUrl": "https://ethereal.email/message/akMJWatu2Pi7dKWHakMNckaRd.PIUobDAAAAAs-F5OIK0UkIJS8KfR2KAkQ"
     }
   ],
   "projects": [

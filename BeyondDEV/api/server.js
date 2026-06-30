@@ -480,13 +480,33 @@ app.post('/api/auth/register-face', async (req, res) => {
             return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
         }
 
-        // Store face profile with all descriptors
+        // Extract pure descriptor arrays from the data
+        const pureDescriptors = descriptors.map(desc => {
+            // If it's an object with .descriptor property, extract it
+            if (typeof desc === 'object' && desc !== null && Array.isArray(desc.descriptor)) {
+                return desc.descriptor;
+            }
+            // If it's already a plain array, use it
+            if (Array.isArray(desc)) {
+                return desc;
+            }
+            return null;
+        }).filter(d => d !== null);
+
+        if (pureDescriptors.length === 0) {
+            return res.status(400).json({ success: false, message: 'No se pudieron procesar los descriptores faciales válidos.' });
+        }
+
+        // Calculate quality from the original descriptors if available
+        const quality = calculateAverageQuality(descriptors);
+
+        // Store face profile with ONLY pure descriptor arrays
         user.faceProfile = {
-            descriptors: descriptors,
+            descriptors: pureDescriptors,
             registeredAt: new Date().toISOString(),
             lastVerifiedAt: null,
             verificationCount: 0,
-            quality: calculateAverageQuality(descriptors)
+            quality: quality
         };
 
         writeDB(db);
@@ -505,7 +525,7 @@ app.post('/api/auth/register-face', async (req, res) => {
             to: email,
             name: user.name,
             subject: 'Face ID Registrado en BeyondDev',
-            message: 'Tu perfil facial ha sido registrado exitosamente. Puedes usar Face ID para acceder.',
+            message: `Tu perfil facial ha sido registrado exitosamente (Calidad: ${quality}%). Puedes usar Face ID para acceder.`,
             timestamp: new Date().toLocaleTimeString('es'),
             previewUrl: mailResult.previewUrl
         };
@@ -517,6 +537,8 @@ app.post('/api/auth/register-face', async (req, res) => {
         res.json({
             success: true,
             message: 'Face ID registrado exitosamente.',
+            quality: quality,
+            descriptorCount: pureDescriptors.length,
             devMail: devMailEntry
         });
     } catch (error) {
@@ -640,18 +662,25 @@ app.delete('/api/auth/face-profile', requireAuth, (req, res) => {
 
 // ─── Face Descriptor Comparison Helper ────────────────────────────────────────
 function compareFaceDescriptors(newDescriptor, storedDescriptors, threshold = 0.6) {
-    if (!Array.isArray(newDescriptor.descriptor || newDescriptor)) {
+    // Extract pure descriptor array from input
+    const descriptor = (newDescriptor && newDescriptor.descriptor) || newDescriptor;
+    
+    if (!Array.isArray(descriptor)) {
+        console.error('Invalid descriptor format:', typeof descriptor);
         return { isMatch: false, confidence: 0, distance: Infinity };
     }
 
-    const descriptor = newDescriptor.descriptor || newDescriptor;
     const distances = [];
 
     // Compare against all stored descriptors
     for (const storedDesc of storedDescriptors) {
-        const stored = Array.isArray(storedDesc) ? storedDesc : storedDesc.descriptor;
+        // Extract pure descriptor (handle both array and object formats)
+        const stored = Array.isArray(storedDesc) ? storedDesc : (storedDesc && storedDesc.descriptor);
         
-        if (!Array.isArray(stored)) continue;
+        if (!Array.isArray(stored)) {
+            console.warn('Skipping invalid stored descriptor');
+            continue;
+        }
 
         // Euclidean distance
         let distance = 0;
@@ -667,7 +696,7 @@ function compareFaceDescriptors(newDescriptor, storedDescriptors, threshold = 0.
         return { isMatch: false, confidence: 0, distance: Infinity };
     }
 
-    // Use minimum distance
+    // Use minimum distance (best match)
     const minDistance = Math.min(...distances);
     const maxDistance = 1.0;
     const confidence = Math.max(0, 100 * (1 - minDistance / maxDistance));
@@ -684,13 +713,22 @@ function calculateAverageQuality(descriptors) {
     if (!Array.isArray(descriptors) || descriptors.length === 0) return 0;
 
     let totalQuality = 0;
+    let qualityCount = 0;
+
     for (const desc of descriptors) {
-        if (desc.quality) {
+        // Handle objects with .quality property
+        if (typeof desc === 'object' && desc !== null && typeof desc.quality === 'number') {
             totalQuality += desc.quality;
+            qualityCount++;
+        }
+        // Handle plain arrays (old format) - estimate quality
+        else if (Array.isArray(desc)) {
+            totalQuality += 80; // Default quality for plain descriptors
+            qualityCount++;
         }
     }
 
-    return Math.round(totalQuality / descriptors.length);
+    return qualityCount > 0 ? Math.round(totalQuality / qualityCount) : 0;
 }
 
 // ── GET /api/events (SSE) ─────────────────────────────────────────────────────

@@ -112,8 +112,23 @@ class FaceIDAuthUI {
             // Initialize biometric auth if not done
             if (!window.biometricAuth.isModelLoaded) {
                 this.showFaceLoginElement('loading');
-                await window.biometricAuth.initialize();
-                this.showFaceLoginElement('select');
+                try {
+                    console.log('🔄 Cargando modelos de Face ID para login...');
+                    await window.biometricAuth.initialize();
+                    console.log('✅ Modelos cargados para login');
+                    
+                    // Verify models are loaded
+                    if (!window.biometricAuth.isModelLoaded) {
+                        throw new Error('Los modelos no se cargaron correctamente');
+                    }
+                    
+                    this.showFaceLoginElement('select');
+                } catch (initErr) {
+                    console.error('❌ Error cargando modelos:', initErr);
+                    this.showToast('Error cargando Face ID. Verifica tu conexión.', 'error');
+                    modal.classList.remove('active');
+                    return;
+                }
             }
 
         } catch (err) {
@@ -260,9 +275,25 @@ class FaceIDAuthUI {
             this.showFaceRegisterElement('loading');
             modal.classList.add('active');
 
-            // Initialize biometric auth
-            if (!biometricAuth.isModelLoaded) {
-                await biometricAuth.initialize();
+            // Initialize biometric auth with error handling
+            try {
+                if (!window.biometricAuth.isModelLoaded) {
+                    console.log('🔄 Cargando modelos de Face ID...');
+                    await window.biometricAuth.initialize();
+                    console.log('✅ Modelos cargados correctamente');
+                }
+            } catch (initErr) {
+                console.error('❌ Error cargando modelos:', initErr);
+                this.showToast('Error cargando Face ID. Verifica tu conexión.', 'error');
+                modal.classList.remove('active');
+                return;
+            }
+
+            // Verify models are loaded before proceeding
+            if (!window.biometricAuth.isModelLoaded) {
+                this.showToast('Los modelos no se cargaron correctamente. Intenta de nuevo.', 'error');
+                modal.classList.remove('active');
+                return;
             }
 
             this.showFaceRegisterElement('capture');
@@ -325,27 +356,58 @@ class FaceIDAuthUI {
     async completeRegisterCapture() {
         try {
             this.showFaceRegisterElement('processing');
+            const videoElement = document.getElementById('face-register-video');
 
-            // Validate and process all captures
-            const validation = await window.biometricAuth.validateFaceForRegistration(
-                document.getElementById('face-register-video')
-            );
+            // Stop detection while processing
+            this.clearFaceDetectionInterval();
 
-            if (validation.isValid) {
-                this.showFaceRegisterResult(
-                    'success',
-                    'Escaneo Completado',
-                    `Tu rostro ha sido capturado exitosamente (Calidad: ${validation.averageQuality}%)`
-                );
-            } else {
+            console.log(`✓ Se capturaron ${this.faceDescriptors.length} rostros. Procesando...`);
+
+            // Validate all captures
+            if (this.faceDescriptors.length === 0) {
                 this.showFaceRegisterResult(
                     'error',
-                    'Escaneo Insuficiente',
-                    `No se capturó suficiente calidad. Intenta de nuevo. (${validation.validCaptures}/${this.maxCaptures})`
+                    'Error de captura',
+                    'No se capturaron datos faciales válidos. Intenta de nuevo.'
                 );
+                // Reset for retry
+                this.captureCount = 0;
+                this.faceDescriptors = [];
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                this.closeFaceRegisterModal();
+                return;
             }
 
+            const averageQuality = Math.round(
+                this.faceDescriptors.reduce((sum, fd) => sum + (fd.quality || 75), 0) / this.faceDescriptors.length
+            );
+
+            if (averageQuality < 75) {
+                this.showFaceRegisterResult(
+                    'error',
+                    'Calidad insuficiente',
+                    `La calidad promedio es ${averageQuality}%. Se requiere al menos 75%. Intenta de nuevo.`
+                );
+                // Reset for retry
+                this.captureCount = 0;
+                this.faceDescriptors = [];
+                return;
+            }
+
+            // Proceed with registration
+            console.log(`✓ Calidad validada: ${averageQuality}%. Registrando Face ID...`);
+            this.showFaceRegisterResult(
+                'success',
+                'Escaneo Completado',
+                `Tu rostro ha sido capturado exitosamente (Calidad: ${averageQuality}%). Registrando...`
+            );
+
+            // Auto-register after showing success
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            await this.completeFaceRegistration();
+
         } catch (err) {
+            console.error('Error en completeRegisterCapture:', err);
             this.showFaceRegisterResult('error', 'Error procesando', err.message);
         }
     }
@@ -371,14 +433,96 @@ class FaceIDAuthUI {
     }
 
     // ─── Complete Face Registration ────────────────────────────────────────────
-    completeFaceRegistration() {
-        // Store face descriptors in session for registration
-        if (this.faceDescriptors.length > 0) {
-            sessionStorage.setItem('faceDescriptors', JSON.stringify(this.faceDescriptors));
-            this.showToast('Face ID registrado exitosamente', 'success');
+    async completeFaceRegistration() {
+        if (this.faceDescriptors.length === 0) {
+            this.showFaceRegisterResult('error', 'No hay datos faciales', 'Captura al menos un rostro antes de completar el registro.');
+            return;
         }
 
-        this.closeFaceRegisterModal();
+        // Get email - try multiple sources
+        let email = null;
+
+        // 1. Try to get from logged-in user
+        const currentUser = window.AuthAPI.getCurrentUser();
+        if (currentUser && currentUser.email) {
+            email = currentUser.email;
+        }
+
+        // 2. If not logged in, try register form email input
+        if (!email) {
+            const registerEmailInput = document.getElementById('register-email');
+            if (registerEmailInput) {
+                email = registerEmailInput.value.trim();
+            }
+        }
+
+        // 3. If still no email, ask user
+        if (!email) {
+            this.showFaceRegisterResult(
+                'error',
+                'Email requerido',
+                'Por favor inicia sesión o ingresa tu correo electrónico en el formulario de registro.'
+            );
+            return;
+        }
+
+        if (!this.isValidEmail(email)) {
+            this.showFaceRegisterResult('error', 'Email inválido', 'Por favor verifica tu dirección de correo electrónico.');
+            return;
+        }
+
+        this.showFaceRegisterElement('processing');
+
+        try {
+            // Extract descriptor arrays AND quality from the complex objects
+            const descriptorData = this.faceDescriptors.map(fd => {
+                if (fd && fd.descriptor) {
+                    return {
+                        descriptor: Array.isArray(fd.descriptor) ? fd.descriptor : Array.from(fd.descriptor),
+                        quality: fd.quality || 75
+                    };
+                }
+                return null;
+            }).filter(d => d !== null);
+
+            if (descriptorData.length === 0) {
+                throw new Error('No se pudieron procesar los descriptores faciales.');
+            }
+
+            console.log(`📤 Registrando ${descriptorData.length} descriptores faciales para ${email}...`);
+            const result = await window.AuthAPI.registerFace(email, descriptorData);
+
+            if (result.success) {
+                // Clear session data
+                sessionStorage.removeItem('faceDescriptors');
+                this.faceDescriptors = [];
+                this.captureCount = 0;
+
+                this.showFaceRegisterResult(
+                    'success',
+                    '✓ Face ID Registrado',
+                    `Tu perfil facial ha sido asociado exitosamente a ${email}. Ya puedes usar Face ID para acceder.`
+                );
+
+                // Auto-close after success
+                setTimeout(() => {
+                    this.closeFaceRegisterModal();
+                }, 3000);
+            } else {
+                throw new Error(result.message || 'Error registrando Face ID');
+            }
+        } catch (err) {
+            console.error('❌ Error registrando Face ID:', err);
+            this.showFaceRegisterResult(
+                'error',
+                'Error registrando Face ID',
+                err.message || 'No se pudo asociar tu perfil facial. Intenta de nuevo.'
+            );
+        }
+    }
+
+    isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
     // ─── Close Face Register Modal ─────────────────────────────────────────────
@@ -399,50 +543,75 @@ class FaceIDAuthUI {
 
         this.clearFaceDetectionInterval();
 
+        // Verificar que los modelos están cargados antes de empezar
+        if (!window.biometricAuth || !window.biometricAuth.isModelLoaded) {
+            if (statusElement) {
+                statusText.textContent = 'Inicializando modelos... Por favor espera.';
+                statusElement.style.display = 'flex';
+            }
+            // Reintentar después de un delay
+            setTimeout(() => this.startFaceDetection(mode), 1000);
+            return;
+        }
+
         this.detectionInterval = setInterval(async () => {
             try {
+                // Double-check que los modelos sigan cargados
+                if (!window.biometricAuth || !window.biometricAuth.isModelLoaded) {
+                    console.warn('⚠️ Modelos no están listos todavía');
+                    if (statusText) statusText.textContent = 'Modelos cargando... Por favor espera.';
+                    return;
+                }
+
                 const detections = await window.biometricAuth.detectFace(videoElement);
 
                 if (detections.length === 0) {
-                    statusElement.style.display = 'flex';
-                    statusText.textContent = 'Rostro no detectado. Acércate a la cámara.';
-                    qualityBar.style.width = '0%';
-                    qualityPercent.textContent = '0%';
-                    captureBtn.disabled = true;
+                    if (statusElement) statusElement.style.display = 'flex';
+                    if (statusText) statusText.textContent = 'Rostro no detectado. Acércate a la cámara.';
+                    if (qualityBar) qualityBar.style.width = '0%';
+                    if (qualityPercent) qualityPercent.textContent = '0%';
+                    if (captureBtn) captureBtn.disabled = true;
                 } else if (detections.length > 1) {
-                    statusElement.style.display = 'flex';
-                    statusText.textContent = 'Se detectaron múltiples rostros. Asegúrate de estar solo.';
-                    qualityBar.style.width = '0%';
-                    qualityPercent.textContent = '0%';
-                    captureBtn.disabled = true;
+                    if (statusElement) statusElement.style.display = 'flex';
+                    if (statusText) statusText.textContent = 'Se detectaron múltiples rostros. Asegúrate de estar solo.';
+                    if (qualityBar) qualityBar.style.width = '0%';
+                    if (qualityPercent) qualityPercent.textContent = '0%';
+                    if (captureBtn) captureBtn.disabled = true;
                 } else {
                     const quality = window.biometricAuth.assessFaceQuality(detections[0], videoElement);
                     
                     // Update quality display
-                    qualityBar.style.width = `${quality.quality}%`;
-                    qualityPercent.textContent = `${Math.round(quality.quality)}%`;
+                    if (qualityBar) qualityBar.style.width = `${quality.quality}%`;
+                    if (qualityPercent) qualityPercent.textContent = `${Math.round(quality.quality)}%`;
 
                     if (quality.quality >= 75) {
-                        statusText.textContent = '✓ Rostro detectado. Calidad excelente. Listo para capturar.';
-                        statusElement.classList.remove('detecting', 'error');
-                        statusElement.classList.add('success');
-                        captureBtn.disabled = false;
+                        if (statusText) statusText.textContent = '✓ Rostro detectado. Calidad excelente. Listo para capturar.';
+                        if (statusElement) {
+                            statusElement.classList.remove('detecting', 'error');
+                            statusElement.classList.add('success');
+                        }
+                        if (captureBtn) captureBtn.disabled = false;
                     } else if (quality.quality >= 50) {
-                        statusText.textContent = `✓ Rostro detectado. Calidad aceptable (${quality.issues[0] || ''})`;
-                        statusElement.classList.remove('error', 'success');
-                        statusElement.classList.add('detecting');
-                        captureBtn.disabled = false;
+                        if (statusText) statusText.textContent = `✓ Rostro detectado. Calidad aceptable (${quality.issues[0] || ''})`;
+                        if (statusElement) {
+                            statusElement.classList.remove('error', 'success');
+                            statusElement.classList.add('detecting');
+                        }
+                        if (captureBtn) captureBtn.disabled = false;
                     } else {
-                        statusText.textContent = `✗ Calidad baja: ${quality.issues[0]}`;
-                        statusElement.classList.remove('detecting', 'success');
-                        statusElement.classList.add('error');
-                        captureBtn.disabled = true;
+                        if (statusText) statusText.textContent = `✗ Calidad baja: ${quality.issues[0]}`;
+                        if (statusElement) {
+                            statusElement.classList.remove('detecting', 'success');
+                            statusElement.classList.add('error');
+                        }
+                        if (captureBtn) captureBtn.disabled = true;
                     }
 
-                    statusElement.style.display = 'flex';
+                    if (statusElement) statusElement.style.display = 'flex';
                 }
             } catch (err) {
-                console.error('Error en detección:', err);
+                console.error('❌ Error en detección:', err);
+                if (statusText) statusText.textContent = `Error: ${err.message}`;
             }
         }, 500);
     }

@@ -265,6 +265,21 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleFormLoading(formRegister, false);
 
             if (result.success) {
+                const pendingFaceDescriptors = sessionStorage.getItem('faceDescriptors');
+                if (pendingFaceDescriptors) {
+                    try {
+                        const faceDescriptors = JSON.parse(pendingFaceDescriptors);
+                        if (Array.isArray(faceDescriptors) && faceDescriptors.length > 0) {
+                            const faceResult = await registerPendingFaceProfile(emailInput.value.trim(), faceDescriptors);
+                            if (faceResult) {
+                                showToast('Face ID fue registrado junto a tu cuenta.', 'success');
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Error al procesar Face ID pendiente:', err);
+                    }
+                }
+
                 showToast('Se envió un correo de verificación. Revisa la bandeja DevMail abajo.', 'info');
                 registerFeedback.textContent = result.message;
                 registerFeedback.className = 'form-feedback success';
@@ -277,6 +292,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    async function registerPendingFaceProfile(email, faceDescriptors) {
+        try {
+            const result = await window.AuthAPI.registerFace(email, faceDescriptors);
+            if (result.success) {
+                sessionStorage.removeItem('faceDescriptors');
+                return true;
+            }
+        } catch (err) {
+            console.error('Error registrando Face ID pendiente con el servidor:', err);
+        }
+        return false;
+    }
 
     // C. Forgot Password Submission
     formForgot.addEventListener('submit', async (e) => {
