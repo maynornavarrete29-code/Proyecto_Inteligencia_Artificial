@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const formRegister = document.getElementById('form-register');
     const formForgot = document.getElementById('form-forgot');
     const formReset = document.getElementById('form-reset');
+
+    const faceRegisterBtn = document.getElementById('btn-faceid-register');
+    const faceLoginBtn = document.getElementById('btn-faceid-login');
     
     // View Switch Links
     const gotoForgot = document.getElementById('goto-forgot');
@@ -235,6 +238,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // FaceID login action
+    if (faceLoginBtn) {
+        faceLoginBtn.addEventListener('click', async () => {
+            //const emailInput = document.getElementById('login-email');
+            //const emailValid = validateField(emailInput.closest('.form-group'), isValidEmail(emailInput.value.trim()));
+
+            /*if (!emailValid) {
+                showToast('Ingresa tu correo antes de intentar inicio de sesión FaceID.', 'error');
+                return;
+            }*/
+
+            faceLoginBtn.disabled = true;
+            faceLoginBtn.classList.add('loading');
+            showToast('Abre la cámara para verificar tu rostro... Presiona S para capturar.', 'info');
+
+            const result = await window.AuthAPI.verifyFace();
+
+            faceLoginBtn.disabled = false;
+            faceLoginBtn.classList.remove('loading');
+
+            if (result.success) {
+                showToast(result.message, 'success');
+                setTimeout(() => {
+                    window.location.href = 'backend.html';
+                }, 1200);
+            } else {
+                showToast(result.message, 'error');
+            }
+        });
+    }
+
     // B. Register Submission
     formRegister.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -277,6 +311,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    if (faceRegisterBtn) {
+        faceRegisterBtn.addEventListener('click', async () => {
+            registerFeedback.style.display = 'none';
+            const nameInput = document.getElementById('register-name');
+            const emailInput = document.getElementById('register-email');
+
+            const nameValid = validateField(nameInput.closest('.form-group'), nameInput.value.trim().length >= 3);
+            const emailValid = validateField(emailInput.closest('.form-group'), isValidEmail(emailInput.value.trim()));
+
+            if (!nameValid || !emailValid) {
+                registerFeedback.textContent = 'Ingresa nombre y correo válidos antes de registrar FaceID.';
+                registerFeedback.className = 'form-feedback error';
+                registerFeedback.style.display = 'block';
+                return;
+            }
+
+            faceRegisterBtn.disabled = true;
+            faceRegisterBtn.classList.add('loading');
+            showToast('Iniciando cámara para registrar tu rostro. Presiona S para capturar.', 'info');
+
+            const result = await window.AuthAPI.registerFace(emailInput.value.trim(), nameInput.value.trim());
+
+            faceRegisterBtn.disabled = false;
+            faceRegisterBtn.classList.remove('loading');
+
+            if (result.success) {
+                showToast('Rostro registrado con éxito. Ahora puedes iniciar sesión con FaceID.', 'success');
+            } else {
+                registerFeedback.textContent = result.message;
+                registerFeedback.className = 'form-feedback error';
+                registerFeedback.style.display = 'block';
+            }
+        });
+    }
 
     // C. Forgot Password Submission
     formForgot.addEventListener('submit', async (e) => {

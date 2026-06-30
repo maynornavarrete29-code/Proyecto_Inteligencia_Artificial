@@ -23,6 +23,27 @@
       "createdAt": "2026-06-24T05:24:48.404Z"
     },
     {
+      "id": "user-7d19e0c6-d27d-4aa1-8ddf-00acef616a8f",
+      "name": "Jeferson Reyes",
+      "email": "jeferson.reyes06@gmail.com",
+      "password": "$2a$10$2X6.jP44bz6/.gSB1N8nxeVL0Alx4qk3ZaXUQkrSiOhdWtwnHkByu",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T07:25:38.435Z"
+    },
+    {
+      "id": "user-fb413cb2-0d21-4771-9806-dce68ae1897e",
+      "name": "Cristhian",
+      "email": "cristhian@gmail.com",
+      "password": "$2a$10$fbDfQSqhceRf35/VEe9CbOjSWRgyibMk84g94/2GKvkLYL/u766Ta",
+      "verified": true,
+      "verificationToken": null,
+      "resetToken": null,
+      "resetTokenExpiry": null,
+      "createdAt": "2026-06-30T07:27:58.177Z"
+    {
       "id": "user-589276ba-29be-4c38-aed3-44a8f990fb16",
       "name": "orl",
       "email": "t#@GMAIL.COM",
@@ -78,6 +99,7 @@
       "previewUrl": "https://ethereal.email/message/ajx8qatu2Pi7VV38ajyBO-h.E5oJUqY6AAAABBUfHTcb4qx5IW4ee2wvQB4"
     }
   ],
+  "emails": [],
   "projects": [
     {
       "id": "proj-1",

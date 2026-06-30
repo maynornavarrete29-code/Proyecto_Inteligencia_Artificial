@@ -58,6 +58,27 @@ const AuthAPI = {
         }
     },
 
+    async registerFace(identifier, name) {
+        try {
+            return await apiRequest('POST', '/face/register', { identifier, name });
+        } catch (err) {
+            return { success: false, message: 'No se pudo conectar con el servidor FaceID.' };
+        }
+    },
+
+    async verifyFace() {
+        try {
+            const result = await apiRequest('POST', '/face/verify');
+            if (result.success && result.token) {
+                localStorage.setItem(TOKEN_KEY, result.token);
+                localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+            }
+            return result;
+        } catch (err) {
+            return { success: false, message: 'No se pudo conectar con el servidor FaceID.' };
+        }
+    },
+
     // Verify account via email link
     async verifyAccount(email, token) {
         try {
@@ -205,6 +226,8 @@ window.AuthService = {
     // These are async now — login.js handles them correctly
     register: (n, e, p) => AuthAPI.register(n, e, p),
     login: (e, p) => AuthAPI.login(e, p),
+    registerFace: (id, n) => AuthAPI.registerFace(id, n),
+    verifyFace: () => AuthAPI.verifyFace(),
     verifyAccount: (e, t) => AuthAPI.verifyAccount(e, t),
     forgotPassword: (e) => AuthAPI.forgotPassword(e),
     resetPassword: (e, t, p) => AuthAPI.resetPassword(e, t, p)
