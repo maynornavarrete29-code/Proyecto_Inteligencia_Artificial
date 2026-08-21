@@ -7,8 +7,7 @@ class FacturaRepository(BaseRepository):
 
         params =(
             data.pago_id,
-            data.numero_factura,
-            data.fecha_creacion,
+            data.numero_factura
         )
 
         return self._execute_query(query, params, is_write=True)
