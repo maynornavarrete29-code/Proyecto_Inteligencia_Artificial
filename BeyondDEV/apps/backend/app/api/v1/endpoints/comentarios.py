@@ -13,4 +13,4 @@ router = APIRouter(
 
 @router.post("")
 async def create_comentario(comentarios: ComentarioSchema, repo: ComentarioRepository = Depends(get_comentario_repository)):
-    return repo.crear_comentario(comentarios)
+    return repo.create_comentario(comentarios)

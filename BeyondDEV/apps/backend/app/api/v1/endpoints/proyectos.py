@@ -13,4 +13,4 @@ router = APIRouter(
 
 @router.post("")
 async def createProject(proyecto: ProyectoSchema, repo: ProyectoRepository = Depends(get_proyecto_repository)):
-    return repo.crear_proyecto(proyecto)
+    return repo.create_proyecto(proyecto)

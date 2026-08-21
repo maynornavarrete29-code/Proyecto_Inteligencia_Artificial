@@ -2,7 +2,7 @@ from .base import BaseRepository
 from .schemas.proyecto import ProyectoSchema
 
 class ProyectoRepository(BaseRepository):
-    def crear_proyecto(self, data: ProyectoSchema):
+    def create_proyecto(self, data: ProyectoSchema):
         query = "EXEC sp_crear_proyecto %s, %s, %s, %s, %s, %s, %s, %s"
         params = (
             data.nombre,

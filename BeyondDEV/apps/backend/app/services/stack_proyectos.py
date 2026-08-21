@@ -2,7 +2,7 @@ from .base import BaseRepository
 from .schemas.stack_proyecto import StackProyectoSchema
 
 class StackProyectosRepository(BaseRepository):
-    def crear_stack_proyecto(self, data: StackProyectoSchema):
+    def create_stack_proyecto(self, data: StackProyectoSchema):
         query = "EXEC sp_crear_stack_proyecto %s, %s"
         params = (
             data.proyecto_id,

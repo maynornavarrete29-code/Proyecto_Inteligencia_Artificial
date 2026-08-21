@@ -11,6 +11,6 @@ router = APIRouter(
     tags=["facturas"],
 )
 
-@router.post("/")
+@router.post("")
 async def create_factura(factura: FacturaSchema, repo: FacturaRepository = Depends(get_factura_repository)):
     return repo.create_factura(factura)

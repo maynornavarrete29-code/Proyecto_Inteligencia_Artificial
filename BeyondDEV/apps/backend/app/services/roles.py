@@ -2,7 +2,7 @@ from .base import BaseRepository
 from .schemas.roles import RolSchema
 
 class RolesRepository(BaseRepository):
-    def crear_rol(self, data: RolSchema):
+    def create_rol(self, data: RolSchema):
         query = "EXEC sp_crear_rol %s, %s"
         params = (
             data.nombre,
