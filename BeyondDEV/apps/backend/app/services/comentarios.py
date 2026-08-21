@@ -1,0 +1,11 @@
+from .base import BaseRepository
+from .schemas.comentario import ComentarioSchema
+
+class ComentarioRepository(BaseRepository):
+    def crear_comentario(self, data: ComentarioSchema):
+        query = "EXEC sp_crear_comentario %s, %s"
+        params = (
+            data.descripcion,
+            data.usuario_id,
+        )
+        return self._execute_query(query, params, is_write=True)
