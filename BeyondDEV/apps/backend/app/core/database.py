@@ -1,43 +1,42 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-from contextlib import contextmanager
-from app.core.config import settings
+from os import getenv
+from pathlib import Path
+from dotenv import load_dotenv
+import pymssql
 
-# Create the SQLAlchemy engine using the settings.database_url
-engine = create_engine(
-    settings.database_url,
-    echo=False,
-    future=True,
-)
+dotenv_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
 
-# Session factory. Use expire_on_commit=False to avoid lazy-refresh surprises.
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False, future=True)
-
-Base = declarative_base()
-
-
-@contextmanager
+# Dependencia para tus endpoints en FastAPI
 def get_db():
-    """Provide a transactional scope around a series of operations.
+    host = getenv("DB_SERVER")
+    port = getenv("DB_PORT")
+    user = getenv("DB_USER")
+    password = getenv("DB_PASSWORD")
+    database = getenv("DB_NAME")
 
-    This is a contextmanager alternative to the FastAPI dependency. Use it
-    for scripts and tests that need a DB session.
-    """
-    db = SessionLocal()
+    missing = [name for name, value in (
+        ("DB_SERVER", host),
+        ("DB_PORT", port),
+        ("DB_USER", user),
+        ("DB_PASSWORD", password),
+        ("DB_NAME", database),
+    ) if not value]
+    if missing:
+        raise RuntimeError(f"Missing DB config variables: {', '.join(missing)}")
+
     try:
-        yield db
-        db.commit()
-    except Exception:
-        db.rollback()
-        raise
-    finally:
-        db.close()
+        conn = pymssql.connect(
+            host=host,
+            port=int(port),
+            user=user,
+            password=password,
+            database=database,
+            login_timeout=10,
+        )
+    except Exception as exc:
+        raise RuntimeError(f"Database connection failed: {exc}") from exc
 
-
-# For FastAPI dependency injection (generator style) you can do:
-def get_db_generator():
-    db = SessionLocal()
     try:
-        yield db
+        yield conn
     finally:
-        db.close()
+        conn.close()

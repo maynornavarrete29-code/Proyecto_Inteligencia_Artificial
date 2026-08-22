@@ -1,28 +1,31 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchAPI } from './api';
+import { Use } from "./use";
 
 export interface Proyecto {
     proyecto_id?: number;
-    nombre_proyecto?: string;
+    nombre?: string;
     descripcion?: string;
     fecha_inicio?: Date;
     fecha_fin?: Date;
     estado_proyecto?: string;
+    presupuesto?: number;
     [key: string]: any;
 }
 
-interface UseReporteState<T> {
-    data: T | null;
-    loading: boolean;
-    error: Error | null;
-}
-
-export async function getProyectos(): Promise<Proyecto[]> {
-    return fetchAPI<Proyecto[]>(`/proyectos`, { method: 'GET' });
+async function getProyectos(): Promise<Proyecto[]> {
+    return fetchAPI<Proyecto[]>(`/proyectos`,
+        {
+            method: 'GET',
+            params: {
+                proyecto_id: null
+            }
+        }
+    );
 }
 
 export function useProyectos() {
-    const [state, setState] = useState<UseReporteState<Proyecto[]>>({
+    const [state, setState] = useState<Use<Proyecto[]>>({
         data: null,
         loading: true,
         error: null,

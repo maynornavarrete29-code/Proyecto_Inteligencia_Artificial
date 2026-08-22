@@ -13,17 +13,17 @@ class BaseRepository:
         try:
             cursor = self.db.cursor(as_dict=True)
             cursor.execute(query, params or ())
-
+            
             if is_write:
                 self.db.commit()
                 if fetch_one:
                     return cursor.fetchone()
                 return True
-
+                
             if fetch_one:
                 return cursor.fetchone()
             return cursor.fetchall()
-
+            
         except Exception as e:
             if is_write:
                 self.db.rollback()

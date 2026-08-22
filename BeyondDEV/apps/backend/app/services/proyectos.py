@@ -19,4 +19,11 @@ class ProyectoRepository(BaseRepository):
             query,
             params,
             is_write=True,
-        );
+        )
+
+    def listar_proyectos(self):
+        query = "EXEC sp_listar_proyectos"
+        '''params = (
+            data.proyecto_id
+        )'''
+        return self._execute_query(query)

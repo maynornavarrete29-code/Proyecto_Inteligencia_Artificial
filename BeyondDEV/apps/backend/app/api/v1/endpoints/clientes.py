@@ -14,3 +14,7 @@ router = APIRouter(
 @router.post("")
 async def create_cliente(cliente: ClienteSchema, repo: ClienteRepository = Depends(get_cliente_repository)):
     return repo.create_cliente(cliente)
+
+@router.get("")
+async def listar_cliente(repo: ClienteRepository = Depends(get_cliente_repository)):
+    return repo.listar_clientes()
