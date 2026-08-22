@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from ....services.schemas.pago_cascada import PagoCascadaSchema
-from ....services.pagos_cascada import PagosCascadaRepository
-from ....core.database import get_db
+from app.services.schemas.pago_cascada import PagoCascadaSchema
+from app.services.pagos_cascada import PagosCascadaRepository
+from app.core.database import get_db
 
 def get_pagos_cascada_repository(db=Depends(get_db)):
     return PagosCascadaRepository(db)

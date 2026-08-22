@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from backend.app.services.stack_proyectos import StackProyectosRepository
-from backend.app.services.schemas.stack_proyecto import StackProyectoSchema
-from backend.app.core.database import get_db
+from app.services.stack_proyectos import StackProyectosRepository
+from app.services.schemas.stack_proyecto import StackProyectoSchema
+from app.core.database import get_db
 
 def get_stack_proyectos_repository(db = Depends(get_db)):
     return StackProyectosRepository(db)

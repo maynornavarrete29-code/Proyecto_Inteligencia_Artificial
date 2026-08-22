@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from typing import Optional
 from pydantic import BaseModel
 
@@ -8,4 +8,5 @@ class UsuarioSchema(BaseModel):
     telefono: str
     email: str
     hashed_password: str
-    fecha_creacion: datetime
+    fecha_creacion: date
+    

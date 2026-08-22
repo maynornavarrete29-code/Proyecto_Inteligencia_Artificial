@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from apps.backend.app.services.roles import RolesRepository
-from apps.backend.app.services.schemas.rol import RolSchema
-from apps.backend.app.core.database import get_db
+from app.services.roles import RolesRepository
+from app.services.schemas.rol import RolSchema
+from app.core.database import get_db
 
 def get_roles_repository(db=Depends(get_db)):
     return RolesRepository(db)

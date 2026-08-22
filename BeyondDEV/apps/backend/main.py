@@ -1,18 +1,20 @@
-﻿"""FastAPI application entrypoint for BeyondDev backend.
-
-Includes CORS configuration for the Next.js frontend and a simple health endpoint.
-"""
+﻿"""FastAPI application entrypoint for BeyondDev backend."""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
-from app.services.ia_engine import get_ia_engine
+from sqlalchemy import text
+
 from app.core import database
+from app.api.v1.routes import api_router  # <-- Importamos desde routes.py
 
-app = FastAPI(title="BeyondDev Backend")
+app = FastAPI(
+    title="BeyondDev Backend",
+    version="1.0.0"
+)
 
-# Allow the local frontend during development
+# Configuración de CORS
 origins = [
     "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 app.add_middleware(
@@ -23,27 +25,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Registramos todas las rutas de v1 bajo el prefijo /api/v1
+app.include_router(api_router, prefix="/api/v1")
 
-@app.get("/api/v1/health")
-async def health() -> dict:
-    """Health endpoint that verifies the AI engine and DB connectivity."""
-    engine = get_ia_engine()
-
-    # Check DB connectivity (non-fatal)
+@app.get("/")
+async def root() -> dict:
+    """comprobación del estado de la Base de Datos."""
     db_ok = False
     db_error = None
     try:
         with database.engine.connect() as conn:
-            # lightweight check
-            conn.execute("SELECT 1")
+            conn.execute(text("SELECT 1"))
         db_ok = True
     except Exception as exc:
         db_error = str(exc)
 
     return {
-        "status": "ok",
-        "model_loaded": bool(engine.model),
-        "db_ok": db_ok,
-        "db_error": db_error,
-        "db_host": settings.DB_HOST,
+        "message": "¡Hola Mundo! La API de BeyondDev está funcionando 🚀",
+        "database_status": "Conectada correctamente" if db_ok else "Sin conexión",
+        "database_error": db_error
     }
+    
+    
+    
+    
+    
+    

@@ -1,10 +1,10 @@
-from ....services.tecnologias import TecnologiaRepository
-from ....services.schemas.tecnologia import TecnologiaSchema
+from app.services.tecnologias import TecnologiasRepository
+from app.services.schemas.tecnologia import TecnologiaSchema
 from fastapi import APIRouter, Depends, HTTPException
 from app.core.database import get_db
 
 def get_tecnologia_repository(db = Depends(get_db)):
-    return TecnologiaRepository(db)
+    return TecnologiasRepository(db)
 
 router = APIRouter(
     prefix = "/tecnologias",
@@ -12,5 +12,5 @@ router = APIRouter(
 )
 
 @router.post("")
-async def create_tecnologias(tecnologia: TecnologiaSchema, repo: TecnologiaRepository = Depends(get_tecnologia_repository)):
+async def create_tecnologias(tecnologia: TecnologiaSchema, repo: TecnologiasRepository = Depends(get_tecnologia_repository)):
     return repo.create_tecnologia(tecnologia)

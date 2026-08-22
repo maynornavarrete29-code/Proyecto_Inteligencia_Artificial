@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.services.schemas.usuario import UsuarioSchema
 from app.services.usuarios import UsuarioRepository
-from app.services.base import get_db
+from app.core.database import get_db
 
 def get_usuarios_repository(db = Depends(get_db)):
     return UsuarioRepository(db)

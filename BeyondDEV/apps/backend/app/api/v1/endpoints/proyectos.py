@@ -1,7 +1,7 @@
 from app.services.schemas.proyecto import ProyectoSchema
 from fastapi  import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-from app.database import get_db
+from app.core.database import get_db
 from app.services.proyectos import ProyectoRepository
 
 def get_proyecto_repository(db = Depends(get_db)):

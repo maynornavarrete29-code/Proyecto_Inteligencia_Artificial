@@ -1,5 +1,5 @@
 from .base import BaseRepository
-from .schemas.roles import RolSchema
+from .schemas.rol import RolSchema
 
 class RolesRepository(BaseRepository):
     def create_rol(self, data: RolSchema):
