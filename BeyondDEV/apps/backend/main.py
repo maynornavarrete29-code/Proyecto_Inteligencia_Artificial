@@ -2,7 +2,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-
 from app.core import database
 from app.api.v1.routes import api_router  # <-- Importamos desde routes.py
 
@@ -28,6 +27,7 @@ app.add_middleware(
 # Registramos todas las rutas de v1 bajo el prefijo /api/v1
 app.include_router(api_router, prefix="/api/v1")
 
+'''
 @app.get("/")
 async def root() -> dict:
     """comprobación del estado de la Base de Datos."""
@@ -45,9 +45,4 @@ async def root() -> dict:
         "database_status": "Conectada correctamente" if db_ok else "Sin conexión",
         "database_error": db_error
     }
-    
-    
-    
-    
-    
-    
+'''

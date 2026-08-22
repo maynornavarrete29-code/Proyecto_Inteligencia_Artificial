@@ -25,7 +25,3 @@ api_router.include_router(roles.router, prefix="/roles", tags=["roles"])
 api_router.include_router(stack_proyectos.router, prefix="/stack_proyectos", tags=["stack_proyectos"])
 api_router.include_router(tecnologias.router, prefix="/tecnologias", tags=["tecnologias"])
 api_router.include_router(usuarios.router, prefix="/usuarios", tags=["usuarios"])
-
-
-
-
