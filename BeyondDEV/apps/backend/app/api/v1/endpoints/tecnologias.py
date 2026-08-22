@@ -7,10 +7,12 @@ def get_tecnologia_repository(db = Depends(get_db)):
     return TecnologiasRepository(db)
 
 router = APIRouter(
-    prefix = "/tecnologias",
-    tags = ["tecnologias"]
 )
 
 @router.post("")
 async def create_tecnologias(tecnologia: TecnologiaSchema, repo: TecnologiasRepository = Depends(get_tecnologia_repository)):
     return repo.create_tecnologia(tecnologia)
+
+@router.get("")
+async def get_tecnologias(repo: TecnologiasRepository = Depends(get_tecnologia_repository)):
+    return repo.get_tecnologias()

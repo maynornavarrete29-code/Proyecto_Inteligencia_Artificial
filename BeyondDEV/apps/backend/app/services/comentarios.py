@@ -9,3 +9,7 @@ class ComentarioRepository(BaseRepository):
             data.usuario_id,
         )
         return self._execute_query(query, params, is_write=True)
+
+    def get_comentarios(self):
+        query = "EXEC sp_listar_comentarios"
+        return self._execute_query(query)

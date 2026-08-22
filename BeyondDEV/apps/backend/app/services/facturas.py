@@ -11,3 +11,7 @@ class FacturaRepository(BaseRepository):
         )
 
         return self._execute_query(query, params, is_write=True)
+
+    def get_facturas(self):
+        query = "EXEC sp_listar_facturas"
+        return self._execute_query(query)

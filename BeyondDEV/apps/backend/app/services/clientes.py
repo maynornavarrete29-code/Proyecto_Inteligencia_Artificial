@@ -10,4 +10,8 @@ class ClienteRepository(BaseRepository):
             data.email
         )
 
-        return self._execute_query(query, params, is_write=True);
+        return self._execute_query(query, params, is_write=True)
+
+    def get_clientes(self):
+        query = "EXEC sp_listar_clientes"
+        return self._execute_query(query)

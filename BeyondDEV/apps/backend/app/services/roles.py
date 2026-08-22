@@ -10,3 +10,7 @@ class RolesRepository(BaseRepository):
         )
 
         return self._execute_query(query, params, is_write=True)
+
+    def get_roles(self):
+        query = "EXEC sp_listar_roles"
+        return self._execute_query(query)

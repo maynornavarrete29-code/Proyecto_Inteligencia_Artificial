@@ -8,10 +8,12 @@ def get_roles_repository(db=Depends(get_db)):
 
 
 router = APIRouter(
-    prefix = "/roles",
-    tags = ["roles"]
 )
 
 @router.post("")
 async def create_rol(rol: RolSchema, repo: RolesRepository = Depends(get_roles_repository)):
     return repo.create_rol(rol)
+
+@router.get("")
+async def get_roles(repo: RolesRepository = Depends(get_roles_repository)):
+    return repo.get_roles()

@@ -7,10 +7,12 @@ def get_usuarios_repository(db = Depends(get_db)):
     return UsuarioRepository(db)
 
 router = APIRouter(
-    prefix = "/usuarios",
-    tags=["usuarios"],
 )
 
 @router.post("")
 async def create_usuario(usuario: UsuarioSchema, repo: UsuarioRepository = Depends(get_usuarios_repository)):
-    return repo.create_usuario(usuario);
+    return repo.create_usuario(usuario)
+
+@router.get("")
+async def get_usuarios(repo: UsuarioRepository = Depends(get_usuarios_repository)):
+    return repo.get_usuarios()

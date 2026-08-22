@@ -7,8 +7,6 @@ def get_cliente_repository(db=Depends(get_db)):
     return ClienteRepository(db)
 
 router = APIRouter(
-    prefix = "/clientes",
-    tags = ["clientes"]
 )
 
 @router.post("")
@@ -16,5 +14,5 @@ async def create_cliente(cliente: ClienteSchema, repo: ClienteRepository = Depen
     return repo.create_cliente(cliente)
 
 @router.get("")
-async def listar_cliente(repo: ClienteRepository = Depends(get_cliente_repository)):
-    return repo.listar_clientes()
+async def get_clientes(repo: ClienteRepository = Depends(get_cliente_repository)):
+    return repo.get_clientes()

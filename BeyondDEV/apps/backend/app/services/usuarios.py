@@ -12,3 +12,7 @@ class UsuarioRepository(BaseRepository):
         )
 
         return self._execute_query(query, params, is_write=True)
+
+    def get_usuarios(self):
+        query = "EXEC sp_listar_usuarios"
+        return self._execute_query(query)

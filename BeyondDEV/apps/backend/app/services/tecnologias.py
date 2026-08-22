@@ -16,3 +16,7 @@ class TecnologiasRepository(BaseRepository):
             params,
             is_write=True,
         )
+
+    def get_tecnologias(self):
+        query = "EXEC sp_listar_tecnologias"
+        return self._execute_query(query)

@@ -14,3 +14,7 @@ class StackProyectosRepository(BaseRepository):
             params,
             is_write=True,
         )
+
+    def get_stack_proyectos(self):
+        query = "EXEC sp_listar_stack_proyectos"
+        return self._execute_query(query)
