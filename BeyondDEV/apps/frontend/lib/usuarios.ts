@@ -7,8 +7,8 @@ export interface Usuario {
     nombre?: string
     telefono?: string
     email?: string
-    hashed_password: string
-    fecha_creacion: Date
+    hashed_password?: string
+    fecha_creacion?: Date
     [key: string]: any;
 }
 

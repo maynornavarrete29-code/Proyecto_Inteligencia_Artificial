@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import LoadingSpinner from "../../components/ui/LoadingSpinner";
-import { sendPrediction } from "../../lib/api";
 
 export default function DashboardPage() {
   const [inputText, setInputText] = useState("");
@@ -11,18 +10,8 @@ export default function DashboardPage() {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await sendPrediction(inputText);
-      setResult(res);
-    } catch (err: any) {
-      setError(err.message || "Ocurrió un error");
-    } finally {
-      setLoading(false);
-    }
+  function handleSubmit() {
+    console.log(inputText);
   }
 
   return (

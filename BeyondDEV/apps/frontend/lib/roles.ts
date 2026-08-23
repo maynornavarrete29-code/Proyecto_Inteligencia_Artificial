@@ -4,9 +4,8 @@ import { Use } from "./use";
 
 export interface Rol {
     rol_id?: number;
-    nombre?: string;
+    tipo?: string;
     descripcion?: string;
-    permisos?: string;
     [key: string]: any;
 }
 

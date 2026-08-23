@@ -3,13 +3,10 @@ import { fetchAPI } from './api';
 import { Use } from "./use";
 
 export interface Cliente {
-    proyecto_id?: number;
     nombre?: string;
-    descripcion?: string;
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
-    estado_proyecto?: string;
-    presupuesto?: number;
+    telefono?: string;
+    email?: string;
+    fecha_creacion?: Date;
     [key: string]: any;
 }
 

@@ -1,0 +1,10 @@
+USE DB20242000639
+GO
+
+CREATE OR ALTER PROCEDURE sp_listar_clientes
+AS
+BEGIN
+	SELECT * 
+	FROM Clientes
+END
+GO

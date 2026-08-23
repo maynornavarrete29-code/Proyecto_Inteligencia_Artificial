@@ -3,13 +3,9 @@ import { fetchAPI } from './api';
 import { Use } from "./use";
 
 export interface PagosCascadas {
-    cliente_id?: number;
     proyecto_id?: number;
-    tipo_pago_id?: number;
-    metodo_pago_id?: number;
     monto?: number;
     fecha_pago?: Date;
-    estado?: string;
     [key: string]: any;
 }
 

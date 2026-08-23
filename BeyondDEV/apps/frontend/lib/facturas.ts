@@ -3,12 +3,9 @@ import { fetchAPI } from './api';
 import { Use } from "./use";
 
 export interface Factura {
-    cliente_id?: number;
-    proyecto_id?: number;
     pago_id?: number;
-    fecha_emision?: Date;
-    total?: number;
-    estado?: string;
+    numero_factura?: string;
+    fecha_creacion?: Date;
     [key: string]: any;
 }
 

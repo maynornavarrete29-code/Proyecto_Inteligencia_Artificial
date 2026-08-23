@@ -3,13 +3,9 @@ import { fetchAPI } from './api';
 import { Use } from "./use";
 
 export interface Tecnologia {
-    proyecto_id?: number;
     nombre?: string;
+    tipo?: string;
     descripcion?: string;
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
-    estado_proyecto?: string;
-    presupuesto?: number;
     [key: string]: any;
 }
 

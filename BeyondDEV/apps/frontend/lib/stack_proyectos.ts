@@ -4,12 +4,7 @@ import { Use } from "./use";
 
 export interface StackProyecto {
     proyecto_id?: number;
-    nombre?: string;
-    descripcion?: string;
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
-    estado_proyecto?: string;
-    presupuesto?: number;
+    tecnologia_id?: number;
     [key: string]: any;
 }
 
