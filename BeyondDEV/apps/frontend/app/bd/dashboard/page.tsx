@@ -39,65 +39,6 @@ export default function DashboardPage() {
       {/* Contenedor principal del Dashboard[cite: 1, 2] */}
       <div className="flex min-h-screen relative z-10">
 
-        {/* BARRA LATERAL (SIDEBAR)[cite: 1, 2] */}
-        <aside
-          className={`w-[280px] bg-[#030508]/95 border-r border-white/10 backdrop-blur-2xl flex flex-col fixed top-0 left-0 bottom-0 z-[100] transition-transform duration-300 lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0 shadow-2xl shadow-black' : '-translate-x-full'
-            }`}
-        >
-          <div className="h-[80px] flex items-center justify-between px-8 border-b border-white/10">
-            <a href="#" className="flex items-center gap-2 text-xl font-bold font-mono">
-              <span className="text-white">Beyond</span>
-              <span className="text-[#efc704]">Dev</span>
-            </a>
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="lg:hidden text-slate-400 hover:text-white text-xl"
-            >
-              <i className="fa-solid fa-xmark"></i>
-            </button>
-          </div>
-
-          <nav className="flex-1 py-8 px-5">
-            <ul className="flex flex-col gap-2">
-              {[
-                { id: 'overview', label: 'Resumen', icon: 'fa-chart-line' },
-                { id: 'projects', label: 'Proyectos Activos', icon: 'fa-cubes' },
-                { id: 'tasks', label: 'Tablero de Tareas', icon: 'fa-list-check' },
-                { id: 'team', label: 'Equipo de Desarrollo', icon: 'fa-user-group' },
-              ].map((item) => (
-                <li key={item.id}>
-                  <button
-                    onClick={() => setActiveView(item.id as any)}
-                    className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-lg text-sm transition-all duration-200 ${activeView === item.id
-                      ? 'text-[#efc704] bg-[#efc704]/5 border-l-2 border-[#efc704] font-semibold'
-                      : 'text-slate-400 hover:text-white hover:bg-white/[0.03] font-medium'
-                      }`}
-                  >
-                    <i className={`fa-solid ${item.icon} w-5 text-center text-base`}></i>
-                    <span>{item.label}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          {/* User Profile Footer[cite: 1, 2] */}
-          <div className="p-5 border-t border-white/10">
-            <div className="flex items-center gap-3 bg-white/[0.02] border border-white/10 p-3 rounded-xl relative">
-              <div className="w-[38px] h-[38px] rounded-full bg-gradient-to-br from-[#2b1d75] to-[#efc704] flex items-center justify-center font-bold text-xs text-white shadow-md shadow-[#2b1d75]/30">
-                AD
-              </div>
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <span className="text-xs font-semibold text-white truncate">Admin</span>
-                <span className="text-[11px] text-slate-400">Dev Lead</span>
-              </div>
-              <button className="text-slate-400 hover:text-red-500 p-1 transition-colors" title="Cerrar Sesión">
-                <i className="fa-solid fa-power-off text-base"></i>
-              </button>
-            </div>
-          </div>
-        </aside>
-
         {/* PANEL PRINCIPAL[cite: 1, 2] */}
         <main className="lg:ml-[280px] flex-1 flex flex-col min-w-0">
 
@@ -373,7 +314,7 @@ export default function DashboardPage() {
                   <select className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]"
                     value={formData.tipo}
                     onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}>
-                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar tipo</option>
+                    <option value="" disabled className="text-slate-500">Seleccionar tipo</option>
                     <option value="sistema">Sistema</option>
                     <option value="movil">Aplicación Móvil</option>
                     <option value="web">Página Web</option>
@@ -387,7 +328,7 @@ export default function DashboardPage() {
                   <select value={formData.prioridad}
                     onChange={(e) => setFormData({ ...formData, prioridad: e.target.value })}
                     className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]">
-                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar prioridad</option>
+                    <option value="" disabled className="text-slate-500">Seleccionar prioridad</option>
                     <option value="baja">Baja</option>
                     <option value="media">Media</option>
                     <option value="alta">Alta</option>
@@ -402,7 +343,7 @@ export default function DashboardPage() {
                   <select value={formData.estado}
                     onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
                     className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]">
-                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar estado</option>
+                    <option value="" disabled className="text-slate-500">Seleccionar estado</option>
                     <option value="en_proceso">En Proceso</option>
                     <option value="finalizado">Finalizado</option>
                     <option value="cancelado">Cancelado</option>

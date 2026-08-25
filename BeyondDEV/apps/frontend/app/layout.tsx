@@ -35,6 +35,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${outfit.variable} dark scroll-smooth`}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
       <body className="bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-amber-500 selection:text-black overflow-x-hidden">
         {/* Glow Background Elements */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
