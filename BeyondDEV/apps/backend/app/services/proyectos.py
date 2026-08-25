@@ -1,7 +1,7 @@
 from .base import BaseRepository
 from .schemas.proyecto import ProyectoSchema
 
-class ProyectoRepository(BaseRepository):
+class ProyectosRepository(BaseRepository):
     def create_proyecto(self, data: ProyectoSchema):
         print("Proyecto a crear desde el backend: ", data)
         try:

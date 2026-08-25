@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 from datetime import date
+from typing import Optional
 
 class ClienteSchema(BaseModel):
-    nombre: str
-    telefono: str
-    email: str
-    fecha_creacion: date
+    nombre: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+    fecha_creacion: Optional[date] = None

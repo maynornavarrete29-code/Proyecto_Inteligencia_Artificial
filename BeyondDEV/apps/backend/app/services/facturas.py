@@ -1,7 +1,7 @@
 from .base import BaseRepository
 from .schemas.factura import FacturaSchema
 
-class FacturaRepository(BaseRepository):
+class FacturasRepository(BaseRepository):
     def create_factura(self, data: FacturaSchema):
         query = "EXEC sp_crear_factura %s, %s, %s"
 

@@ -3,10 +3,10 @@ from typing import Optional
 from pydantic import BaseModel
 
 class UsuarioSchema(BaseModel):
-    rol_id: int
-    nombre: str
-    telefono: str
-    email: str
-    hashed_password: str
-    fecha_creacion: date
+    rol_id: Optional[int] = None
+    nombre: Optional[str] = None
+    telefono: Optional[str] = None
+    email: Optional[str] = None
+    hashed_password: Optional[str] = None
+    fecha_creacion: Optional[date] = None
     

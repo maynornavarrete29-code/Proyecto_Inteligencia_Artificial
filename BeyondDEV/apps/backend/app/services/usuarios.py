@@ -1,7 +1,7 @@
 from .base import BaseRepository
 from .schemas.usuario import UsuarioSchema
 
-class UsuarioRepository(BaseRepository):
+class UsuariosRepository(BaseRepository):
     def create_usuario(self, data: UsuarioSchema):
         query = "EXEC sp_crear_usuario %s, %s, %s, %s"
         params = (

@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 class ComentarioSchema(BaseModel):
-    descripcion: str
-    usuario_id: int
-    fecha_creacion: datetime
+    descripcion: Optional[str] = None
+    usuario_id: Optional[int] = None
+    fecha_creacion: Optional[datetime] = None

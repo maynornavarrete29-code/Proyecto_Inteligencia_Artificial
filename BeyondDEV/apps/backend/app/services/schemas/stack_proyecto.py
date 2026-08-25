@@ -1,5 +1,6 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class StackProyectoSchema(BaseModel):
-    proyecto_id: int
-    tecnologia_id: int
+    proyecto_id: Optional[int] = None
+    tecnologia_id: Optional[int] = None
