@@ -1,0 +1,14 @@
+USE DB20242000639
+GO
+
+SELECT COLUMN_NAME 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE TABLE_SCHEMA = 'dbo' 
+  AND TABLE_NAME = 'Stack_Proyectos'
+ORDER BY ORDINAL_POSITION;
+
+SELECT name, create_date, modify_date 
+FROM sys.procedures 
+ORDER BY name;
+
+EXEC sp_listar_usuarios

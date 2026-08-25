@@ -1,12 +1,32 @@
 'use client';
-
 import React, { useState } from 'react';
+import { createProyecto, Proyecto } from '@/lib/proyectos';
 
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<'overview' | 'projects' | 'tasks' | 'team'>('overview');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const [formData, setFormData] = useState<Proyecto>({
+    nombre: '',
+    tipo: '',
+    descripcion: '',
+    prioridad: '',
+    estado: '',
+    fecha_inicio: new Date().toISOString().split('T')[0],
+    entrega_propuesta: new Date().toISOString().split('T')[0],
+    presupuesto: 0,
+  });
+
+  const handleCreateProyecto = async (proyecto: Proyecto) => {
+    try {
+      await createProyecto(formData);
+      //setIsProjectModalOpen(false);
+    } catch (error) {
+      console.error('Error al crear el proyecto:', error);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#030508] text-slate-200 font-sans relative overflow-x-hidden">
@@ -119,7 +139,15 @@ export default function DashboardPage() {
 
           {/* VISTAS DE CONTENIDO[cite: 1, 2] */}
           <div className="p-6 lg:p-10 flex-1">
-
+            <div className="py-10">
+              <p className="px-5">Acciones Rapidas</p>
+              <div className='pt-3'>
+                <button className="bg-[#efc704] text-black font-semibold px-5 py-2 rounded-lg text-xs hover:bg-[#d8b303] transition-colors flex items-center gap-2 whitespace-nowrap">
+                  <i className="fa-solid fa-plus"></i>
+                  <span>Nuevo Proyecto</span>
+                </button>
+              </div>
+            </div>
             {/* VISTA 1: OVERVIEW[cite: 1, 2] */}
             {activeView === 'overview' && (
               <section className="space-y-10 animate-fade-in">
@@ -292,30 +320,176 @@ export default function DashboardPage() {
         </main>
       </div>
 
+
       {/* MODAL: REGISTRAR PROYECTO[cite: 1, 2] */}
       {isProjectModalOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
-          <div className="bg-[#0a0f19] border border-white/10 rounded-xl p-8 max-w-[650px] w-full shadow-2xl">
-            <div className="flex justify-between items-center border-b border-white/10 pb-5 mb-6">
-              <h2 className="font-mono text-xl font-bold text-[#efc704]">Registrar Nuevo Proyecto</h2>
-              <button onClick={() => setIsProjectModalOpen(false)} className="text-slate-400 hover:text-white text-xl">
-                <i className="fa-solid fa-xmark"></i>
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[150] flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-[#0a0f19] border border-white/10 rounded-2xl p-6 sm:p-8 max-w-[680px] w-full shadow-2xl relative overflow-hidden">
+
+            {/* Línea de acento superior BeyonDev */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#efc704] to-transparent opacity-80" />
+
+            {/* Encabezado con branding */}
+            <div className="flex justify-between items-start pb-5 mb-6 border-b border-white/10">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] font-mono tracking-widest text-[#efc704] bg-[#efc704]/10 border border-[#efc704]/30 px-2 py-0.5 rounded-full font-bold uppercase">
+                    BeyonDev Systems
+                  </span>
+                </div>
+                <h2 className="text-xl font-bold text-white tracking-tight">
+                  Registrar Nuevo Proyecto
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsProjectModalOpen(false)}
+                className="text-slate-400 hover:text-white hover:bg-white/10 p-2 rounded-lg transition-all"
+              >
+                <i className="fa-solid fa-xmark text-lg"></i>
               </button>
             </div>
+
+            {/* Formulario */}
             <form className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-slate-300 mb-1 block">Nombre del Proyecto *</label>
-                  <input type="text" placeholder="Ej. Portal de Contratos" className="w-full bg-white/5 border border-white/10 rounded p-2.5 text-xs text-white outline-none focus:border-[#efc704]" />
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Nombre del Proyecto <span className="text-[#efc704]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ej. Portal de Contratos"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]"
+                    value={formData.nombre}
+                    onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                  />
                 </div>
+
                 <div>
-                  <label className="text-xs text-slate-300 mb-1 block">Cliente / Empresa *</label>
-                  <input type="text" placeholder="Ej. Logística SA" className="w-full bg-white/5 border border-white/10 rounded p-2.5 text-xs text-white outline-none focus:border-[#efc704]" />
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Tipo de Proyecto <span className="text-[#efc704]">*</span>
+                  </label>
+                  <select className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]"
+                    value={formData.tipo}
+                    onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}>
+                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar tipo</option>
+                    <option value="sistema">Sistema</option>
+                    <option value="movil">Aplicación Móvil</option>
+                    <option value="web">Página Web</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Prioridad <span className="text-[#efc704]">*</span>
+                  </label>
+                  <select value={formData.prioridad}
+                    onChange={(e) => setFormData({ ...formData, prioridad: e.target.value })}
+                    className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]">
+                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar prioridad</option>
+                    <option value="baja">Baja</option>
+                    <option value="media">Media</option>
+                    <option value="alta">Alta</option>
+                    <option value="urgente">Urgente</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Estado <span className="text-[#efc704]">*</span>
+                  </label>
+                  <select value={formData.estado}
+                    onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
+                    className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]">
+                    <option value="" disabled defaultValue className="text-slate-500">Seleccionar estado</option>
+                    <option value="en_proceso">En Proceso</option>
+                    <option value="finalizado">Finalizado</option>
+                    <option value="cancelado">Cancelado</option>
+                    <option value="en_espera">En Espera</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Fecha de Inicio <span className="text-[#efc704]">*</span>
+                  </label>
+                  <input
+                    value={formData.fecha_inicio}
+                    onChange={(e) => setFormData({ ...formData, fecha_inicio: e.target.value })}
+                    type="date"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704] [color-scheme:dark]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Fecha de Entrega Propuesta <span className="text-[#efc704]">*</span>
+                  </label>
+                  <input
+                    value={formData.entrega_propuesta}
+                    onChange={(e) => setFormData({ ...formData, entrega_propuesta: e.target.value })}
+                    type="date"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704] [color-scheme:dark]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Cliente / Empresa <span className="text-[#efc704]">*</span>
+                  </label>
+                  <input
+                    value={formData.cliente}
+                    onChange={(e) => setFormData({ ...formData, cliente: e.target.value })}
+                    type="text"
+                    placeholder="Ej. Logística SA"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                    Presupuesto ($) <span className="text-[#efc704]">*</span>
+                  </label>
+                  <input
+                    value={formData.presupuesto}
+                    onChange={(e) => setFormData({ ...formData, presupuesto: Number(e.target.value) })}
+                    type="number"
+                    placeholder="10000"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704]"
+                  />
                 </div>
               </div>
-              <div className="flex justify-end gap-4 border-t border-white/10 pt-5 mt-6">
-                <button type="button" onClick={() => setIsProjectModalOpen(false)} className="px-6 py-2.5 bg-white/5 text-xs text-slate-300 rounded hover:bg-white/10">Cancelar</button>
-                <button type="submit" className="px-6 py-2.5 bg-[#efc704] text-xs text-black font-semibold rounded hover:bg-[#d8b303]">Guardar Proyecto</button>
+
+              <div>
+                <label className="text-xs font-medium text-slate-300 mb-1.5 block">
+                  Descripción <span className="text-[#efc704]">*</span>
+                </label>
+                <textarea
+                  value={formData.descripcion}
+                  onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
+                  rows={3}
+                  placeholder="Describe brevemente el alcance del proyecto..."
+                  className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-xs text-white placeholder-slate-500 outline-none transition-all focus:border-[#efc704] focus:ring-1 focus:ring-[#efc704] resize-none"
+                />
+              </div>
+
+              {/* Acciones de Footer */}
+              <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-5 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setIsProjectModalOpen(false)}
+                  className="px-5 py-2.5 bg-white/5 text-xs font-medium text-slate-300 rounded-lg hover:bg-white/10 hover:text-white transition-all"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  onClick={handleCreateProyecto}
+                  className="px-5 py-2.5 bg-[#efc704] text-xs text-slate-950 font-bold rounded-lg hover:bg-[#d8b303] shadow-lg shadow-[#efc704]/20 transition-all active:scale-[0.98]"
+                >
+                  Crear Proyecto
+                </button>
               </div>
             </form>
           </div>

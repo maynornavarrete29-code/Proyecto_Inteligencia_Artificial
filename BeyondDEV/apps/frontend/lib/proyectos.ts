@@ -6,10 +6,12 @@ export interface Proyecto {
     proyecto_id?: number;
     nombre?: string;
     descripcion?: string;
-    fecha_inicio?: Date;
-    fecha_fin?: Date;
-    estado_proyecto?: string;
+    prioridad?: string;
+    tipo?: string;
+    fecha_inicio?: string;
+    entrega_propuesta?: string;
     presupuesto?: number;
+    estado?: string;
     [key: string]: any;
 }
 
@@ -49,6 +51,7 @@ export function useProyectos() {
 }
 
 export async function createProyecto(proyecto: Proyecto) {
+    console.log("Proyecto a crear desde la API para el backend: ", proyecto);
     return fetchAPI<Proyecto>(`/proyectos`, {
         method: 'POST',
         body: JSON.stringify(proyecto),

@@ -1,8 +1,14 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
-import { Inter, Orbitron } from 'next/font/google';
+import { Outfit } from 'next/font/google';
+//import { Inter, Orbitron } from 'next/font/google';
 import './globals.css';
 
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+});
+/*
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -14,6 +20,7 @@ const orbitron = Orbitron({
   variable: '--font-orbitron',
   display: 'swap',
 });
+*/
 
 export const metadata: Metadata = {
   title: 'BeyondDev | Beyond code, Beyond limit',
@@ -27,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${inter.variable} ${orbitron.variable} dark scroll-smooth`}>
+    <html lang="es" className={`${outfit.variable} dark scroll-smooth`}>
       <body className="bg-zinc-950 text-zinc-100 font-sans antialiased selection:bg-amber-500 selection:text-black overflow-x-hidden">
         {/* Glow Background Elements */}
         <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">

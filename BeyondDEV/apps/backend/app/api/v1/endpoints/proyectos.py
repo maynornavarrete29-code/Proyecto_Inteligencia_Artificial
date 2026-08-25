@@ -12,6 +12,7 @@ router = APIRouter(
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def createProject(proyecto: ProyectoSchema, repo: ProyectoRepository = Depends(get_proyecto_repository)):
+    print("Proyecto a crear desde el backend: ", proyecto)
     return repo.create_proyecto(proyecto)
 
 @router.get("")
