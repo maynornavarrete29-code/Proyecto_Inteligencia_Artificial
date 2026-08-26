@@ -16,14 +16,7 @@ export default function DashboardLayout({
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     const reportSublinks = [
-        { name: "Clientes Frecuentes", href: "/bd/reportes/clientes-frecuentes", icon: "notes" },
-        { name: "Reservaciones Diarias", href: "/bd/reportes/reservaciones-diarias", icon: "notes" },
-        { name: "Estado de Habitaciones", href: "/bd/reportes/estado-habitaciones", icon: "notes" },
-        { name: "Limpieza y Mantenimiento", href: "/bd/reportes/limpieza-mantenimiento", icon: "notes" },
-        { name: "Ocupación Mensual", href: "/bd/reportes/ocupacion-mensual", icon: "bar_chart_4_bars" },
-        { name: "Ingresos por Habitación", href: "/bd/reportes/ingresos-habitacion", icon: "bar_chart_4_bars" },
-        { name: "Consumo de Amenidades", href: "/bd/reportes/consumo-amenidades", icon: "bar_chart_4_bars" },
-        { name: "Incidentes", href: "/bd/reportes/incidentes", icon: "error" },
+        { name: "Clientes Leales", href: "/bd/reportes/clientes-leales", icon: "notes" },
     ];
 
     const navLinks = [
@@ -31,7 +24,6 @@ export default function DashboardLayout({
         { name: "Proyectos", href: "/bd/proyectos", icon: "folder", subtitle: "Estado e historial de proyectos" },
         { name: "Tareas", href: "/bd/tareas", icon: "task_alt", subtitle: "Gestión de tareas y pendientes" },
         { name: "Clientes", href: "/bd/clientes", icon: "group", subtitle: "Perfiles de clientes e historial" },
-        { name: "Finanzas", href: "/bd/finanzas", icon: "payments", subtitle: "Gestión financiera e ingresos" },
         { name: "Mantenimiento", href: "/bd/mantenimiento", icon: "build", subtitle: "Gestión de soporte y mantenimiento" },
         { name: "Usuarios", href: "/bd/usuarios", icon: "person", subtitle: "Gestión de usuarios" },
         { name: "Reportes", href: "/bd/reportes", icon: "bar_chart", subtitle: "Análisis y reportes de desempeño", isDropdown: true },
