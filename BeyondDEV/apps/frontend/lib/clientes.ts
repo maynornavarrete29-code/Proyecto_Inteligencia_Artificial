@@ -3,6 +3,7 @@ import { fetchAPI } from './api';
 import { Use } from "./use";
 
 export interface Cliente {
+    cliente_id?: number;
     nombre?: string;
     telefono?: string;
     email?: string;

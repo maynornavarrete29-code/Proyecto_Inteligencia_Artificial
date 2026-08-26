@@ -1,16 +1,7 @@
 'use client'
 import { useState } from 'react'
-
-interface Usuario {
-    id: string
-    nombre: string
-    email: string
-    telefono: string
-    rol_id: string
-    estado: 'activo' | 'inactivo'
-    initials: string
-    color: string
-}
+import { useUsuarios, createUsuario, Usuario } from '@/lib/usuarios'
+import { useRoles } from '@/lib/roles'
 
 const COLOR_PALETTE = [
     'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
@@ -20,41 +11,11 @@ const COLOR_PALETTE = [
     'text-rose-400 border-rose-500/30 bg-rose-500/10',
 ]
 
-const INITIAL_USERS: Usuario[] = [
-    {
-        id: '1',
-        nombre: 'Carlos Mendoza',
-        email: 'carlos.mendoza@empresa.com',
-        telefono: '+504 9988-7766',
-        rol_id: 'ADMIN',
-        estado: 'activo',
-        initials: 'CM',
-        color: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-    },
-    {
-        id: '2',
-        nombre: 'Ana Valenzuela',
-        email: 'ana.v@empresa.com',
-        telefono: '+504 8877-6655',
-        rol_id: 'DESARROLLADOR',
-        estado: 'activo',
-        initials: 'AV',
-        color: 'text-indigo-400 border-indigo-500/30 bg-indigo-500/10'
-    },
-    {
-        id: '3',
-        nombre: 'Roberto Gómez',
-        email: 'roberto.g@empresa.com',
-        telefono: '+504 3322-1100',
-        rol_id: 'ANALISTA',
-        estado: 'inactivo',
-        initials: 'RG',
-        color: 'text-amber-400 border-amber-500/30 bg-amber-500/10'
-    }
-]
-
 export default function UsuariosPage() {
-    const [usuarios, setUsuarios] = useState<Usuario[]>(INITIAL_USERS)
+    const { data: usuarios, loading: usuarioLoading, error: usuarioError } = useUsuarios();
+    const { data: roles, loading: rolLoading, error: rolError } = useRoles();
+
+    //const [usuarios, setUsuarios] = useState<Usuario[]>(INITIAL_USERS)
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedRole, setSelectedRole] = useState('TODOS')
 
@@ -65,8 +26,7 @@ export default function UsuariosPage() {
         nombre: '',
         email: '',
         telefono: '',
-        rol_id: 'DESARROLLADOR',
-        estado: 'activo' as 'activo' | 'inactivo'
+        rol_id: 1
     })
 
     // Generar iniciales
@@ -80,11 +40,11 @@ export default function UsuariosPage() {
     }
 
     // Filtrado
-    const filteredUsers = usuarios.filter(u => {
-        const matchesSearch = u.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            u.email.toLowerCase().includes(searchTerm.toLowerCase())
-        const matchesRole = selectedRole === 'TODOS' || u.rol_id === selectedRole
-        return matchesSearch && matchesRole
+    const filteredUsers = usuarios?.filter(u => {
+        const matchesSearch = u.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            u.email?.toLowerCase().includes(searchTerm.toLowerCase())
+        // const matchesRole = selectedRole === 'TODOS' || u.rol_id === selectedRole
+        return matchesSearch //&& matchesRole
     })
 
     // Abrir modal
@@ -92,11 +52,10 @@ export default function UsuariosPage() {
         if (user) {
             setEditingUser(user)
             setFormData({
-                nombre: user.nombre,
-                email: user.email,
-                telefono: user.telefono,
-                rol_id: user.rol_id,
-                estado: user.estado
+                nombre: user.nombre!,
+                email: user.email!,
+                telefono: user.telefono!,
+                rol_id: user.rol_id!
             })
         } else {
             setEditingUser(null)
@@ -104,17 +63,32 @@ export default function UsuariosPage() {
                 nombre: '',
                 email: '',
                 telefono: '',
-                rol_id: 'DESARROLLADOR',
-                estado: 'activo'
+                rol_id: 1
             })
         }
         setIsModalOpen(true)
     }
 
     // Guardar usuario
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        const user = await createUsuario(formData);
+        console.log(user);
 
+        if (user) {
+            alert('Usuario creado exitosamente');
+            setIsModalOpen(false);
+            setFormData({
+                nombre: '',
+                email: '',
+                telefono: '',
+                rol_id: 1
+            })
+        } else {
+            alert('Error al crear usuario');
+        }
+
+        /*e.preventDefault()
         if (editingUser) {
             setUsuarios(prev =>
                 prev.map(u => u.id === editingUser.id ? {
@@ -134,15 +108,21 @@ export default function UsuariosPage() {
             setUsuarios(prev => [newUser, ...prev])
         }
 
-        setIsModalOpen(false)
+        setIsModalOpen(false)*/
     }
 
     // Eliminar usuario
     const handleDelete = (id: string) => {
-        if (confirm('¿Estás seguro de eliminar este usuario?')) {
+        /*if (confirm('¿Estás seguro de eliminar este usuario?')) {
             setUsuarios(prev => prev.filter(u => u.id !== id))
-        }
+        }*/
     }
+
+    if (usuarioLoading || rolLoading)
+        return <p className="text-white">Loading...</p>
+
+    if (usuarioError || rolError)
+        return <p className="text-red-500">Error al cargar usuarios</p>
 
     return (
         <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl mx-auto p-4 md:p-6">
@@ -183,17 +163,17 @@ export default function UsuariosPage() {
 
             {/* Grid de Tarjetas de Usuario */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredUsers.map((member) => (
+                {filteredUsers?.map((member) => (
                     <div
-                        key={member.id}
+                        key={member.usuario_id}
                         className="bg-white/[0.02] border border-white/10 backdrop-blur-md rounded-xl p-8 flex flex-col items-center text-center relative group hover:border-white/20 transition duration-300"
                     >
                         {/* Indicador de Estado Activo/Inactivo */}
                         <div
                             title={member.estado === 'activo' ? 'Usuario Activo' : 'Usuario Inactivo'}
                             className={`absolute top-5 right-5 w-2.5 h-2.5 rounded-full ${member.estado === 'activo'
-                                    ? 'bg-green-400 shadow-lg shadow-green-400/50'
-                                    : 'bg-slate-600'
+                                ? 'bg-green-400 shadow-lg shadow-green-400/50'
+                                : 'bg-slate-600'
                                 }`}
                         />
 
@@ -236,7 +216,7 @@ export default function UsuariosPage() {
                 ))}
             </div>
 
-            {filteredUsers.length === 0 && (
+            {filteredUsers?.length === 0 && (
                 <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
                     <p className="text-slate-400 text-xs">No se encontraron usuarios matching con la búsqueda.</p>
                 </div>
@@ -285,23 +265,12 @@ export default function UsuariosPage() {
                                     <label className="text-xs text-slate-400 block mb-1">Rol</label>
                                     <select
                                         value={formData.rol_id}
-                                        onChange={(e) => setFormData({ ...formData, rol_id: e.target.value })}
+                                        onChange={(e) => setFormData({ ...formData, rol_id: Number(e.target.value) })}
                                         className="w-full bg-slate-900 border border-white/10 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-[#efc704]"
                                     >
-                                        <option value="ADMIN">ADMIN</option>
-                                        <option value="DESARROLLADOR">DESARROLLADOR</option>
-                                        <option value="ANALISTA">ANALISTA</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="text-xs text-slate-400 block mb-1">Estado</label>
-                                    <select
-                                        value={formData.estado}
-                                        onChange={(e) => setFormData({ ...formData, estado: e.target.value as 'activo' | 'inactivo' })}
-                                        className="w-full bg-slate-900 border border-white/10 rounded px-3 py-2 text-xs text-white focus:outline-none focus:border-[#efc704]"
-                                    >
-                                        <option value="activo">Activo</option>
-                                        <option value="inactivo">Inactivo</option>
+                                        {roles?.map(rol => (
+                                            <option value={rol.rol_id}>{rol.tipo}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>

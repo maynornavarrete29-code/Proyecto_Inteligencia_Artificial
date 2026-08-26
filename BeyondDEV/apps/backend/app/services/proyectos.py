@@ -5,8 +5,9 @@ class ProyectosRepository(BaseRepository):
     def create_proyecto(self, data: ProyectoSchema):
         print("Proyecto a crear desde el backend: ", data)
         try:
-            query = "EXEC sp_crear_proyecto %s, %s, %s, %s, %s, %s, %s, %s"
+            query = "EXEC sp_crear_proyecto %s, %s, %s, %s, %s, %s, %s, %s, %s"
             params = (
+                data.cliente_id,
                 data.nombre,
                 data.tipo,
                 data.descripcion,

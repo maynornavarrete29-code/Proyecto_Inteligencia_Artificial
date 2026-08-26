@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 class ProyectoSchema(BaseModel):
     proyecto_id: Optional[int] = None
+    cliente_id: Optional[int] = None
     nombre: Optional[str] = None
     tipo: Optional[str] = None
     descripcion: Optional[str] = None

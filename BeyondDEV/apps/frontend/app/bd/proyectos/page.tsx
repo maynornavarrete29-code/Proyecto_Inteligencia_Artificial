@@ -2,67 +2,14 @@
 
 import { useState, useMemo } from 'react';
 import Header from '@/components/ui/header';
-import { useProyectos, Proyecto } from '@/lib/proyectos';
-
-// Datos de demostración iniciales
-const MOCK_PROYECTOS: Proyecto[] = [
-    {
-        proyecto_id: 1,
-        nombre: 'Portal de Contratos ERP',
-        descripcion: 'Sistema de gestión de contratos digitales con firma electrónica y auditoría.',
-        prioridad: 'Alta',
-        tipo: 'Sistema',
-        fecha_inicio: '2026-01-15',
-        entrega_propuesta: '2026-04-30',
-        presupuesto: 18500,
-        estado: 'En Proceso',
-        cliente: 'Logística SA',
-        progreso: 65,
-    },
-    {
-        proyecto_id: 2,
-        nombre: 'App Móvil de Repartidores',
-        descripcion: 'Aplicación nativa iOS/Android para rastreo GPS en tiempo real.',
-        prioridad: 'Urgente',
-        tipo: 'Aplicacion Movil',
-        fecha_inicio: '2026-02-01',
-        entrega_propuesta: '2026-05-15',
-        presupuesto: 24000,
-        estado: 'En Proceso',
-        cliente: 'FastExpress Corp',
-        progreso: 40,
-    },
-    {
-        proyecto_id: 3,
-        nombre: 'Rediseño E-Commerce',
-        descripcion: 'Rediseño UI/UX y migración a Next.js 15 con pasarela de pagos Stripe.',
-        prioridad: 'Media',
-        tipo: 'Pagina Web',
-        fecha_inicio: '2025-11-10',
-        entrega_propuesta: '2026-01-20',
-        presupuesto: 9500,
-        estado: 'Finalizado',
-        cliente: 'Moda & Estilo',
-        progreso: 100,
-    },
-    {
-        proyecto_id: 4,
-        nombre: 'Módulo de Facturación Electrónica',
-        descripcion: 'API de facturación conforme a normativas fiscales locales.',
-        prioridad: 'Baja',
-        tipo: 'Sistema',
-        fecha_inicio: '2026-03-01',
-        entrega_propuesta: '2026-06-01',
-        presupuesto: 12000,
-        estado: 'En Espera',
-        cliente: 'Finanzas Global',
-        progreso: 10,
-    },
-];
+import { useProyectos, createProyecto, Proyecto } from '@/lib/proyectos';
+import { useClientes } from '@/lib/clientes';
 
 export default function ProyectosPage() {
     //const [proyectos, setProyectos] = useState<Proyecto[]>(MOCK_PROYECTOS);
-    const { data: proyectos, loading, error } = useProyectos();
+    const { data: proyectos, loading: pLoading, error: pError } = useProyectos();
+    const { data: clientes, loading: cLoading, error: cError } = useClientes();
+
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('TODOS');
     const [priorityFilter, setPriorityFilter] = useState('TODOS');
@@ -116,7 +63,7 @@ export default function ProyectosPage() {
             entrega_propuesta: '',
             presupuesto: 0,
             estado: 'En Proceso',
-            cliente: '',
+            cliente_id: 1,
             progreso: 0,
         });
         setIsModalOpen(true);
@@ -128,20 +75,33 @@ export default function ProyectosPage() {
         setIsModalOpen(true);
     };
 
-    /*const handleSaveProyecto = (e: React.FormEvent) => {
+    const handleSaveProyecto = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingProyecto) {
-            setProyectos((prev) =>
-                prev.map((p) => (p.proyecto_id === editingProyecto.proyecto_id ? ({ ...formData } as Proyecto) : p))
-            );
+
+        const newProject = await createProyecto(formData);
+        console.log(newProject);
+
+        if (newProject) {
+            console.log("Proyecto creado exitosamente: ", newProject);
+            setIsModalOpen(false);
         } else {
-            const newId = Math.max(...proyectos.map((p) => p.proyecto_id || 0), 0) + 1;
-            setProyectos((prev) => [...prev, { ...formData, proyecto_id: newId } as Proyecto]);
+            console.log("Error al crear el proyecto");
         }
-        setIsModalOpen(false);
+
+        /*
+        if (editingProyecto) {
+                setProyectos((prev) =>
+                    prev.map((p) => (p.proyecto_id === editingProyecto.proyecto_id ? ({ ...formData } as Proyecto) : p))
+                );
+            } else {
+                const newId = Math.max(...proyectos.map((p) => p.proyecto_id || 0), 0) + 1;
+                setProyectos((prev) => [...prev, { ...formData, proyecto_id: newId } as Proyecto]);
+            }
+            setIsModalOpen(false);
+            */
     };
 
-    const handleDeleteProyecto = (id: number) => {
+    /*const handleDeleteProyecto = (id: number) => {
         setProyectos((prev) => prev.filter((p) => p.proyecto_id !== id));
         setDeleteConfirmId(null);
     };*/
@@ -174,6 +134,15 @@ export default function ProyectosPage() {
                 return 'bg-slate-500/10 text-slate-400 border-slate-500/30';
         }
     };
+
+    if (pLoading || cLoading)
+        return <p className="text-white">Loading...</p>
+
+    if (pError || cError)
+        return <p className="text-red-500">Error</p>
+
+    console.log("Clientes: ", clientes)
+    console.log("Proyectos: ", proyectos)
 
     return (
         <div className="lg:ml-[280px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
@@ -372,7 +341,7 @@ export default function ProyectosPage() {
                                     <div className="mt-4 pt-3 border-t border-white/5 space-y-2">
                                         <div className="flex justify-between text-xs">
                                             <span className="text-slate-400">Cliente:</span>
-                                            <span className="text-white font-medium">{p.cliente || 'N/A'}</span>
+                                            <span className="text-white font-medium">{clientes?.find(c => c.cliente_id === p.cliente_id)?.nombre || 'N/A'}</span>
                                         </div>
                                         <div className="flex justify-between text-xs">
                                             <span className="text-slate-400">Presupuesto:</span>
@@ -629,13 +598,13 @@ export default function ProyectosPage() {
 
                                 <div>
                                     <label className="text-xs font-medium text-slate-300 mb-1 block">Cliente / Empresa</label>
-                                    <input
-                                        type="text"
-                                        value={formData.cliente || ''}
-                                        onChange={(e) => setFormData({ ...formData, cliente: e.target.value })}
-                                        placeholder="Ej. Logística SA"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
+                                    <select name="" id="" value={formData.cliente_id} onChange={(e) => setFormData({ ...formData, cliente_id: Number(e.target.value) })} className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-[#efc704]">
+                                        {clientes?.map(cliente => (
+                                            <option key={cliente.cliente_id} value={cliente.cliente_id}>
+                                                {cliente.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div>

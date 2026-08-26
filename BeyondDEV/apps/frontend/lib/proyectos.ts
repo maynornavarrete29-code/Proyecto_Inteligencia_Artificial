@@ -4,6 +4,7 @@ import { Use } from "./use";
 
 export interface Proyecto {
     proyecto_id?: number;
+    cliente_id?: number;
     nombre?: string;
     descripcion?: string;
     prioridad?: string;
