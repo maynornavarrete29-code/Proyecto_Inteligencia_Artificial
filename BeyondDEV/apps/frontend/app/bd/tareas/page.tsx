@@ -2,75 +2,20 @@
 
 import { useState, useMemo } from 'react';
 import Header from '@/components/ui/header';
-
-export interface Tarea {
-    tarea_id?: number;
-    titulo?: string;
-    descripcion?: string;
-    proyecto?: string;
-    asignado_a?: string;
-    prioridad?: string;
-    estado?: string;
-    fecha_limite?: string;
-    horas_estimadas?: number;
-    [key: string]: any;
-}
-
-// Datos de demostración iniciales
-const MOCK_TAREAS: Tarea[] = [
-    {
-        tarea_id: 1,
-        titulo: 'Diseñar wireframes de la pantalla de dashboard',
-        descripcion: 'Crear propuesta visual UI/UX en Figma para el panel general de analíticas.',
-        proyecto: 'Portal de Contratos ERP',
-        asignado_a: 'Sofía Castro',
-        prioridad: 'Urgente',
-        estado: 'En Proceso',
-        fecha_limite: '2026-03-05',
-        horas_estimadas: 12,
-    },
-    {
-        tarea_id: 2,
-        titulo: 'Integrar SDK de procesamiento de pagos Stripe',
-        descripcion: 'Implementar webhooks de respuesta y tokenización de tarjetas de crédito.',
-        proyecto: 'Rediseño E-Commerce',
-        asignado_a: 'Carlos Mendoza',
-        prioridad: 'Alta',
-        estado: 'Pendiente',
-        fecha_limite: '2026-03-10',
-        horas_estimadas: 20,
-    },
-    {
-        tarea_id: 3,
-        titulo: 'Configurar canalizaciones CI/CD en GitHub Actions',
-        descripcion: 'Automatizar pruebas unitarias y despliegue continuo en servidor de staging.',
-        proyecto: 'App Móvil de Repartidores',
-        asignado_a: 'Miguel Torres',
-        prioridad: 'Media',
-        estado: 'En Revisión',
-        fecha_limite: '2026-03-01',
-        horas_estimadas: 8,
-    },
-    {
-        tarea_id: 4,
-        titulo: 'Optimización de consultas SQL en reporte financiero',
-        descripcion: 'Refactorizar índices y vistas en Postgres para acelerar carga de reportes.',
-        proyecto: 'Módulo de Facturación Electrónica',
-        asignado_a: 'Ana López',
-        prioridad: 'Baja',
-        estado: 'Completada',
-        fecha_limite: '2026-02-20',
-        horas_estimadas: 6,
-    },
-];
+import { Tarea, useTareas, createTarea } from '@/lib/tareas';
+import { useProyectos } from '@/lib/proyectos';
+import { useUsuarios } from '@/lib/usuarios';
 
 export default function TareasPage() {
-    const [tareas, setTareas] = useState<Tarea[]>(MOCK_TAREAS);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('TODOS');
     const [priorityFilter, setPriorityFilter] = useState('TODOS');
     const [projectFilter, setProjectFilter] = useState('TODOS');
     const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+
+    const { data: tareas, loading: tareasLoading, error: tareasError } = useTareas();
+    const { data: proyectos, loading: proyectosLoading, error: proyectosError } = useProyectos();
+    const { data: usuarios, loading: usuariosLoading, error: usuariosError } = useUsuarios();
 
     // Modales
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,33 +28,33 @@ export default function TareasPage() {
 
     // Filtrado de tareas
     const filteredTareas = useMemo(() => {
-        return tareas.filter((t) => {
+        return tareas?.filter((t) => {
             const matchesSearch =
                 t.titulo?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                t.proyecto?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                t.asignado_a?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                //t.proyecto_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                //t.usuario_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 t.descripcion?.toLowerCase().includes(searchTerm.toLowerCase());
 
             const matchesStatus = statusFilter === 'TODOS' || t.estado === statusFilter;
             const matchesPriority = priorityFilter === 'TODOS' || t.prioridad === priorityFilter;
-            const matchesProject = projectFilter === 'TODOS' || t.proyecto === projectFilter;
+            //const matchesProject = projectFilter === 'TODOS' || t.proyecto === projectFilter;
 
-            return matchesSearch && matchesStatus && matchesPriority && matchesProject;
+            return matchesSearch && matchesStatus && matchesPriority;
         });
-    }, [tareas, searchTerm, statusFilter, priorityFilter, projectFilter]);
+    }, [tareas, searchTerm, statusFilter, priorityFilter]);
 
     // Lista única de proyectos para el filtro
     const proyectosDisponibles = useMemo(() => {
-        const list = tareas.map((t) => t.proyecto).filter(Boolean) as string[];
+        const list = tareas?.map((t) => t.proyecto_id).filter(Boolean) as number[];
         return Array.from(new Set(list));
     }, [tareas]);
 
     // Métricas KPI
     const stats = useMemo(() => {
-        const total = tareas.length;
-        const pendientes = tareas.filter((t) => t.estado === 'Pendiente').length;
-        const enProceso = tareas.filter((t) => t.estado === 'En Proceso' || t.estado === 'En Revisión').length;
-        const completadas = tareas.filter((t) => t.estado === 'Completada').length;
+        const total = tareas?.length;
+        const pendientes = tareas?.filter((t) => t.estado === 'Pendiente').length;
+        const enProceso = tareas?.filter((t) => t.estado === 'En Proceso' || t.estado === 'En Revisión').length;
+        const completadas = tareas?.filter((t) => t.estado === 'Completada').length;
 
         return { total, pendientes, enProceso, completadas };
     }, [tareas]);
@@ -120,12 +65,10 @@ export default function TareasPage() {
         setFormData({
             titulo: '',
             descripcion: '',
-            proyecto: proyectosDisponibles[0] || 'General',
-            asignado_a: '',
+            proyecto_id: 0,
+            usuario_id: 0,
             prioridad: 'Media',
-            estado: 'Pendiente',
-            fecha_limite: new Date().toISOString().split('T')[0],
-            horas_estimadas: 4,
+            estado: 'Pendiente'
         });
         setIsModalOpen(true);
     };
@@ -136,29 +79,26 @@ export default function TareasPage() {
         setIsModalOpen(true);
     };
 
-    const handleSaveTarea = (e: React.FormEvent) => {
+    const handleSaveTarea = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (editingTarea) {
-            setTareas((prev) =>
-                prev.map((t) => (t.tarea_id === editingTarea.tarea_id ? ({ ...formData } as Tarea) : t))
-            );
-        } else {
-            const newId = Math.max(...tareas.map((t) => t.tarea_id || 0), 0) + 1;
-            setTareas((prev) => [...prev, { ...formData, tarea_id: newId } as Tarea]);
-        }
-        setIsModalOpen(false);
-    };
 
-    const handleDeleteTarea = (id: number) => {
-        setTareas((prev) => prev.filter((t) => t.tarea_id !== id));
-        setDeleteConfirmId(null);
+        const newTask = await createTarea(formData);
+
+        if (newTask) {
+            setIsModalOpen(false);
+        }
+        else {
+            alert('Error al crear la tarea');
+        }
     };
 
     const handleToggleEstado = (tarea: Tarea) => {
+        /*
         const nuevoEstado = tarea.estado === 'Completada' ? 'En Proceso' : 'Completada';
         setTareas((prev) =>
             prev.map((t) => (t.tarea_id === tarea.tarea_id ? { ...t, estado: nuevoEstado } : t))
         );
+        */
     };
 
     // Badges estilizados
@@ -189,6 +129,26 @@ export default function TareasPage() {
                 return 'bg-slate-500/10 text-slate-400 border-slate-500/30';
         }
     };
+
+    if (proyectosLoading || tareasLoading || usuariosLoading) {
+        return (
+            <div className="lg:ml-[280px] lg:mt-[30px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
+                <Header title="Gestión de Tareas" subtitle="Asignación, seguimiento y control de pendientes operativos" />
+                <p className="text-white font-semibold">Cargando...</p>
+            </div>
+        );
+    }
+
+    if (proyectosError || tareasError || usuariosError) {
+        return (
+            <div className="lg:ml-[280px] lg:mt-[30px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
+                <Header title="Gestión de Tareas" subtitle="Asignación, seguimiento y control de pendientes operativos" />
+                <p className="text-white font-semibold">Error al cargar las tareas</p>
+            </div>
+        );
+    }
+
+    console.log('tareas', tareas);
 
     return (
         <div className="lg:ml-[280px] lg:mt-[30px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
@@ -341,7 +301,7 @@ export default function TareasPage() {
                 </div>
 
                 {/* LISTADO DE TAREAS */}
-                {filteredTareas.length === 0 ? (
+                {filteredTareas?.length === 0 ? (
                     <div className="bg-[#0a0f19] border border-white/10 rounded-2xl p-12 text-center flex flex-col items-center justify-center">
                         <span className="material-symbols-outlined text-4xl text-slate-600 mb-3">task</span>
                         <p className="text-white font-semibold">No se encontraron tareas</p>
@@ -350,7 +310,7 @@ export default function TareasPage() {
                 ) : viewMode === 'grid' ? (
                     /* VISTA EN GRID */
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {filteredTareas.map((t) => (
+                        {filteredTareas?.map((t) => (
                             <div
                                 key={t.tarea_id}
                                 className="bg-[#0a0f19] border border-white/10 rounded-2xl p-5 hover:border-[#efc704]/50 transition-all flex flex-col justify-between group shadow-lg relative overflow-hidden"
@@ -359,7 +319,7 @@ export default function TareasPage() {
                                     {/* Card Header */}
                                     <div className="flex items-start justify-between gap-2 mb-3">
                                         <span className="text-[10px] font-mono tracking-wider text-[#efc704] bg-[#efc704]/10 border border-[#efc704]/30 px-2 py-0.5 rounded-full font-bold uppercase truncate max-w-[150px]">
-                                            {t.proyecto}
+                                            {t.proyecto_id}
                                         </span>
                                         <div className="flex items-center gap-1.5">
                                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPriorityBadge(t.prioridad)}`}>
@@ -397,11 +357,11 @@ export default function TareasPage() {
                                         <div className="flex justify-between items-center text-slate-300">
                                             <div className="flex items-center gap-1.5 text-slate-400">
                                                 <span className="material-symbols-outlined text-sm">person</span>
-                                                <span className="text-white font-medium">{t.asignado_a || 'Sin asignar'}</span>
+                                                <span className="text-white font-medium">{t.nombre_usuario || 'Sin asignar'}</span>
                                             </div>
                                             <div className="flex items-center gap-1 text-slate-400 font-mono text-[11px]">
                                                 <span className="material-symbols-outlined text-sm">schedule</span>
-                                                <span>{t.horas_estimadas}h</span>
+                                                <span>{t.fecha_asignacion}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -462,7 +422,7 @@ export default function TareasPage() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-white/5 text-xs">
-                                    {filteredTareas.map((t) => (
+                                    {filteredTareas?.map((t) => (
                                         <tr key={t.tarea_id} className="hover:bg-white/5 transition-colors">
                                             <td className="p-4">
                                                 <button
@@ -484,7 +444,7 @@ export default function TareasPage() {
                                             </td>
                                             <td className="p-4">
                                                 <span className="text-[10px] font-mono text-[#efc704] bg-[#efc704]/10 border border-[#efc704]/30 px-2 py-0.5 rounded-full font-bold">
-                                                    {t.proyecto}
+                                                    {t.proyecto_id}
                                                 </span>
                                             </td>
                                             <td className="p-4 text-slate-300 font-medium">{t.asignado_a || 'Sin Asignar'}</td>
@@ -580,25 +540,24 @@ export default function TareasPage() {
                                     <label className="text-xs font-medium text-slate-300 mb-1 block">
                                         Proyecto <span className="text-[#efc704]">*</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={formData.proyecto || ''}
-                                        onChange={(e) => setFormData({ ...formData, proyecto: e.target.value })}
-                                        placeholder="Ej. Portal ERP"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
+                                    <select value={formData.proyecto_id} onChange={(e) => setFormData({ ...formData, proyecto_id: parseInt(e.target.value) })}
+                                        className="w-full border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
+                                    >
+                                        {proyectos?.map(proyecto => (
+                                            <option key={proyecto.proyecto_id} value={proyecto.proyecto_id}>{proyecto.nombre}</option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div>
                                     <label className="text-xs font-medium text-slate-300 mb-1 block">Asignado a</label>
-                                    <input
-                                        type="text"
-                                        value={formData.asignado_a || ''}
-                                        onChange={(e) => setFormData({ ...formData, asignado_a: e.target.value })}
-                                        placeholder="Ej. Sofía Castro"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
+                                    <select value={formData.usuario_id} onChange={(e) => setFormData({ ...formData, usuario_id: parseInt(e.target.value) })}
+                                        className="w-full border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
+                                    >
+                                        {usuarios?.map(usuario => (
+                                            <option key={usuario.usuario_id} value={usuario.usuario_id}>{usuario.nombre}</option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div>

@@ -3,77 +3,6 @@
 import { useState, useMemo } from 'react';
 import Header from '@/components/ui/header';
 import { useClientes, createCliente, Cliente } from '@/lib/clientes';
-/*
-export interface Cliente {
-    cliente_id?: number;
-    nombre?: string;
-    empresa?: string;
-    email?: string;
-    telefono?: string;
-    sector?: string;
-    estado?: string;
-    proyectos_activos?: number;
-    total_invertido?: number;
-    fecha_registro?: string;
-    notas?: string;
-    [key: string]: any;
-}*/
-
-// Datos de demostración iniciales
-const MOCK_CLIENTES: Cliente[] = [
-    {
-        cliente_id: 1,
-        nombre: 'Carlos Mendoza',
-        empresa: 'Logística SA',
-        email: 'cmendoza@logisticasa.com',
-        telefono: '+504 9876-5432',
-        sector: 'Logística & Transporte',
-        estado: 'Activo',
-        proyectos_activos: 2,
-        total_invertido: 38500,
-        fecha_registro: '2025-03-10',
-        notas: 'Cliente clave en sector transporte. Interesado en expansión de módulos móviles.',
-    },
-    {
-        cliente_id: 2,
-        nombre: 'Ana Rodríguez',
-        empresa: 'FastExpress Corp',
-        email: 'arodriguez@fastexpress.io',
-        telefono: '+504 8812-3456',
-        sector: 'E-commerce & Entregas',
-        estado: 'Activo',
-        proyectos_activos: 1,
-        total_invertido: 24000,
-        fecha_registro: '2025-06-18',
-        notas: 'Revisión semanal de avances cada martes a las 10 AM.',
-    },
-    {
-        cliente_id: 3,
-        nombre: 'Roberto Gómez',
-        empresa: 'Moda & Estilo',
-        email: 'rgomez@modaestilo.hn',
-        telefono: '+504 9543-2109',
-        sector: 'Retail & Moda',
-        estado: 'Inactivo',
-        proyectos_activos: 0,
-        total_invertido: 9500,
-        fecha_registro: '2024-11-05',
-        notas: 'Proyecto de e-commerce completado con éxito. Posible renovación en Q4.',
-    },
-    {
-        cliente_id: 4,
-        nombre: 'Elena Torres',
-        empresa: 'Finanzas Global',
-        email: 'etorres@finanzasglobal.com',
-        telefono: '+504 3321-6789',
-        sector: 'Servicios Financieros',
-        estado: 'Prospecto',
-        proyectos_activos: 1,
-        total_invertido: 12000,
-        fecha_registro: '2026-01-22',
-        notas: 'En fase de negociación para módulo de facturación electrónica.',
-    },
-];
 
 export default function ClientesPage() {
     //const [clientes, setClientes] = useState<Cliente[]>(MOCK_CLIENTES);
@@ -130,15 +59,9 @@ export default function ClientesPage() {
         setEditingCliente(null);
         setFormData({
             nombre: '',
-            empresa: '',
             email: '',
             telefono: '',
-            sector: 'Tecnología',
-            estado: 'Activo',
-            proyectos_activos: 0,
-            total_invertido: 0,
-            fecha_registro: new Date().toISOString().split('T')[0],
-            notas: '',
+            documento: ''
         });
         setIsModalOpen(true);
     };
@@ -148,19 +71,16 @@ export default function ClientesPage() {
         setFormData({ ...cliente });
         setIsModalOpen(true);
     };
-    const handleSaveCliente = (e: React.FormEvent) => {
-        /*
-        e.preventDefault();
-        if (editingCliente) {
-            setClientes((prev) =>
-                prev.map((c) => (c.cliente_id === editingCliente.cliente_id ? ({ ...formData } as Cliente) : c))
-            );
-        } else {
-            const newId = Math.max(...clientes.map((c) => c.cliente_id || 0), 0) + 1;
-            setClientes((prev) => [...prev, { ...formData, cliente_id: newId } as Cliente]);
+    const handleSaveCliente = async (e: React.FormEvent) => {
+        console.log(formData);
+        const newClient = await createCliente(formData);
+
+        if (newClient) {
+            console.log("Cliente Registrado con exito!");
+            setIsModalOpen(false);
         }
-            */
-        setIsModalOpen(false);
+        else
+            console.log("Error al registrar el cliente")
     };
 
     const handleDeleteCliente = (id: number) => {
@@ -534,17 +454,6 @@ export default function ClientesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="text-xs font-medium text-slate-300 mb-1 block">Empresa / Razón Social</label>
-                                    <input
-                                        type="text"
-                                        value={formData.empresa || ''}
-                                        onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                                        placeholder="Ej. Logística SA"
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
-                                </div>
-
-                                <div>
                                     <label className="text-xs font-medium text-slate-300 mb-1 block">
                                         Correo Electrónico <span className="text-[#efc704]">*</span>
                                     </label>
@@ -570,61 +479,15 @@ export default function ClientesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="text-xs font-medium text-slate-300 mb-1 block">Sector Industrial</label>
+                                    <label className="text-xs font-medium text-slate-300 mb-1 block">DNI</label>
                                     <input
                                         type="text"
-                                        value={formData.sector || ''}
-                                        onChange={(e) => setFormData({ ...formData, sector: e.target.value })}
-                                        placeholder="Ej. Logística, Finanzas, Retail"
+                                        value={formData.documento || ''}
+                                        onChange={(e) => setFormData({ ...formData, documento: e.target.value })}
+                                        placeholder="12345678901234"
                                         className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
                                     />
                                 </div>
-
-                                <div>
-                                    <label className="text-xs font-medium text-slate-300 mb-1 block">Estado</label>
-                                    <select
-                                        value={formData.estado || 'Activo'}
-                                        onChange={(e) => setFormData({ ...formData, estado: e.target.value })}
-                                        className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-[#efc704]"
-                                    >
-                                        <option value="Activo">Activo</option>
-                                        <option value="Prospecto">Prospecto</option>
-                                        <option value="Inactivo">Inactivo</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label className="text-xs font-medium text-slate-300 mb-1 block">Proyectos Activos</label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={formData.proyectos_activos || 0}
-                                        onChange={(e) => setFormData({ ...formData, proyectos_activos: Number(e.target.value) })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="text-xs font-medium text-slate-300 mb-1 block">Total Invertido ($)</label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={formData.total_invertido || 0}
-                                        onChange={(e) => setFormData({ ...formData, total_invertido: Number(e.target.value) })}
-                                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704]"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-xs font-medium text-slate-300 mb-1 block">Notas / Observaciones</label>
-                                <textarea
-                                    rows={3}
-                                    value={formData.notas || ''}
-                                    onChange={(e) => setFormData({ ...formData, notas: e.target.value })}
-                                    placeholder="Detalles de contacto, historial o acuerdos importantes..."
-                                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-xs text-white placeholder-slate-500 outline-none focus:border-[#efc704] resize-none"
-                                />
                             </div>
 
                             <div className="flex justify-end gap-3 border-t border-white/10 pt-4 mt-5">

@@ -3,11 +3,12 @@ from .schemas.tarea import TareaSchema
 
 class TareasRepository(BaseRepository):
     def create_tarea(self, data: TareaSchema):
-        query = "EXEC sp_crear_tarea %s, %s, %s, %s, %s, %s"
-
+        query = "EXEC sp_crear_tarea %s, %s, %s, %s, %s, %s, %s"
+        
         params = (
             data.proyecto_id,
             data.usuario_id,
+            data.titulo,
             data.descripcion,
             data.prioridad,
             data.estado,

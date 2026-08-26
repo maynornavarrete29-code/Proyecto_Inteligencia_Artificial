@@ -55,16 +55,15 @@ export default function ProyectosPage() {
     const handleOpenCreateModal = () => {
         setEditingProyecto(null);
         setFormData({
+            cliente_id: 1,
             nombre: '',
+            tipo: 'Sistema',
             descripcion: '',
             prioridad: 'Media',
-            tipo: 'Sistema',
+            estado: 'En Proceso',
             fecha_inicio: '',
             entrega_propuesta: '',
-            presupuesto: 0,
-            estado: 'En Proceso',
-            cliente_id: 1,
-            progreso: 0,
+            presupuesto: 0
         });
         setIsModalOpen(true);
     };
@@ -424,7 +423,7 @@ export default function ProyectosPage() {
                                                 <div>{p.nombre}</div>
                                                 <span className="text-[10px] text-slate-500 font-normal">{p.fecha_inicio}</span>
                                             </td>
-                                            <td className="p-4 text-slate-300">{p.cliente || 'N/A'}</td>
+                                            <td className="p-4 text-slate-300">{clientes?.find(c => c.cliente_id === p.cliente_id)?.nombre || 'N/A'}</td>
                                             <td className="p-4">
                                                 <span className="text-[10px] font-mono text-[#efc704] bg-[#efc704]/10 border border-[#efc704]/30 px-2 py-0.5 rounded-full font-bold">
                                                     {p.tipo}

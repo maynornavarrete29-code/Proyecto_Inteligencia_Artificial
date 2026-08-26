@@ -7,6 +7,7 @@ export interface Cliente {
     nombre?: string;
     telefono?: string;
     email?: string;
+    documento?: string;
     fecha_creacion?: Date;
     [key: string]: any;
 }

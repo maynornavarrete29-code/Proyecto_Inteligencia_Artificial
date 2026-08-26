@@ -9,7 +9,8 @@ from app.api.v1.endpoints import (
     roles,
     stack_proyectos,
     tecnologias,
-    usuarios
+    usuarios,
+    tareas
 )
 
 #creamos un router central para la version 1 de la api
@@ -25,3 +26,4 @@ api_router.include_router(roles.router, prefix="/roles", tags=["roles"])
 api_router.include_router(stack_proyectos.router, prefix="/stack_proyectos", tags=["stack_proyectos"])
 api_router.include_router(tecnologias.router, prefix="/tecnologias", tags=["tecnologias"])
 api_router.include_router(usuarios.router, prefix="/usuarios", tags=["usuarios"])
+api_router.include_router(tareas.router, prefix="/tareas", tags=["tareas"])

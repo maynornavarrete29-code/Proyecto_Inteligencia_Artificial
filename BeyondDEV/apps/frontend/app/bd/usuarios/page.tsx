@@ -178,8 +178,8 @@ export default function UsuariosPage() {
                         />
 
                         {/* Avatar e Iniciales */}
-                        <div className={`w-[64px] h-[64px] rounded-full border-2 border-dashed flex items-center justify-center mb-6 ${member.color}`}>
-                            <span className="font-mono text-xl font-bold">{member.initials}</span>
+                        <div className={`w-[64px] h-[64px] rounded-full border-2 border-dashed flex items-center justify-center mb-6 bg-indigo-400`}>
+                            <span className="font-mono text-xl font-bold">{member.nombre?.charAt(0).toUpperCase()}</span>
                         </div>
 
                         {/* Información del Usuario */}
