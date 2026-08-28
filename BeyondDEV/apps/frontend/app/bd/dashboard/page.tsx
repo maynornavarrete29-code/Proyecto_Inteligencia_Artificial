@@ -29,7 +29,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030508] text-slate-200 font-sans relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#030508] text-slate-200 font-sans relative overflow-x-hidden p-6 md:p-6 lg:p-8">
       {/* Elementos de fondo con resplandor */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#2b1d75]/30 rounded-full blur-3xl" />
@@ -40,7 +40,7 @@ export default function DashboardPage() {
       <div className="flex min-h-screen relative z-10">
 
         {/* PANEL PRINCIPAL[cite: 1, 2] */}
-        <main className="lg:ml-[280px] flex-1 flex flex-col min-w-0">
+        <main className="flex-1 flex flex-col min-w-0">
 
           {/* BARRA SUPERIOR (TOPBAR)[cite: 1, 2] */}
           <header className="h-[80px] bg-[#000405]/60 border-b border-white/10 backdrop-blur-md flex flex-col sm:flex-row justify-between items-start sm:items-center px-6 lg:px-10 sticky top-0 z-40 gap-4 sm:gap-0">

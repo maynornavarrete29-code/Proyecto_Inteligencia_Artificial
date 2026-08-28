@@ -189,14 +189,15 @@ export default function MantenimientoPage() {
         }
     };
 
+
     return (
-        <div className="lg:ml-[280px] lg:mt-[30px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
+        <div className="flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-6 md:p-8 lg:p-10 min-h-screen">
             <Header
                 title="Planes de Mantenimiento & SLA"
                 subtitle="Gestión de contratos recurrentes, garantías y pólizas de soporte técnico"
             />
 
-            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl mx-auto">
+            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl">
                 {/* METRICAS KPI */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="bg-[#0a0f19] border border-white/10 rounded-2xl p-5 shadow-lg relative overflow-hidden">

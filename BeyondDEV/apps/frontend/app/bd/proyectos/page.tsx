@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Header from '@/components/ui/header';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { useProyectos, createProyecto, Proyecto } from '@/lib/proyectos';
 import { useClientes } from '@/lib/clientes';
 
@@ -86,24 +87,7 @@ export default function ProyectosPage() {
         } else {
             console.log("Error al crear el proyecto");
         }
-
-        /*
-        if (editingProyecto) {
-                setProyectos((prev) =>
-                    prev.map((p) => (p.proyecto_id === editingProyecto.proyecto_id ? ({ ...formData } as Proyecto) : p))
-                );
-            } else {
-                const newId = Math.max(...proyectos.map((p) => p.proyecto_id || 0), 0) + 1;
-                setProyectos((prev) => [...prev, { ...formData, proyecto_id: newId } as Proyecto]);
-            }
-            setIsModalOpen(false);
-            */
     };
-
-    /*const handleDeleteProyecto = (id: number) => {
-        setProyectos((prev) => prev.filter((p) => p.proyecto_id !== id));
-        setDeleteConfirmId(null);
-    };*/
 
     // Badges estilizados
     const getPriorityBadge = (prioridad?: string) => {
@@ -135,7 +119,12 @@ export default function ProyectosPage() {
     };
 
     if (pLoading || cLoading)
-        return <p className="text-white">Loading...</p>
+        return (
+            <div className="min-h-screen bg-[#050811] text-slate-200 flex items-center justify-center">
+                <LoadingSpinner />
+            </div>
+        );
+
 
     if (pError || cError)
         return <p className="text-red-500">Error</p>
@@ -144,10 +133,10 @@ export default function ProyectosPage() {
     console.log("Proyectos: ", proyectos)
 
     return (
-        <div className="lg:ml-[280px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
+        <div className="flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-8 sm:p-6 lg:p-8 min-h-screen">
             <Header title="Proyectos" subtitle="Estado, presupuesto e historial operacional de proyectos" />
 
-            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl mx-auto">
+            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl">
 
                 {/* KPI CARDS METRICAS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

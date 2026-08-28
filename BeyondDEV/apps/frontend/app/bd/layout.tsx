@@ -42,11 +42,11 @@ export default function DashboardLayout({
     };
 
     return (
-        <div className="bg-[#050811] text-slate-200 min-h-screen selection:bg-[#efc704]/30 selection:text-[#efc704]">
+        <div className="bg-[#050811] text-slate-200 flex min-h-screen selection:bg-[#efc704]/30 selection:text-[#efc704]">
 
             {/* SIDEBAR NAVEGACIÓN */}
             <aside
-                className={`fixed left-0 top-0 h-full z-50 bg-[#0a0f19] border-r border-white/10 flex flex-col p-3 gap-2 transition-all duration-300 ease-in-out ${isCollapsed ? "w-20" : "w-64"
+                className={`fixed left-0 top-0 h-full z-50 bg-[#0a0f19] border-r border-white/10 flex flex-col p-3 gap-2 transition-all duration-300 ease-in-out ${isCollapsed ? "w-16" : "w-64"
                     }`}
             >
                 {/* Botón flotante para colapsar */}
@@ -155,7 +155,7 @@ export default function DashboardLayout({
                 {/* AJUSTES Y LOGOUT */}
                 <div className="mt-auto border-t border-white/10 pt-3 flex flex-col gap-1">
                     <Link
-                        href="/bd/ajustas"
+                        href="/bd/ajustes"
                         className={`flex items-center p-2.5 text-slate-400 hover:text-white hover:bg-white/5 transition-all rounded-xl text-xs font-medium ${isCollapsed ? "justify-center px-0" : "gap-3"
                             }`}
                         title={isCollapsed ? "Ajustes" : undefined}
@@ -179,7 +179,7 @@ export default function DashboardLayout({
 
             {/* CONTENIDO PRINCIPAL */}
             <main
-                className={`min-h-screen flex flex-col transition-all duration-300 ease-in-out ${isCollapsed ? "ml-0" : "ml-0"
+                className={`flex-1 flex flex-col min-w-0 min-h-screen transition-all duration-300 ease-in-out ${isCollapsed ? "ml-16" : "ml-64"
                     }`}
             >
                 {children}

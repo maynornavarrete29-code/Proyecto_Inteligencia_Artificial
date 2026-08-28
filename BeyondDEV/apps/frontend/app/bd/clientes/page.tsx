@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Header from '@/components/ui/header';
 import { useClientes, createCliente, Cliente } from '@/lib/clientes';
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 export default function ClientesPage() {
     //const [clientes, setClientes] = useState<Cliente[]>(MOCK_CLIENTES);
@@ -103,11 +104,21 @@ export default function ClientesPage() {
         }
     };
 
+    if (loading)
+        return (
+            <div className="min-h-screen bg-[#050811] text-slate-200 flex items-center justify-center">
+                <LoadingSpinner />
+            </div>
+        );
+
+    if (error)
+        return <p className="text-red-500">Error</p>
+
     return (
-        <div className="lg:ml-[280px] lg:mt-[30px] flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
+        <div className="flex-1 flex flex-col min-w-0 bg-[#050811] text-slate-200 p-4 sm:p-6 lg:p-8 min-h-screen">
             <Header title="Gestión de Clientes" subtitle="Perfiles de clientes, historial de facturación y directorio de contactos" />
 
-            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl mx-auto">
+            <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl">
 
                 {/* KPI CARDS METRICAS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

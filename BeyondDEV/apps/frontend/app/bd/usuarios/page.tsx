@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useUsuarios, createUsuario, Usuario } from '@/lib/usuarios'
 import { useRoles } from '@/lib/roles'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 const COLOR_PALETTE = [
     'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
@@ -119,13 +120,17 @@ export default function UsuariosPage() {
     }
 
     if (usuarioLoading || rolLoading)
-        return <p className="text-white">Loading...</p>
+        return (
+            <div className="min-h-screen bg-[#050811] text-slate-200 flex items-center justify-center">
+                <LoadingSpinner />
+            </div>
+        );
 
     if (usuarioError || rolError)
         return <p className="text-red-500">Error al cargar usuarios</p>
 
     return (
-        <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl mx-auto p-4 md:p-6">
+        <div className="flex-1 flex flex-col gap-6 w-full max-w-7xl p-6 md:p-8">
             {/* Encabezado y Acción */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/10 pb-5">
                 <div>

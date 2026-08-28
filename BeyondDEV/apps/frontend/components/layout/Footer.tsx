@@ -24,7 +24,7 @@ export default function Footer() {
           <a href="#" aria-label="Instagram" className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-400 hover:border-zinc-700">
             <FiInstagram />
           </a>
-          <a href="/login" aria-label="Backend Admin" className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-400 hover:border-zinc-700">
+          <a href="/bd/dashboard" aria-label="Backend Admin" className="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-400 hover:border-zinc-700">
             <FiLogIn />
           </a>
         </div>

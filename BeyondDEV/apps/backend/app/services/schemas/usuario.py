@@ -11,3 +11,7 @@ class UsuarioSchema(BaseModel):
     hashed_password: Optional[str] = None
     fecha_creacion: Optional[date] = None
     
+class UsuarioLoginSchema(BaseModel):
+    email: str
+    hashed_password: str
+

@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { 
-  ArrowLeft, 
-  Eye, 
-  EyeOff, 
-  Lock, 
-  Mail, 
-  User, 
-  ScanFace, 
-  Sparkles, 
-  Check, 
+import { login } from "@/lib/usuarios";
+import { useRouter } from 'next/navigation'
+import {
+  ArrowLeft,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  User,
+  ScanFace,
+  Sparkles,
+  Check,
   ArrowRight,
   ShieldCheck,
   Terminal,
@@ -41,14 +43,16 @@ const formContainerVariants = {
 
 const itemVariants = {
   hidden: { opacity: 0, y: 12 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 300, damping: 24 }
   },
 };
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [tab, setTab] = useState<"login" | "register">("login");
   const [showPassword, setShowPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -64,14 +68,24 @@ export default function LoginPage() {
     setTimeout(() => setCopiedDemo(false), 2200);
   };
 
+  const handleLogin = async () => {
+    const res = await login({ email, hashed_password: password });
+
+    if (res) {
+      router.replace("/bd/dashboard");
+    }
+    else
+      console.log("Error al iniciar sesión");
+  }
+
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#030712] text-zinc-100 selection:bg-cyan-400 selection:text-black flex flex-col justify-between">
-      
+
       {/* --- FONDO ANIMADO & ORBES EN MOVIMIENTO --- */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#1f293718_1px,transparent_1px),linear-gradient(to_bottom,#1f293718_1px,transparent_1px)] bg-[size:36px_36px] [mask-image:radial-gradient(ellipse_75%_60%_at_50%_50%,#000_70%,transparent_100%)]" />
-      
+
       {/* Orbe Flotante 1 (Violeta) */}
-      <motion.div 
+      <motion.div
         animate={{
           scale: [1, 1.25, 1],
           opacity: [0.25, 0.4, 0.25],
@@ -83,7 +97,7 @@ export default function LoginPage() {
       />
 
       {/* Orbe Flotante 2 (Cian / Ámbar) */}
-      <motion.div 
+      <motion.div
         animate={{
           scale: [1, 1.3, 1],
           opacity: [0.2, 0.35, 0.2],
@@ -98,7 +112,7 @@ export default function LoginPage() {
       <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 z-20">
         <div className="flex items-center justify-between rounded-2xl border border-zinc-800/80 bg-zinc-950/70 px-5 py-3 backdrop-blur-2xl shadow-2xl shadow-purple-950/20">
           <Link href="/" className="group flex items-center gap-3">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.08, rotate: 2 }}
               whileTap={{ scale: 0.95 }}
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 via-purple-500 to-amber-400 font-extrabold text-black shadow-lg shadow-purple-500/25"
@@ -110,8 +124,8 @@ export default function LoginPage() {
             </span>
           </Link>
 
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="group inline-flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/60 px-4 py-2 text-xs sm:text-sm font-medium text-zinc-300 hover:border-purple-500/50 hover:bg-zinc-800/80 hover:text-white transition-all duration-300 shadow-sm"
           >
             <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 text-cyan-400" />
@@ -123,7 +137,7 @@ export default function LoginPage() {
       {/* Contenido Principal Grid */}
       <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex-1 flex items-center justify-center z-10">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
+
           {/* Columna Izquierda: Showcase Developer */}
           <div className="hidden lg:flex lg:col-span-6 flex-col justify-center space-y-8 pr-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/30 text-cyan-300 text-xs font-semibold backdrop-blur-md w-fit shadow-inner shadow-cyan-500/20">
@@ -144,7 +158,7 @@ export default function LoginPage() {
             </div>
 
             {/* Terminal Interactiva con Cursor Parpadeante */}
-            <motion.div 
+            <motion.div
               whileHover={{ y: -3 }}
               className="rounded-2xl border border-zinc-800/80 bg-zinc-950/90 p-4 shadow-2xl shadow-purple-950/30 backdrop-blur-xl space-y-3 font-mono text-xs relative overflow-hidden group"
             >
@@ -208,9 +222,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setTab("login")}
-                  className={`relative z-10 flex-1 py-2.5 text-xs sm:text-sm font-bold transition-colors duration-200 ${
-                    tab === "login" ? "text-zinc-950" : "text-zinc-400 hover:text-zinc-100"
-                  }`}
+                  className={`relative z-10 flex-1 py-2.5 text-xs sm:text-sm font-bold transition-colors duration-200 ${tab === "login" ? "text-zinc-950" : "text-zinc-400 hover:text-zinc-100"
+                    }`}
                 >
                   {tab === "login" && (
                     <motion.div
@@ -225,9 +238,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setTab("register")}
-                  className={`relative z-10 flex-1 py-2.5 text-xs sm:text-sm font-bold transition-colors duration-200 ${
-                    tab === "register" ? "text-zinc-950" : "text-zinc-400 hover:text-zinc-100"
-                  }`}
+                  className={`relative z-10 flex-1 py-2.5 text-xs sm:text-sm font-bold transition-colors duration-200 ${tab === "register" ? "text-zinc-950" : "text-zinc-400 hover:text-zinc-100"
+                    }`}
                 >
                   {tab === "register" && (
                     <motion.div
@@ -284,8 +296,8 @@ export default function LoginPage() {
                           <label className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
                             Contraseña
                           </label>
-                          <button 
-                            type="button" 
+                          <button
+                            type="button"
                             className="text-xs font-medium text-amber-400 hover:text-amber-300 transition-colors"
                           >
                             ¿Olvidaste tu contraseña?
@@ -315,6 +327,7 @@ export default function LoginPage() {
                         <motion.button
                           whileHover={{ scale: 1.015 }}
                           whileTap={{ scale: 0.985 }}
+                          onClick={handleLogin}
                           type="submit"
                           className="group relative flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 via-purple-500 to-amber-400 px-4 py-3 text-sm font-bold text-zinc-950 shadow-xl shadow-purple-500/20 transition-all hover:shadow-cyan-500/30 mt-2 overflow-hidden"
                         >

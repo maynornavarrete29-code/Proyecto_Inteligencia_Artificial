@@ -1,19 +1,32 @@
 from .base import BaseRepository
 from .schemas.usuario import UsuarioSchema
+from typing import Optional
 
 class UsuariosRepository(BaseRepository):
-    def create_usuario(self, data: UsuarioSchema):
+    def create_usuario(self, data: UsuarioSchema, hashed_password: str) -> int:
         query = "EXEC sp_crear_usuario %s, %s, %s, %s, %s"
         params = (
             data.rol_id,
             data.nombre,
             data.telefono,
             data.email,
-            '$2b$10$d0.NeMqKOMJhsAH2VfcDk.Y.PTWz2JEfG0W0imwmgL37cXTZModnW'
+            hashed_password
         )
 
-        return self._execute_query(query, params, is_write=True)
+        result = self._execute_query(query, params, is_write=True)
+
+        if result:
+            if isinstance(result, dict):
+                return int(result.get("usuario_id", 0))
+            elif isinstance(result, (list, tuple)):
+                return int(result[0])
+        return 0
 
     def get_usuarios(self):
         query = "EXEC sp_listar_usuarios"
         return self._execute_query(query)
+
+    def get_usuario_by_email(self, email: str) -> Optional[dict]:
+        query = "EXEC sp_obtener_usuario_por_email %s"
+        params = (email,)
+        return self._execute_query(query, params, fetch_one=True)
