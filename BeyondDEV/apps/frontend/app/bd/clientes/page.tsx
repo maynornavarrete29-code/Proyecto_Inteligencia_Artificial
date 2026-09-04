@@ -311,11 +311,11 @@ export default function ClientesPage() {
                                     <div className="mt-4 pt-3 border-t border-white/5 grid grid-cols-2 gap-2 text-xs">
                                         <div className="bg-white/5 p-2 rounded-lg border border-white/5">
                                             <span className="text-[10px] text-slate-400 block uppercase font-mono">Proyectos</span>
-                                            <span className="text-white font-bold">{c.proyectos_activos || 0} Activos</span>
+                                            <span className="text-white font-bold">{c.proyectos_totales || 0} Activos</span>
                                         </div>
                                         <div className="bg-white/5 p-2 rounded-lg border border-white/5">
                                             <span className="text-[10px] text-slate-400 block uppercase font-mono">Inversión</span>
-                                            <span className="text-[#efc704] font-bold">${c.total_invertido?.toLocaleString()}</span>
+                                            <span className="text-[#efc704] font-bold">${c.inversion?.toLocaleString()}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -363,8 +363,8 @@ export default function ClientesPage() {
                                         <th className="p-4">Contacto</th>
                                         <th className="p-4">Sector</th>
                                         <th className="p-4">Estado</th>
-                                        <th className="p-4">Proyectos</th>
-                                        <th className="p-4">Inversión Total</th>
+                                        <th className="p-4">Proyectos Totales</th>
+                                        <th className="p-4">Inversión </th>
                                         <th className="p-4 text-right">Acciones</th>
                                     </tr>
                                 </thead>
@@ -385,8 +385,8 @@ export default function ClientesPage() {
                                                     {c.estado}
                                                 </span>
                                             </td>
-                                            <td className="p-4 text-white font-medium">{c.proyectos_activos || 0}</td>
-                                            <td className="p-4 text-[#efc704] font-bold">${c.total_invertido?.toLocaleString()}</td>
+                                            <td className="p-4 text-white font-medium">{c.proyectos_totales || 0}</td>
+                                            <td className="p-4 text-[#efc704] font-bold">${c.inversion?.toLocaleString()}</td>
                                             <td className="p-4 text-right">
                                                 <div className="flex items-center justify-end gap-1">
                                                     <button

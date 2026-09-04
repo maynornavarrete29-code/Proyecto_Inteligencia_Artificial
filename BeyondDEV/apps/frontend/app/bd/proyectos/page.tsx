@@ -244,8 +244,8 @@ export default function ProyectosPage() {
                         >
                             <option value="TODOS">Todos los Tipos</option>
                             <option value="Sistema">Sistema</option>
-                            <option value="Aplicacion Movil">Aplicación Móvil</option>
-                            <option value="Pagina Web">Página Web</option>
+                            <option value="Aplicación Movil">Aplicación Móvil</option>
+                            <option value="Página Web">Página Web</option>
                         </select>
 
                         {/* Toggle de Vista */}
@@ -527,8 +527,8 @@ export default function ProyectosPage() {
                                         className="w-full bg-[#0a0f19] border border-white/10 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-[#efc704]"
                                     >
                                         <option value="Sistema">Sistema</option>
-                                        <option value="Aplicacion Movil">Aplicación Móvil</option>
-                                        <option value="Pagina Web">Página Web</option>
+                                        <option value="Aplicación Movil">Aplicación Móvil</option>
+                                        <option value="Página Web">Página Web</option>
                                     </select>
                                 </div>
 
