@@ -26,3 +26,15 @@ async def getProjects(repo: ProyectosRepository = Depends(get_proyecto_repositor
 
     return proyectos
 
+@router.put("/{proyecto_id}", status_code=status.HTTP_200_OK)
+async def updateProject(proyecto_id: int, proyecto: ProyectoSchema, repo: ProyectosRepository = Depends(get_proyecto_repository)):
+    print("Proyecto a actualizar desde el backend: ", proyecto)
+    updated_proyecto = repo.update_proyecto(proyecto)
+
+    if not updated_proyecto:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="Proyecto no encontrado"
+        )
+
+    return updated_proyecto

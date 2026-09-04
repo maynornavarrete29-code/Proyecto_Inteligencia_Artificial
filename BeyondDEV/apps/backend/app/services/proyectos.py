@@ -33,3 +33,27 @@ class ProyectosRepository(BaseRepository):
             data.proyecto_id
         )'''
         return self._execute_query(query)
+    
+    def update_proyecto(self, data: ProyectoSchema):
+        print("Proyecto a actualizar desde el backend: ", data)
+        try:
+            query = "EXEC sp_actualizar_proyecto %s, %s, %s, %s, %s, %s, %s, %s"
+            params = (
+                data.proyecto_id,
+                data.nombre,
+                data.tipo,
+                data.descripcion,
+                data.prioridad,
+                data.estado,
+                data.entrega_propuesta,
+                data.presupuesto
+            )
+
+            return self._execute_query(
+                query,
+                params,
+                is_write=True,
+            )
+        except Exception as e:
+            print(f"Error al actualizar el proyecto: {e}")
+            return None
